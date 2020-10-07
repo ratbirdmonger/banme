@@ -9,7 +9,8 @@
 * You need to be ok with getting banned and/or the script running amok. It has some safety checks but theoretically if the right sequence of taps happens, it can do horrible things like: sell your units, buy money bundles, use your tickets, etc. I treat it like I would a self-driving car. It's a convenience feature but I take full responsibility if I take my hands off the wheel and it gets me into trouble.
 
 ## Disclaimers
-* **As the name of the project implies, you may get banned for using this.**
+* <span style="color:red">**As the name of the project implies, you may get banned for using this.**</span>
+    * Why doesn't this bother me? This game is not worth the time if I have to manually grind all this crap. If the developer wants to ban a paying customer who isn't gaining any in-game advantage, so be it. I have better things to do than "work hard" on a mobile game.
 * This has only been tested on an jailbroken iPad 6th gen with resolution 1536 x 2048
     * Requires the autotouch app (which requires jailbreak)
     * These scripts will likely work on other iOS devices with the exact same resolution: iPad 3rd gen - 5th gen
