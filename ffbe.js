@@ -1,0 +1,628 @@
+const { touchDown, touchMove, touchUp, usleep, toast } = at
+
+// all coordinates gathered by hand on an iPad 6th generation
+// resolution: 1536 x 2048 pixels
+// it's almost certainly all wrong for any other resolution / aspect ratio
+const unitTopLeft = {
+    1: {x: 6, y: 1132},
+    2: {x: 6, y: 1375},
+    3: {x: 6, y: 1623},
+    4: {x: 765, y: 1132},
+    5: {x: 765, y: 1375},
+    6: {x: 765, y: 1623}   
+};
+
+// relative to top left, the unit action icon is at:
+//   x + 0, y - 50, width: 108, height: 96
+const UNIT_ACTION_ICON_OFFSET = {x: 0, y: -50};
+const UNIT_ACTION_ICON_REGION = {width: 108, height: 96};
+
+// default "auto attack" action is selected
+// yellow pixel in bottom of hilt, blue-green pixel in gem of hilt, white pixel at top of blade
+const UNIT_ACTION_ATTACK_COLORS = [
+    { color: 12754765, x: 0, y: 0 },
+    { color: 5015928, x: -13, y: -23 },
+    { color: 13355723, x: -34, y: -63 }
+]
+
+function isAutoAttackSelected(unitPosition) {
+    let actionIconRegion = {
+        x: unitTopLeft[unitPosition].x + UNIT_ACTION_ICON_OFFSET.x,
+        y: unitTopLeft[unitPosition].y + UNIT_ACTION_ICON_OFFSET.y,
+        width: UNIT_ACTION_ICON_REGION.width, height: UNIT_ACTION_ICON_REGION.height
+     }
+
+     return areColorsPresentInRegion(UNIT_ACTION_ATTACK_COLORS, actionIconRegion);
+}
+
+const repeatButton = {x: 473, y: 1951};
+const reloadButton = {x: 885, y: 1938};
+
+// in the ability menu during a battle, we can see 3 rows of 2 abilities each
+const battleAbilityTopLeft = [
+    [/* 0,0 */ {x: 22, y: 1129}, /* 0,1 */ {x: 768, y: 1129}],
+    [/* 1,0 */ {x: 22, y: 1361}, /* 1,1 */ {x: 768, y: 1361}],
+    [/* 2,0 */ {x: 22, y: 1592}, /* 2,1 */ {x: 768, y: 1592}]    
+];
+const BATTLE_ABILITY_DIMENSIONS = {width: 700, height: 200};
+
+// size of the unit's box in the battle display
+const unitBoxSize = {width: 751, height:237 };
+
+// used to check if the esper gauge is full
+const esperGaugeRegion = { x: 1114, y: 1070, width: 386, height: 783 };
+const esperGaugeFullColors = [
+    { color: 16777057, x: 0, y: 2 }
+];
+
+// used to check if the reload button is active, which means it's our turn to act
+const reloadButtonCheckRegion = {x: 794, y: 1925, width: 48, height: 32};
+const reloadButtonActiveColors = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 30889, x: 0, y: -21 }
+];
+
+// used to check if we are outside of battle
+const titleBarGoldCoinCheckRegion = {x: 0, y: 0, width: 96, height: 96};
+const titleBarGoldCoinColors = [
+    { color: 11433246, x: 0, y: 0 },
+    { color: 15523195, x: 2, y: -27 },
+    { color: 16308859, x: -21, y: -1 }];
+
+// sleep in one second chunks so we can abort easier
+function sleep(seconds) {
+    let microsecondsToSleep = seconds * 1000000;
+
+    const napLength = 1000000; // 1 second
+
+    while(microsecondsToSleep > 0) {
+        if(microsecondsToSleep > 3000000 && (microsecondsToSleep / 1000000 % 3 == 0)) {
+            toast(`${microsecondsToSleep/1000000} seconds left`, 1);
+        }
+        if(microsecondsToSleep > napLength) {
+            usleep(napLength);
+            microsecondsToSleep -= napLength;
+        } else {
+            usleep(microsecondsToSleep);
+            microsecondsToSleep = 0;
+        }
+    }
+}
+
+function pressRepeat() {
+    tap(repeatButton.x, repeatButton.y, 1000, 7);
+    sleep(0.4);
+}
+
+function pressReload() {
+    tap(reloadButton.x, reloadButton.y, 1000, 7);
+    sleep(0.2);
+}
+
+// swipe from (x,y) to (newx,newy)
+// this took a lot of trial and error
+function swipe(x, y, newx, newy, finger = 1) {
+    
+    touchDown(finger, x, y);
+    let step = 15; // how many intermediate places to move the "finger"
+    for (let i = 0; i <= step; i++) {
+        // a function that moves from 0 to 1 as x goes from 0 to 1, but decelerates as it gets close to 1
+        let scale = Math.sqrt(Math.sin(Math.PI*0.5*(i/step)));
+        // scale the progression of the finger according to the scaling function
+        let stepx = (newx-x)*scale+x;
+        let stepy = (newy-y)*scale+y;
+        touchMove(finger, stepx, stepy);
+		usleep(5000);
+    }
+    touchUp(finger, newx, newy);
+    usleep(100000);
+}
+
+// opens the ability list for the unit. position between 1 and 6.
+function openUnitAbility(unitPosition) {
+    swipe(unitTopLeft[unitPosition].x + 10, unitTopLeft[unitPosition].y + unitBoxSize.height/2, 
+        unitTopLeft[unitPosition].x + 10 + unitBoxSize.width/2, 
+        unitTopLeft[unitPosition].y + unitBoxSize.height/2, unitPosition);
+    sleep(0.4);
+}
+
+// activate (press) the unit. position between 1 and 6.
+function activateUnit(unitPosition) {
+    tapMiddle(
+        {x: unitTopLeft[unitPosition].x, y: unitTopLeft[unitPosition].y,
+         width: unitBoxSize.width, height: unitBoxSize.height }, 0, unitPosition);
+}
+
+// unitPosition is as number from 1 to 6
+// abilities is a list of x and y pairs, and optional target
+function selectAbilities(unitPosition, abilities) {
+    openUnitAbility(unitPosition);
+
+    // we start at row 0. we can reach row, row+1, and row+2
+    let row = 0;
+    for(let i = 0; i < abilities.length; i++) {
+        if(abilities[i].x < row) {
+            // need to seek upwards (decreasing the row) by row - abilities.x
+            let rowsToSeek = abilities[i].x - (row + 2);
+            for(let j = 0; j < rowsToSeek; j++) {
+                swipe(battleAbilityTopLeft[0][0].x + BATTLE_ABILITY_DIMENSIONS.width/2, 
+                    battleAbilityTopLeft[0][0].y + BATTLE_ABILITY_DIMENSIONS.height/2, 
+                    battleAbilityTopLeft[1][0].x + BATTLE_ABILITY_DIMENSIONS.width/2, 
+                    battleAbilityTopLeft[1][0].y + BATTLE_ABILITY_DIMENSIONS.height/2, 2);                
+                row--;
+                sleep(0.05);
+            }            
+        } else if (abilities[i].x > row + 2) {
+            // need to seek downwards (increasing the row) by abilities.x - (row + 2)
+            let rowsToSeek = abilities[i].x - (row + 2);
+            for(let j = 0; j < rowsToSeek; j++) {
+                swipe(battleAbilityTopLeft[2][0].x + BATTLE_ABILITY_DIMENSIONS.width/2, 
+                    battleAbilityTopLeft[2][0].y + BATTLE_ABILITY_DIMENSIONS.height/2, 
+                    battleAbilityTopLeft[1][0].x + BATTLE_ABILITY_DIMENSIONS.width/2, 
+                    battleAbilityTopLeft[1][0].y + BATTLE_ABILITY_DIMENSIONS.height/2, 2);                
+                row++;
+                sleep(0.05);
+            }
+        }
+        pressAbilityButton(abilities[i].x - row, abilities[i].y);
+        if(abilities[i].target !== undefined) {
+            sleep(0.1);
+            activateUnit(abilities[i].target);
+            sleep(0.3);
+        }
+    }
+
+    // pause long enough for the "unit finished selection" animation
+    sleep(0.5);
+}
+
+// x is the row on the ability list, 0 indexed, y = 0 or 1 (left or right ability in the row)
+function pressAbilityButton(x, y) {
+    tapMiddle({x: battleAbilityTopLeft[x][y].x, y: battleAbilityTopLeft[x][y].y,
+               width: BATTLE_ABILITY_DIMENSIONS.width, height: BATTLE_ABILITY_DIMENSIONS.height}, 10000)
+    sleep(0.3);
+}
+
+function isEsperGaugeFull() {
+    return areColorsPresentInRegion(esperGaugeFullColors, esperGaugeRegion);
+}
+
+function isTurnReady() {
+    return areColorsPresentInRegion(reloadButtonActiveColors, reloadButtonCheckRegion);
+}
+
+function isMainMenuTopBarVisible() {
+    return areColorsPresentInRegion(titleBarGoldCoinColors, titleBarGoldCoinCheckRegion);
+}
+
+function areColorsPresentInRegion(colors, region) {
+    var options = { colors: colors, region: region};
+    var [result, error] = at.findColors(options);
+
+    if(result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// execute the provided function for the specified amount of time
+// returns true if the function evaluated to true, false otherwise (i.e. the timeout was hit)
+function poll(pollFunction, timeoutInSeconds = 5, intervalInSeconds = 1, throwOnTimeoutMessage = null) {
+    const INTERMEDIATE_SLEEP_TIME_IN_MICROSECONDS = 1000000;
+    const SECONDS_BETWEEN_PROGRESS_MESSAGE = 3;
+    let microsecondsToSleep = timeoutInSeconds * 1000000;
+
+    const napLength = intervalInSeconds * INTERMEDIATE_SLEEP_TIME_IN_MICROSECONDS;
+    var result = false;
+
+    while(microsecondsToSleep > 0) {
+        result = pollFunction();
+        if(result) {
+            break;
+        }
+        if(microsecondsToSleep > SECONDS_BETWEEN_PROGRESS_MESSAGE*1000000 
+            && (microsecondsToSleep / 1000000 % SECONDS_BETWEEN_PROGRESS_MESSAGE == 0)) {
+            toast(`${microsecondsToSleep/1000000} seconds left`, 1);
+        }
+        if(microsecondsToSleep > napLength) {
+            usleep(napLength);
+            microsecondsToSleep -= napLength;
+        } else {
+            usleep(microsecondsToSleep);
+            microsecondsToSleep = 0;
+        }
+    }
+
+    if(throwOnTimeoutMessage != null && !result) {
+        alert("${throwOnTimeoutMessage} timed out, aborting");
+        at.stop();
+    }
+    return result;
+}
+
+function tap(x, y, timeInUs = 150000, finger = 1) {
+    touchDown(finger, x, y);
+    usleep(timeInUs);
+    touchUp(finger, x, y);
+}
+
+function tapMiddle(region, time = 150000, finger = 1) {
+    tap(region.x + region.width/2, region.y + region.height/2, time, finger);
+}
+
+// region size: 1450 x 300
+// top left pixels of each friend unit in the "pick a companion" dialog before a battle
+const FRIEND_TOP_LEFT = [
+    {x: 44, y: 643},
+    {x: 44, y: 1001},
+    {x: 44, y: 1359},
+    {x: 44, y: 1717}
+];
+
+// region from the top left pixel of a friend unit that could have the status/drop bonus overlay
+const FRIEND_REGION_WITH_BONUS = { height: 285, width: 285 };
+
+// pixels from bonus green arrow for status/drop bonus
+const bonusColors = [
+    { color: 50688, x: 0, y: 0 },
+    { color: 50688, x: 0, y: -1 },
+    { color: 50688, x: 0, y: -2 },
+    { color: 50688, x: 0, y: -3 }
+];
+
+// a few white/black pixels to match the "Depart without companion" option in the "pick a companion" dialog
+const departWithoutCompanionColors = [
+    { color: 2575, x: 0, y: 0 },
+    { color: 15658991, x: 278, y: 1 },
+    { color: 4633, x: 283, y: 1 }
+];
+
+// vertical distance between adjacent friends in the "pick a companion" dialog
+const friendDistance = FRIEND_TOP_LEFT[1].y - FRIEND_TOP_LEFT[0].y;
+
+function reachedEndOfFriendList() {
+    return areColorsPresentInRegion(departWithoutCompanionColors);
+}
+
+// return the index of the friend unit with a bonus (from 0 to 3) or -1 if none found
+function findBonusUnit() {
+    for(let j = 0; j < 10; j++) {
+        // look for the bonus every 200ms 5 times, since it fades in and out
+        let found = false;
+        for(let i = 0; i <= 3; i++) {
+            var region = { x: FRIEND_TOP_LEFT[i].x, y: FRIEND_TOP_LEFT[i].y, 
+                height: FRIEND_REGION_WITH_BONUS.height, width: FRIEND_REGION_WITH_BONUS.width };
+
+            if(areColorsPresentInRegion(bonusColors,region)) {
+                found = true;
+                return i;
+            }
+        }
+        sleep(0.2);
+    }
+
+    return -1;
+}
+
+// swipes through the current companion list. returns the row index of a bonus unit or -1 if none found
+function searchFriendListForBonus() {
+    let bonusFriend = -1;
+    while(!reachedEndOfFriendList()) {
+        bonusFriend = findBonusUnit();
+        if(bonusFriend >= 0) {
+            break;
+        }
+        swipe(FRIEND_TOP_LEFT[3].x, FRIEND_TOP_LEFT[3].y, FRIEND_TOP_LEFT[3].x, FRIEND_TOP_LEFT[3].y - friendDistance*4, 1);
+    }
+    if(bonusFriend == -1) {
+        // one last try in case we just swiped a bonus unit into view
+        bonusFriend = findBonusUnit();
+    }
+    return bonusFriend;
+}
+
+// scroll through the friend list, tapping any bonus units. if a bonus unit does not exist, pick the first row
+function tapBonusFriendOrDefault(companionTabs = null) {
+    let bonusFriend = -1;
+
+    if(companionTabs == null || companionTabs.length == 0) {
+        // look for units in the current tab only
+        bonusFriend = searchFriendListForBonus();
+    } else {
+        for(let i = 0; i < companionTabs.length; i++) {
+            selectCompanionTab(companionTabs[i]);
+            bonusFriend = searchFriendListForBonus();
+            if(bonusFriend != -1) {
+                break;
+            }
+        }
+    }
+
+    if(bonusFriend == -1) {
+        // searched all the tabs and still couldn't find one, so just pick whatever is here
+        bonusFriend = 0;
+    }
+
+    tap(FRIEND_TOP_LEFT[bonusFriend].x + 50, FRIEND_TOP_LEFT[bonusFriend].y + 50);
+    sleep(1.5);
+}
+
+const HOME_BUTTON_TEXT_REGION = { x: 1324, y: 346, width: 173, height: 78 };
+
+// if we're at a raid, MK, etc., screen then there's a Home button
+// was using findColors for this but there's a slight difference depending on which screen
+function atEventScreen() {
+    return readText(HOME_BUTTON_TEXT_REGION) == "Home";
+}
+
+const PARTY_NAME_REGION = {x: 1034, y: 486, width: 452, height: 59};
+
+// reads text in the region. if it times out (5s) or errors, will return empty string
+function readText(region, minHeight = 0.5, level = 1) {
+    const options = {
+        region: region,
+        customWords: ['Espers', 'Troops'],
+        minimumTextHeight: minHeight, // OPTIONAL, the minimum height of the text expected to be recognized, relative to the region/screen height, default is 1/32
+        level: level, // OPTIONAL, 0 means accurate first, 1 means speed first
+        correct: false, // OPTIONAL, whether use language correction during the recognition process.
+    }
+
+    var text = null;
+    
+    at.recognizeText(options, (result, error) => {
+        if (error) {
+            text = "";
+            alert(error)
+        } else {
+            // alert(`${JSON.stringify(result, null, '    ')}`)
+            if(result.length >= 1) {
+                text = result[0].text;
+            } else {
+                text = "";
+            }
+        }
+    })
+
+    poll(function(){ return text != null }, 5, 0.1);
+
+    return text;
+}
+
+// get the name of our currently selected party
+function getPartyName() {
+    return readText(PARTY_NAME_REGION);
+}
+
+const SHIFT_PARTY_LEFT_BUTTON = {x: 20, y: 732};
+const SHIFT_PARTY_RIGHT_BUTTON = {x: 1510, y: 732};
+
+// try to select the party with the specified name
+function selectParty(partyName) {
+    for(let i = 0; i < 5; i++) {
+        if(getPartyName() == partyName) {
+            return true;
+        } 
+        tap(SHIFT_PARTY_RIGHT_BUTTON.x, SHIFT_PARTY_RIGHT_BUTTON.y);
+        sleep(0.5);
+    }
+    return false;
+}
+
+const DAILY_QUEST_CLOSE_REGION = {x: 236, y:1441, width:324, height:90}
+const DAILY_QUEST_CLOSE_BUTTON_COLORS = [
+    { color: 4182, x: 0, y: 0 },
+    { color: 15856116, x: 0, y: -11 },
+    { color: 2358, x: 0, y: -22 }
+];
+
+// white pixels from e and x in Next and a dark pixel above x
+const NEXT_BUTTON_COLORS = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 3646, x: 1, y: -16 },
+    { color: 16777215, x: -22, y: -1 }
+];
+
+// a mission that has 5 rewards uses this Next button
+const NEXT_BUTTON_2_COLORS = [
+    { color: 16645630, x: 0, y: 0 },
+    { color: 16777215, x: 20, y: 0 },
+    { color: 201808, x: 21, y: -8 }
+];
+
+// Next button shifts slightly across screens, make the height a bit bigger to accommodate both
+const NEXT_BUTTON_REGION = {x: 594, y: 1785, width: 350, height: 200}
+
+// post-battle next button
+function isNextButtonActive() {
+    return areColorsPresentInRegion(NEXT_BUTTON_COLORS, NEXT_BUTTON_REGION) 
+    || areColorsPresentInRegion(NEXT_BUTTON_2_COLORS, NEXT_BUTTON_REGION);
+}
+
+// light and dark pixels from R and e
+const DONT_REQUEST_BUTTON_COLORS = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16777215, x: 25, y: 6 },
+    { color: 75365, x: -3, y: -11 },
+    { color: 140136, x: 37, y: 0 }
+]
+
+const DONT_REQUEST_BUTTON_REGION = {x: 40, y: 1395, width: 700, height: 205};
+
+// friend request dialog
+function isDontRequestButtonActive() {
+    return areColorsPresentInRegion(DONT_REQUEST_BUTTON_COLORS, DONT_REQUEST_BUTTON_REGION);
+}
+
+// daily quest complete dialog
+function isDailyQuestCloseButtonActive() {
+    return areColorsPresentInRegion(DAILY_QUEST_CLOSE_BUTTON_COLORS, DAILY_QUEST_CLOSE_REGION);
+}
+
+// taps the post-battle next button 
+function tapNextButton() {
+    tapMiddle(NEXT_BUTTON_REGION);
+}
+
+// tap the Don't Request button in the friend request dialog
+function tapDontRequestButton() {
+    tapMiddle(DONT_REQUEST_BUTTON_REGION);
+}
+
+// click the close button in the daily quest complete dialog
+function tapDailyQuestCloseButton() {
+    tapMiddle(DAILY_QUEST_CLOSE_REGION);
+}
+
+// after completing a battle we need to click through a bunch of screens
+function dismissVictoryScreenDialogs() {
+    while(!atEventScreen()) {
+        if(isDailyQuestCloseButtonActive()) {
+            tapDailyQuestCloseButton(); sleep(1);
+        } else if(isNextButtonActive()) {
+            tapNextButton(); sleep(1);
+        } else if(isDontRequestButtonActive()) {
+            tapDontRequestButton(); sleep(1);
+        } else {
+            // tap center of screen to hurry things along
+            // if the event screen doesn't load up fast enough and we click here, nothing bad happens
+            tap(750, 1000);
+            sleep(0.25);
+        }
+    }
+    sleep(1);
+}
+
+const EVENT_1_REGION = {x: 43, y: 476, width: 1445, height: 434 }
+const EVENT_2_REGION = {x: 43, y: 1081, width: 1445, height: 434 }
+const EVENT_3_REGION = {x: 43, y: 1685, width: 1445, height: 269 }
+
+const VORTEX_TAB_REGIONS = [
+    {x: 20, y: 304, width: 297, height: 101 },   // Event
+    {x: 320, y: 304, width: 297, height: 101 },  // Enhance
+    {x: 620, y: 304, width: 297, height: 101 },  // Special
+    {x: 920, y: 304, width: 297, height: 101 },  // Nemeses
+    {x: 1220, y: 304, width: 297, height: 101 }  // Challenges
+]
+
+// when in the Vortex, x is the tab and y is the row within the tab
+// example: Special -> Training the Soul: (2, 1)
+function selectVortex(x, y) {
+    tapMiddle(VORTEX_TAB_REGIONS[x]);
+    sleep(0.7);
+    let row = 0;
+    // if we're at row 0 then we can also see row 1 and row 2
+    for(; row < y - 2; row++) {
+        swipe(EVENT_2_REGION.x, EVENT_2_REGION.y, EVENT_1_REGION.x, EVENT_1_REGION.y);
+        sleep(0.1);
+    }
+    if(row == y) {
+        tapMiddle(EVENT_1_REGION);
+    } else if(row == y-1) {
+        tapMiddle(EVENT_2_REGION);
+    } else {
+        tapMiddle(EVENT_3_REGION);
+    }
+    poll(isBackButtonActive, 5, 0.5);
+}
+
+// from Home, enter the Vortex
+function enterVortex() {
+    tap(450, 1120); // Vortex swirl
+    sleep(2);
+}
+
+// from Vortex, go back to Home
+function exitVortex() {
+    tap(80, 50); // Back button
+    sleep(2);
+}
+
+// top-left back button that applies to almost all situations
+function tapBackButton() {
+    tap(140, 320); // Back button
+    sleep(2);
+}
+
+const MAIN_MENU_LABEL_REGION = {x: 591, y: 1634, width: 357, height: 55 }
+// read the label of the currently active main menu action (World, Arena, Expedition, etc.)
+function getMainMenuLabel() {
+    return readText(MAIN_MENU_LABEL_REGION, 0.5);
+}
+
+const SHIFT_MAIN_MENU_RIGHT_BUTTON = {x: 1480, y: 1520};
+// try to select the main menu action with the specified name
+function selectMainMenu(label) {
+    for(let i = 0; i < 5; i++) {
+        if(getMainMenuLabel() == label) {
+            return true;
+        } 
+        tap(SHIFT_MAIN_MENU_RIGHT_BUTTON.x, SHIFT_MAIN_MENU_RIGHT_BUTTON.y);
+        sleep(0.5);
+    }
+    return false;
+}
+
+// tap the main menu action to enter it (World, Arena, Expedition, etc.)
+function tapActiveMainMenuButton() {
+    tapMiddle(MAIN_MENU_LABEL_REGION);
+    sleep(3);
+}
+
+const COMPANION_TAB_REGIONS = [
+    {x: 10, y: 530, width: 302, height: 101 },   // Favorite
+    {x: 315, y: 530, width: 297, height: 101 },  // Event 1
+    {x: 619, y: 530, width: 297, height: 101 },  // Event 2
+    {x: 924, y: 530, width: 297, height: 101 },  // Nemesis 1
+    {x: 1229, y: 530, width: 297, height: 101 }  // Nemesis 2
+]
+// choose which companion tab to activate
+function selectCompanionTab(x) {
+    tapMiddle(COMPANION_TAB_REGIONS[x]);
+     // TODO poll for the "Connecting..." to go away and sanity check that we're still at the Companion screen
+    sleep(2);
+}
+
+// at the home screen, clicks the FREE!! button for viewing ads
+const MAIN_MENU_AD_BUTTON = {x: 175, y: 274};
+function tapMainMenuAdButton() {
+    tap(MAIN_MENU_AD_BUTTON.x, MAIN_MENU_AD_BUTTON.y);
+    sleep(2);
+}
+
+// inside an event's difficulty selection, there is an event title
+const EVENT_TEXT_REGION = { x: 288, y: 343, width: 543, height: 55};
+function readEventText() {
+    return readText(EVENT_TEXT_REGION);
+}
+
+const BACK_BUTTON_ACTIVE_COLORS = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16523, x: 0, y: -25 },
+    { color: 5963, x: 37, y: -1 }
+];
+
+const BACK_BUTTON_REGION = {x: 50, y: 280, width: 207, height: 115};
+
+// the back button that displays under the title bar. applies to raids, events, etc. except for the top level vortex. 
+function isBackButtonActive() {
+    return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
+}
+
+
+module.exports = {
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, readEventText, areColorsPresentInRegion, poll, 
+    // menu navigation 
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive,
+    // pre-battle dialogs
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, 
+    // battle commands
+    pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    // post-battle dialogs and checks
+    isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
+}
