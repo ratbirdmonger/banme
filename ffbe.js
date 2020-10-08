@@ -143,7 +143,7 @@ function selectAbilities(unitPosition, abilities) {
     for(let i = 0; i < abilities.length; i++) {
         if(abilities[i].x < row) {
             // need to seek upwards (decreasing the row) by row - abilities.x
-            let rowsToSeek = abilities[i].x - (row + 2);
+            let rowsToSeek = row - abilities[i].x;
             for(let j = 0; j < rowsToSeek; j++) {
                 swipe(battleAbilityTopLeft[0][0].x + BATTLE_ABILITY_DIMENSIONS.width/2, 
                     battleAbilityTopLeft[0][0].y + BATTLE_ABILITY_DIMENSIONS.height/2, 

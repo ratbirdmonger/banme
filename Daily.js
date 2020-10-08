@@ -151,14 +151,16 @@ function buyGoldBundle() {
 sendGiftsAndPressShare();
 
 tapMainMenuAdButton();
+poll(isBackButtonActive, 10, 0.5, "Back button available");
 executeAdLoop();
 tapBackButton();
 tapBackButton();
 
 enterVortex();
-selectVortex(0,1);
+selectVortex(0,6);
 executeEXTDaily();
 tapBackButton();
 exitVortex();
 
-buyGoldBundle();  
+buyGoldBundle();
+  

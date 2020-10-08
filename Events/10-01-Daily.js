@@ -33,7 +33,7 @@ function executeEXTDaily() {
     // vaan steals
     selectAbilities(1, [{x: 4, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}]);
     // basch covers
-    selectAbilities(4, [{x: 2, y: 0}]);
+    selectAbilities(4, [{x: 2, y: 1}]);
     // ashe DPS
     selectAbilities(2, [{x: 3, y: 1}, {x: 8, y: 1}, {x: 10, y: 0}, {x: 10, y: 0}])
     // fran DPS
@@ -45,7 +45,7 @@ function executeEXTDaily() {
     activateUnit(3);
     activateUnit(4);
     // wait for boss to BREAK
-    sleep(10);
+    sleep(12);
 
     activateUnit(2);
     activateUnit(5);

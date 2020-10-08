@@ -24,7 +24,7 @@ appActivate("com.square-enix.ffbeww");
 
 // Raid
 enterVortex();
-selectVortex(0, 0);
+selectVortex(0, 5);
 poll(isBackButtonActive, 10, 0.5);
 sleep(0.5); // make sure the screen finishes fading in
 executeRaidLoop();

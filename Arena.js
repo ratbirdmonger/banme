@@ -80,6 +80,58 @@ function isRewardOkButtonActive() {
     return areColorsPresentInRegion(REWARD_OK_BUTTON_COLORS, REWARD_OK_BUTTON_REGION);
 }
 
+function multicastCWA() {
+    if(isAutoAttackSelected(4)) {
+        selectAbilities(4, [{x: 5, y: 1}]); // SElena using frozen hurricane
+    }
+    if(isAutoAttackSelected(2)) {
+        selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
+    }
+    if(isAutoAttackSelected(5)) {
+        selectAbilities(5, [{x: 2, y:1}, {x: 6, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]) // Kuja CWA firex3
+    }
+    if(isAutoAttackSelected(3)) {
+        selectAbilities(3, [{x: 1, y:1}, {x:2, y: 1}, {x:3, y: 0}, {x:3, y:1}]); // Hein CWA fire/ice/lightning
+    }
+
+    activateUnit(4);
+    sleep(1);
+    activateUnit(2);
+    activateUnit(3);
+    activateUnit(5);
+    poll(isEsperGaugeFull, 10, 0.2);
+    selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    activateUnit(1);
+}
+
+function tornado() {
+    if(isAutoAttackSelected(2)) {
+        selectAbilities(2, [{x: 7, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 5, y: 0}]); // Rem triple cast tornadox2, firaja
+    }
+    if(isAutoAttackSelected(4)) {
+        selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast tornado
+    }
+    if(isAutoAttackSelected(3)) {
+        selectAbilities(3, [{x: 4, y:0}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
+    }
+    if(isAutoAttackSelected(5)) {
+        selectAbilities(5, [{x: 4, y:1}, {x:2, y: 1}, {x:2, y: 1}, {x:3, y:1}]); // Tyro dualcast tornado
+    }
+
+    // 2xUltima
+    activateUnit(3);
+    activateUnit(4);
+
+    sleep(2.5);
+    // 2xTornado
+    activateUnit(2);
+    activateUnit(5);
+
+    poll(isEsperGaugeFull, 10, 0.2);
+    selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    activateUnit(1);
+}
+
 function executeArena() {
     // setup button
     tap(800, 1900);
@@ -101,7 +153,6 @@ function executeArena() {
     tap(800, 1800);
 
     let keepGoing = true;
-    let fullEsperStartOfTurn = false;
     while(keepGoing) {
         let turnReady = poll(isTurnReady, 60, 1);
         if(!turnReady) {
@@ -113,37 +164,10 @@ function executeArena() {
         // try to save time doing a reload but if previous MP drain disabled our attacks we need to reset the attacks
         pressReload();
         sleep(1);
-        if(isAutoAttackSelected(4)) {
-            selectAbilities(4, [{x: 5, y: 1}]); // SElena using frozen hurricane
-        }
-        if(isAutoAttackSelected(2)) {
-            selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
-        }
-        if(isAutoAttackSelected(5)) {
-            selectAbilities(5, [{x: 2, y:1}, {x: 6, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]) // Kuja CWA firex3
-        }
-        if(isAutoAttackSelected(3)) {
-            selectAbilities(3, [{x: 1, y:1}, {x:2, y: 1}, {x:3, y: 0}, {x:3, y:1}]); // Hein CWA fire/ice/lightning
-        }
-        if(!isAutoAttackSelected(1)) {
-            // if we got here then that means we already had the esper gauge full, so let's remember this and
-            // not redo the esper command. because it won't work - can't reselect esper if you already have it selected.
-            // warning: if you manually take over and change the action, it will keep executing that action instead
-            fullEsperStartOfTurn = true;
-        }
 
-        activateUnit(4);
-        sleep(1);
-        activateUnit(2);
-        activateUnit(3);
-        activateUnit(5);
-        poll(isEsperGaugeFull, 10, 0.2);
-        if(!fullEsperStartOfTurn) {
-            selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
-        }
-        activateUnit(1);
-        fullEsperStartOfTurn = false;
-        
+        // multicastCWA();
+        tornado();
+
         sleep(1); // give time for the reload/repeat button to go blank
         poll(function(){ return isArenaDone() || isTurnReady() }, 30, 1);
         keepGoing = isTurnReady();
