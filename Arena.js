@@ -100,7 +100,9 @@ function multicastCWA() {
     activateUnit(3);
     activateUnit(5);
     poll(isEsperGaugeFull, 10, 0.2);
-    selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    if(isAutoAttackSelected(1)) {
+        selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    }
     activateUnit(1);
 }
 
@@ -112,7 +114,7 @@ function tornado() {
         selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast tornado
     }
     if(isAutoAttackSelected(3)) {
-        selectAbilities(3, [{x: 4, y:0}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
+        selectAbilities(3, [{x: 6, y:1}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
     }
     if(isAutoAttackSelected(5)) {
         selectAbilities(5, [{x: 4, y:1}, {x:2, y: 1}, {x:2, y: 1}, {x:3, y:1}]); // Tyro dualcast tornado
@@ -128,7 +130,9 @@ function tornado() {
     activateUnit(5);
 
     poll(isEsperGaugeFull, 10, 0.2);
-    selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    if(isAutoAttackSelected(1)) {
+        selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    }
     activateUnit(1);
 }
 

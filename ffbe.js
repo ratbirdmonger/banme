@@ -1,4 +1,4 @@
-const { touchDown, touchMove, touchUp, usleep, toast } = at
+const { touchDown, touchMove, touchUp, usleep, toast, findImage } = at
 
 // all coordinates gathered by hand on an iPad 6th generation
 // resolution: 1536 x 2048 pixels
@@ -17,14 +17,6 @@ const unitTopLeft = {
 const UNIT_ACTION_ICON_OFFSET = {x: 0, y: -50};
 const UNIT_ACTION_ICON_REGION = {width: 108, height: 96};
 
-// default "auto attack" action is selected
-// yellow pixel in bottom of hilt, blue-green pixel in gem of hilt, white pixel at top of blade
-const UNIT_ACTION_ATTACK_COLORS = [
-    { color: 12754765, x: 0, y: 0 },
-    { color: 5015928, x: -13, y: -23 },
-    { color: 13355723, x: -34, y: -63 }
-]
-
 function isAutoAttackSelected(unitPosition) {
     let actionIconRegion = {
         x: unitTopLeft[unitPosition].x + UNIT_ACTION_ICON_OFFSET.x,
@@ -32,7 +24,14 @@ function isAutoAttackSelected(unitPosition) {
         width: UNIT_ACTION_ICON_REGION.width, height: UNIT_ACTION_ICON_REGION.height
      }
 
-     return areColorsPresentInRegion(UNIT_ACTION_ATTACK_COLORS, actionIconRegion);
+     const [result, error] = findImage({
+         targetImagePath: 'Images/battle-action-sword.png',
+         threshold: 0.95,
+         region: actionIconRegion,
+         method: 1 // 2 is more sophisticated
+     })
+
+     return result.length == 1;
 }
 
 const repeatButton = {x: 473, y: 1951};
@@ -362,7 +361,7 @@ const PARTY_NAME_REGION = {x: 1034, y: 486, width: 452, height: 59};
 function readText(region, minHeight = 0.5, level = 1) {
     const options = {
         region: region,
-        customWords: ['Espers', 'Troops'],
+        customWords: ['Espers'],
         minimumTextHeight: minHeight, // OPTIONAL, the minimum height of the text expected to be recognized, relative to the region/screen height, default is 1/32
         level: level, // OPTIONAL, 0 means accurate first, 1 means speed first
         correct: false, // OPTIONAL, whether use language correction during the recognition process.
@@ -375,7 +374,7 @@ function readText(region, minHeight = 0.5, level = 1) {
             text = "";
             alert(error)
         } else {
-            // alert(`${JSON.stringify(result, null, '    ')}`)
+            //alert(`${JSON.stringify(result, null, '    ')}`)
             if(result.length >= 1) {
                 text = result[0].text;
             } else {
