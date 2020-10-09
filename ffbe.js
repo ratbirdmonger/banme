@@ -474,8 +474,9 @@ function tapDailyQuestCloseButton() {
 }
 
 // after completing a battle we need to click through a bunch of screens
-function dismissVictoryScreenDialogs() {
-    while(!atEventScreen()) {
+// stops once it sees the "Home" button
+function dismissVictoryScreenDialogs(endFunction = atEventScreen) {
+    while(!endFunction()) {
         if(isDailyQuestCloseButtonActive()) {
             tapDailyQuestCloseButton(); sleep(1);
         } else if(isNextButtonActive()) {
@@ -485,7 +486,7 @@ function dismissVictoryScreenDialogs() {
         } else {
             // tap center of screen to hurry things along
             // if the event screen doesn't load up fast enough and we click here, nothing bad happens
-            tap(750, 1000);
+            tap(760, 1250);
             sleep(0.25);
         }
     }
@@ -533,7 +534,9 @@ function enterVortex() {
 
 // from Vortex, go back to Home
 function exitVortex() {
-    tap(80, 50); // Back button
+    tap(100, 70); // Back button
+    sleep(0.25);
+    tap(100, 70); // double tap because it has been getting stuck
     sleep(2);
 }
 
