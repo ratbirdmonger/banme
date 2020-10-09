@@ -108,10 +108,10 @@ function multicastCWA() {
 
 function tornado() {
     if(isAutoAttackSelected(2)) {
-        selectAbilities(2, [{x: 7, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 5, y: 0}]); // Rem triple cast tornadox2, firaja
+        selectAbilities(2, [{x: 7, y: 1}, {x: 6, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // Rem triple cast firaja, tornadox2 
     }
     if(isAutoAttackSelected(4)) {
-        selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast tornado
+        selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast ultima
     }
     if(isAutoAttackSelected(3)) {
         selectAbilities(3, [{x: 6, y:1}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
@@ -120,14 +120,13 @@ function tornado() {
         selectAbilities(5, [{x: 4, y:1}, {x:2, y: 1}, {x:2, y: 1}, {x:3, y:1}]); // Tyro dualcast tornado
     }
 
-    // 2xUltima
-    activateUnit(3);
-    activateUnit(4);
+    activateUnit(3); // 2xUltima
+    activateUnit(4); // 2xUltima
 
-    sleep(2.5);
-    // 2xTornado
-    activateUnit(2);
-    activateUnit(5);
+    sleep(2.633);
+    activateUnit(2); // firaja, tornadox2
+    sleep(.9);
+    activateUnit(5); // tornadox2
 
     poll(isEsperGaugeFull, 10, 0.2);
     if(isAutoAttackSelected(1)) {
