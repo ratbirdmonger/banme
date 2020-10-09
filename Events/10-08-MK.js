@@ -44,12 +44,15 @@ tap(820, 1880);
 
 poll(isTurnReady, 30, 1);
 
-// unit 1 (vaan) LB
-selectAbilities(1, [{x: 0, y: 0}]);
-// unit 4 (DKL) damage
-selectAbilities(4, [{x: 1, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]);
+// WIP - not enough damage yet
+// World Destroyer
+selectAbilities(1, [{x: 5, y: 1}]);
+// unit 4 (DKL) MP drain, damage 
+selectAbilities(4, [{x: 1, y: 0}, {x: 3, y: 1}, {x: 6, y: 0}]);
 // unit 5 (WRF) LB
 selectAbilities(5, [{x: 0, y: 0}]);
+// unit 2 Minwu heal
+selectAbilities(2, [{x:5, y:0}]);
 
 activateUnit(1);
 sleep(0.5);

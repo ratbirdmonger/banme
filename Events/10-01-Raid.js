@@ -35,7 +35,7 @@ function executeRaid(count) {
     tap(780, 1950);
     sleep(1.5);
 
-    tapBonusFriendOrDefault([1, 2, 0]); // start with event 1, then event 2, then favorites
+    tapBonusFriendOrDefault([2, 1, 0]); // start with event 2, then event 1, then favorites
 
     if(!selectParty("Raid")) {
         alert("Could not find Raid party");
