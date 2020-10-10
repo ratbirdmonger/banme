@@ -8,13 +8,24 @@
 
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
 
-const { 
-    pressRepeat, pressReload, swipe, openUnitAbility, activateUnit, selectAbilities, sleep, isEsperGaugeFull, isTurnReady, poll, tap, tapMiddle,
-    tapBonusFriendOrDefault, isMainMenuTopBarVisible, areColorsPresentInRegion, atEventScreen, selectParty, readText, isDailyQuestCloseButtonActive,
-    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs,
-    selectVortex, enterVortex, exitVortex, exitToVortex, selectMainMenu, selectCompanionTab, tapActiveMainMenuButton, tapMainMenuAdButton,
-    readEventText
-} = require(`${at.rootDir()}/ffbe/ffbe`);
+const {
+    // menu navigation 
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive, readEventText,
+    // pre-battle dialogs
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    // battle commands
+    pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    // post-battle dialogs and checks
+    isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
+ } = require(`${at.rootDir()}/banme/banme-common`);
+const {
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, areColorsPresentInRegion, poll
+} = require(`${at.rootDir()}/bot-common/bot-common`);
 
 
 usleep(1000000);
@@ -44,39 +55,40 @@ tap(820, 1880);
 
 poll(isTurnReady, 30, 1);
 
-// WIP - not enough damage yet
-// World Destroyer
-selectAbilities(1, [{x: 5, y: 1}]);
-// unit 4 (DKL) MP drain, damage 
-selectAbilities(4, [{x: 1, y: 0}, {x: 3, y: 1}, {x: 6, y: 0}]);
-// unit 5 (WRF) LB
-selectAbilities(5, [{x: 0, y: 0}]);
+// Aileen restores MP
+selectAbilities(1, [{x: 6, y: 1, target: 1}]);
 // unit 2 Minwu heal
-selectAbilities(2, [{x:5, y:0}]);
+selectAbilities(2, [{x:5, y:1, target: 1}]);
+// Emperor WD
+selectAbilities(3, [{x:3, y:1}]);
+// unit 4 (DKL) damage 
+selectAbilities(4, [{x: 1, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]);
+// unit 5 (WRF) AoE damage
+selectAbilities(5, [{x: 1, y: 0}, {x: 2, y: 0}, {x: 2, y: 0}]);
 
-activateUnit(1);
-sleep(0.5);
-activateUnit(5);
-sleep(3);
 activateUnit(3);
-activateUnit(4);
+sleep(0.5);
 activateUnit(2);
+activateUnit(4);
+activateUnit(5);
 activateUnit(6);
-sleep(1.5);
+sleep(1);
+activateUnit(1);
+sleep(1);
 
 while(true) {
     poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
     if(isTurnReady()) {
         pressReload();
-        activateUnit(1);
-        sleep(0.5);
-        activateUnit(5);
-        sleep(3);
         activateUnit(3);
-        activateUnit(4);
+        sleep(0.5);
         activateUnit(2);
+        activateUnit(4);
+        activateUnit(5);
         activateUnit(6);
-        sleep(1.5);        
+        sleep(1);
+        activateUnit(1);
+        sleep(1); 
     } else {
         break;
     }

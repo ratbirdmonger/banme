@@ -1,23 +1,26 @@
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp, getColor, getColors } = at
 const { intToRgb } = utils
 const {
-    // basic gestures
-    swipe, sleep, tap, tapMiddle,
-    // color & text recognition, polling
-    readText, readEventText, areColorsPresentInRegion, poll, 
     // menu navigation 
-    enterVortex, selectVortex, tapBackButton, exitVortex, selectMainMenu, tapActiveMainMenuButton, tapMainMenuAdButton, isBackButtonActive,
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive, readEventText,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, 
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
-    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
-} = require(`${at.rootDir()}/ffbe/ffbe`);
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
+} = require(`${at.rootDir()}/banme/banme-common`);
+const {
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, areColorsPresentInRegion, poll
+} = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const { executeAdLoop } = require(`${at.rootDir()}/ffbe/Ad`);
-const { executeEXTDaily } = require(`${at.rootDir()}/ffbe/Events/10-01-Daily`);
+const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
+const { executeEXTDaily } = require(`${at.rootDir()}/banme/Events/10-01-Daily`);
 
 //appActivate("com.square-enix.ffbeww");
 

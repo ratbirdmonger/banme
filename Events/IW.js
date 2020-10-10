@@ -1,21 +1,23 @@
 const { touchDown, touchMove, touchUp, usleep, getColor, appActivate, keyDown, keyUp, toast, findImage } = at
 
-const { 
-    // basic gestures
-    swipe, sleep, tap, tapMiddle,
-    // color & text recognition, polling
-    readText, readEventText, areColorsPresentInRegion, poll, 
+const {
     // menu navigation 
-    enterVortex, selectVortex, tapBackButton, exitVortex, selectMainMenu, getMainMenuLabel,
-    tapActiveMainMenuButton, tapMainMenuAdButton, isBackButtonActive,
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive, readEventText,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, 
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
-    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
-} = require(`${at.rootDir()}/ffbe/ffbe`);
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
+} = require(`${at.rootDir()}/banme/banme-common`);
+const {
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, areColorsPresentInRegion, poll
+} = require(`${at.rootDir()}/bot-common/bot-common`);
 
 usleep(500000);
 

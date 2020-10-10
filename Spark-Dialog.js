@@ -1,5 +1,22 @@
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
-const { pressRepeat, pressReload, swipe, openUnitAbility, activateUnit, selectAbilities, isEsperGaugeFull, isTurnReady, poll, sleep } = require("./ffbe")
+const {
+    // menu navigation 
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive, readEventText,
+    // pre-battle dialogs
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    // battle commands
+    pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    // post-battle dialogs and checks
+    isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
+} = require(`${at.rootDir()}/banme/banme-common`);
+const {
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, areColorsPresentInRegion, poll
+} = require(`${at.rootDir()}/bot-common/bot-common`);
 
 appActivate("com.square-enix.ffbeww");
 
