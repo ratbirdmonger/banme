@@ -19,11 +19,9 @@ const {
 
 usleep(500000);
 
-// the OCR built into autotouch doesn't detect % symbols
-
-const IW_TOP_ABILITY_CAPTION_REGION = {x: 631, y: 901, width: 470, height: 46};
-const IW_LEFT_ABILITY_CAPTION_REGION = {x: 258, y: 1607, width: 470, height: 46};
-const IW_RIGHT_ABILITY_CAPTION_REGION = {x: 1016, y: 1607, width: 470, height: 46};
+const IW_TOP_ABILITY_CAPTION_REGION = {x: 636, y: 907, width: 460, height: 40};
+const IW_LEFT_ABILITY_CAPTION_REGION = {x: 259, y: 1612, width: 460, height: 40};
+const IW_RIGHT_ABILITY_CAPTION_REGION = {x: 1022, y: 1612, width: 460, height: 40};
 
 const IW_ABILITIES_OBTAINED_REGION = {x: 22, y: 348, width: 536, height: 57};
 
@@ -39,20 +37,44 @@ function atIWAbilitiesObtainedScreen() {
 // drew a bounding box surrounding the "Challenge" button
 const IW_CHALLENGE_BUTTON_REGION = { x: 912, y: 1852, width: 250, height: 58 };
 
-// the leftmost orb
-const IW_FIRST_ORB_REGION = {x: 799, y: 1943, width: 36, height: 35};
+// bounding box surrounding the "Steel Castle Melfikya" caption to start the first battle
+const IW_FIRST_CHALLENGE_BUTTON_REGION = {x: 194, y: 1238, width: 548, height: 71};
+
+// the leftmost orb in the first round
+const IW_FIRST_ORB_FIRST_REGION = {x: 528, y: 1005, width: 36, height: 34};
+// the leftmost orb in the subsequent rounds
+const IW_FIRST_ORB_LATER_REGION = {x: 799, y: 1943, width: 36, height: 35};
 // bright red color that is repeated a bunch of times. empty orb doesn't have it.
 const IW_FIRST_ORB_FULL_COLORS = [{ color: 15277843, x: 0, y: 0 }]
 
-function iwOrbLeft() {
-    return areColorsPresentInRegion(IW_FIRST_ORB_FULL_COLORS, IW_FIRST_ORB_REGION);
+function iwOrbLeftLater() {
+    return areColorsPresentInRegion(IW_FIRST_ORB_FULL_COLORS, IW_FIRST_ORB_LATER_REGION);
+}
+
+function iwOrbLeftFirst() {
+    return areColorsPresentInRegion(IW_FIRST_ORB_FULL_COLORS, IW_FIRST_ORB_FIRST_REGION);
 }
 
 const SCROLL_BUTTON_INITIAL_LOCATION = {x: 1515, y: 775};
 const SCROLL_BUTTON_END_LOCATION = {x: 1515, y: 2023};
 
-if(iwOrbLeft()) {
+// alert/toast/console.log does some kind of printf so we have to escape some stuff
+function escapeForAlert(str) {
+    return str.replace(/%/g, '%%%');
+}
+
+// need to handle first IW round and later rounds
+var canContinue = true;
+if(iwOrbLeftFirst()) {
+    tapMiddle(IW_FIRST_CHALLENGE_BUTTON_REGION);
+} else if(iwOrbLeftLater()) {
     tapMiddle(IW_CHALLENGE_BUTTON_REGION);
+} else {
+    // no orbs
+    canContinue = false;
+}
+
+if(canContinue) {
     sleep(0.5);
     poll(isBackButtonActive, 5, 1, "Wait for active back button");
 
@@ -62,7 +84,7 @@ if(iwOrbLeft()) {
     sleep(0.5);
     tap(800, 1920);
     sleep(1);
-    
+
     // hit depart
     tap(800, 1920);
 
@@ -77,7 +99,7 @@ if(iwOrbLeft()) {
     activateUnit(2);
     activateUnit(6);
     sleep(1);
-    
+
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {
@@ -93,8 +115,18 @@ if(iwOrbLeft()) {
             break;
         }
     }
-    
+
     dismissVictoryScreenDialogs(atIWAbilitiesObtainedScreen);
     // at the selection screen now
-}
 
+    var obtainedAbility1 = readText(IW_OBTAINED_SLOT_1, 0.5, 0);
+    var obtainedAbility2 = readText(IW_OBTAINED_SLOT_2, 0.5, 0);
+    var obtainedAbility3 = readText(IW_OBTAINED_SLOT_3, 0.5, 0);
+
+    var topChoice = readText(IW_TOP_ABILITY_CAPTION_REGION, 0.5, 0);
+    var leftChoice = readText(IW_LEFT_ABILITY_CAPTION_REGION, 0.5, 0);
+    var rightChoice = readText(IW_RIGHT_ABILITY_CAPTION_REGION, 0.5, 0);
+
+    alert(escapeForAlert(`Obtained: ${obtainedAbility1}, ${obtainedAbility2}, and ${obtainedAbility3}`));
+    alert(escapeForAlert(`Choose from: ${topChoice}, ${leftChoice}, and ${rightChoice}`));    
+}
