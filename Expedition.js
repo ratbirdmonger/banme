@@ -121,8 +121,8 @@ function executeExpeditionLoop() {
         if(areColorsPresentInRegion(EXPEDITION_MOOGLE_DEPART_BUTTON_COLORS, EXPEDITION_MOOGLE_DEPART_REGION)) {
             tapMiddle(EXPEDITION_MOOGLE_DEPART_REGION);
         } else {
-            // tap the empty unit slot
-            tap(156, 1360);
+            // tap the middle empty unit slot
+            tap(750, 1360);
             sleep(2);
             // now at the Select party screen, so tap the top 5 units. may not use them all
             tap(150, 868);
