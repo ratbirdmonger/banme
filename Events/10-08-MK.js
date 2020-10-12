@@ -59,8 +59,8 @@ poll(isTurnReady, 30, 1);
 selectAbilities(1, [{x: 6, y: 1, target: 1}]);
 // unit 2 Minwu heal
 selectAbilities(2, [{x:5, y:1, target: 1}]);
-// Emperor WD
-selectAbilities(3, [{x:3, y:1}]);
+// Emperor WD (keeps changing because the bastard keeps leveling up)
+selectAbilities(3, [{x:6, y:0}]);
 // unit 4 (DKL) damage 
 selectAbilities(4, [{x: 1, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]);
 // unit 5 (WRF) AoE damage
