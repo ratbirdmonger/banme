@@ -7,6 +7,7 @@ const {
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    isBattleUnitReady,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
@@ -122,18 +123,32 @@ function multicastCWA() {
 }
 
 function tornado(orbsUsed) {
-    if(orbsUsed == 0 || isAutoAttackSelected(2)) {
+
+    // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
+    var deadUnit = -1;
+    for(let i = 2; i < 5; i++) {
+        if(!isBattleUnitReady(i)) {
+            deadUnit = i;
+            break;
+        }
+    }    
+    if(deadUnit > 0) {
+        selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+        activateUnit(1);
+    }
+
+    if(isBattleUnitReady(2) && (orbsUsed == 0 || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 7, y: 1}, {x: 5, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // Rem triple cast firaja, tornadox2 
     }
-    if(orbsUsed == 0 || isAutoAttackSelected(4)) {
+    if(isBattleUnitReady(4) && (orbsUsed == 0 || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast ultima
     }
-    if(orbsUsed == 0 || isAutoAttackSelected(3)) {
+    if(isBattleUnitReady(3) && (orbsUsed == 0 || isAutoAttackSelected(3))) {
         selectAbilities(3, [{x: 6, y:0}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
     }
-    if(orbsUsed == 0 || isAutoAttackSelected(5)) {
+    if(isBattleUnitReady(5) && (orbsUsed == 0 || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x: 4, y:0}, {x:2, y: 1}, {x:2, y: 1}]); // Tyro dualcast tornado
-    }
+    }    
 
     activateUnit(3); // 2xUltima
     activateUnit(4); // 2xUltima
@@ -144,8 +159,8 @@ function tornado(orbsUsed) {
     activateUnit(5); // tornadox2
 
     poll(isEsperGaugeFull, 10, 0.2);
-    if(orbsUsed == 1 || isAutoAttackSelected(1)) {
-        selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    if(isBattleUnitReady(1) && (orbsUsed == 0 || isAutoAttackSelected(1))) {
+        selectAbilities(1, [{x: 0, y: 1}]); // healer summons Odin
     }
     activateUnit(1);
 }

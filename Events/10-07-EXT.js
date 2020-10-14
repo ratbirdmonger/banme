@@ -47,7 +47,7 @@ selectAbilities(1, [{x:5, y:1}]);
 // unit 2 2xCWA
 selectAbilities(2, [{x:4, y:0}, {x:6, y:0}, {x:6, y:0}]);
 // unit 3 flood
-selectAbilities(3, [{x:4, y:1}]);
+selectAbilities(3, [{x:6, y:1}]);
 // unit 4 DKL - executioner, dark flow
 selectAbilities(4, [{x:1, y:0}, {x:5, y:1}, {x:2, y:1}]);
 // unit 5 WRF - LB (to unlock triple cast)

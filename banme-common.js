@@ -9,24 +9,38 @@ const {
 // all coordinates gathered by hand on an iPad 6th generation
 // resolution: 1536 x 2048 pixels
 // it's almost certainly all wrong for any other resolution / aspect ratio
-const unitTopLeft = {
-    1: {x: 6, y: 1132},
-    2: {x: 6, y: 1375},
-    3: {x: 6, y: 1623},
-    4: {x: 765, y: 1132},
-    5: {x: 765, y: 1375},
-    6: {x: 765, y: 1623}   
+const BATTLE_UNIT_REGIONS = {
+    1: {x: 6, y: 1132, width: 751, height: 237},
+    2: {x: 6, y: 1375, width: 751, height: 237},
+    3: {x: 6, y: 1623, width: 751, height: 237},
+    4: {x: 765, y: 1132, width: 751, height: 237},
+    5: {x: 765, y: 1375, width: 751, height: 237},
+    6: {x: 765, y: 1623, width: 751, height: 237}   
 };
 
 // relative to top left, the unit action icon is at:
 //   x + 0, y - 50, width: 108, height: 96
 const UNIT_ACTION_ICON_OFFSET = {x: 0, y: -50};
 const UNIT_ACTION_ICON_REGION = {width: 108, height: 96};
+// sliver of the border. we will use this to determine if the unit is ready or not
+const UNIT_BORDER_OFFSET = {x: 115, y: 18};
+const UNIT_BORDER_REGION = {width: 184, height: 8};
+const UNIT_BORDER_READY_COLORS = [{ color: 5008543, x: 0, y: 0 }];
+
+function isBattleUnitReady(unitPosition) {
+    var region = {
+        x: BATTLE_UNIT_REGIONS[unitPosition].x + UNIT_BORDER_OFFSET.x,
+        y: BATTLE_UNIT_REGIONS[unitPosition].y + UNIT_BORDER_OFFSET.y,
+        width: UNIT_BORDER_REGION.width,
+        height: UNIT_BORDER_REGION.height
+    }
+    return areColorsPresentInRegion(UNIT_BORDER_READY_COLORS, region);
+}
 
 function isAutoAttackSelected(unitPosition) {
     let actionIconRegion = {
-        x: unitTopLeft[unitPosition].x + UNIT_ACTION_ICON_OFFSET.x,
-        y: unitTopLeft[unitPosition].y + UNIT_ACTION_ICON_OFFSET.y,
+        x: BATTLE_UNIT_REGIONS[unitPosition].x + UNIT_ACTION_ICON_OFFSET.x,
+        y: BATTLE_UNIT_REGIONS[unitPosition].y + UNIT_ACTION_ICON_OFFSET.y,
         width: UNIT_ACTION_ICON_REGION.width, height: UNIT_ACTION_ICON_REGION.height
      }
 
@@ -51,8 +65,6 @@ const battleAbilityTopLeft = [
 ];
 const BATTLE_ABILITY_DIMENSIONS = {width: 700, height: 200};
 
-// size of the unit's box in the battle display
-const unitBoxSize = {width: 751, height:237 };
 
 // used to check if the esper gauge is full
 const esperGaugeRegion = { x: 1114, y: 1070, width: 386, height: 783 };
@@ -86,17 +98,19 @@ function pressReload() {
 
 // opens the ability list for the unit. position between 1 and 6.
 function openUnitAbility(unitPosition) {
-    swipe(unitTopLeft[unitPosition].x + 10, unitTopLeft[unitPosition].y + unitBoxSize.height/2, 
-        unitTopLeft[unitPosition].x + 10 + unitBoxSize.width/2, 
-        unitTopLeft[unitPosition].y + unitBoxSize.height/2, unitPosition);
+    swipe(BATTLE_UNIT_REGIONS[unitPosition].x + 10, 
+        BATTLE_UNIT_REGIONS[unitPosition].y + BATTLE_UNIT_REGIONS[unitPosition].height/2, 
+        BATTLE_UNIT_REGIONS[unitPosition].x + 10 + BATTLE_UNIT_REGIONS[unitPosition].width/2, 
+        BATTLE_UNIT_REGIONS[unitPosition].y + BATTLE_UNIT_REGIONS[unitPosition].height/2, 
+        unitPosition);
     sleep(0.4);
 }
 
 // activate (press) the unit. position between 1 and 6.
 function activateUnit(unitPosition) {
     tapMiddle(
-        {x: unitTopLeft[unitPosition].x, y: unitTopLeft[unitPosition].y,
-         width: unitBoxSize.width, height: unitBoxSize.height }, 0, unitPosition);
+        {x: BATTLE_UNIT_REGIONS[unitPosition].x, y: BATTLE_UNIT_REGIONS[unitPosition].y,
+         width: BATTLE_UNIT_REGIONS[unitPosition].width, height: BATTLE_UNIT_REGIONS[unitPosition].height }, 0, unitPosition);
 }
 
 // unitPosition is as number from 1 to 6
@@ -503,6 +517,7 @@ module.exports = {
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    isBattleUnitReady,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
