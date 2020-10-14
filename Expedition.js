@@ -62,10 +62,10 @@ function isExpeditionNextButtonActive() {
     return areColorsPresentInRegion(EXPEDITION_NEXT_BUTTON_COLORS, EXPEDITION_NEXT_BUTTON_REGION);
 }
 
-function isExpeditionNewButtonActive() {
+function isExpeditionNewButtonSelected() {
     return areColorsPresentInRegion(EXPEDITION_BUTTON_ENABLED_COLORS, EXPEDITION_NEW_BUTTON_REGION);
 }
-function isExpeditionOngoingButtonActive() {
+function isExpeditionOngoingButtonSelected() {
     return areColorsPresentInRegion(EXPEDITION_BUTTON_ENABLED_COLORS, EXPEDITION_ONGOING_BUTTON_REGION);
 }
 
@@ -114,8 +114,9 @@ function executeExpeditionLoop() {
             // but I'm too lazy to handle this (vs there are more to be claimed), so just restart the loop
             i = -1;
             tapMiddle(EXPEDITION_ONGOING_BUTTON_REGION);
-            if(!isExpeditionOngoingButtonActive()) {
-                // we're locked out of the ongoing list because there are 0 ongoing
+            if(!isExpeditionNewButtonSelected()) {
+                // new button selected means we tried to go to ongoing but were kept on New because there are no ongoing
+                // therefore we're done with processing ongoing expeditions
                 break;
             }
         } else {
