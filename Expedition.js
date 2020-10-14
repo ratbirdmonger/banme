@@ -33,6 +33,9 @@ const EXPEDITION_COMPLETE_COLORS = [
     { color: 16776976, x: 0, y: 0 },
     { color: 16777135, x: -30, y: 24 },
 ];
+const EXPEDITION_BUTTON_ENABLED_COLORS = [
+    { color: 30652, x: 0, y: 0 }
+];
 
 const EXPEDITION_IN_PROGRESS_X_REGION = {x: 1333, y: 540, width: 65, height: 59};
 const EXPEDITION_IN_PROGRESS_X_COLORS = [
@@ -57,6 +60,13 @@ const EXPEDITION_MOOGLE_DEPART_REGION = {x: 500, y: 1800, width: 540, height: 14
 
 function isExpeditionNextButtonActive() {
     return areColorsPresentInRegion(EXPEDITION_NEXT_BUTTON_COLORS, EXPEDITION_NEXT_BUTTON_REGION);
+}
+
+function isExpeditionNewButtonActive() {
+    return areColorsPresentInRegion(EXPEDITION_BUTTON_ENABLED_COLORS, EXPEDITION_NEW_BUTTON_REGION);
+}
+function isExpeditionOngoingButtonActive() {
+    return areColorsPresentInRegion(EXPEDITION_BUTTON_ENABLED_COLORS, EXPEDITION_ONGOING_BUTTON_REGION);
 }
 
 const EXPEDITION_CANCEL_ONGOING_NO_BUTTON_COLORS = [
@@ -104,6 +114,10 @@ function executeExpeditionLoop() {
             // but I'm too lazy to handle this (vs there are more to be claimed), so just restart the loop
             i = -1;
             tapMiddle(EXPEDITION_ONGOING_BUTTON_REGION);
+            if(!isExpeditionOngoingButtonActive()) {
+                // we're locked out of the ongoing list because there are 0 ongoing
+                break;
+            }
         } else {
             // there was no expedition in that slot
         }

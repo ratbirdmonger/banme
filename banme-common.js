@@ -508,7 +508,6 @@ function isBackButtonActive() {
     return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
 }
 
-
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
