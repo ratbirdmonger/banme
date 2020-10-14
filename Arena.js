@@ -121,18 +121,18 @@ function multicastCWA() {
     activateUnit(1);
 }
 
-function tornado() {
-    if(isAutoAttackSelected(2)) {
-        selectAbilities(2, [{x: 7, y: 1}, {x: 6, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // Rem triple cast firaja, tornadox2 
+function tornado(orbsUsed) {
+    if(orbsUsed == 0 || isAutoAttackSelected(2)) {
+        selectAbilities(2, [{x: 7, y: 1}, {x: 5, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // Rem triple cast firaja, tornadox2 
     }
-    if(isAutoAttackSelected(4)) {
+    if(orbsUsed == 0 || isAutoAttackSelected(4)) {
         selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast ultima
     }
-    if(isAutoAttackSelected(3)) {
-        selectAbilities(3, [{x: 6, y:1}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
+    if(orbsUsed == 0 || isAutoAttackSelected(3)) {
+        selectAbilities(3, [{x: 6, y:0}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
     }
-    if(isAutoAttackSelected(5)) {
-        selectAbilities(5, [{x: 4, y:1}, {x:2, y: 1}, {x:2, y: 1}, {x:3, y:1}]); // Tyro dualcast tornado
+    if(orbsUsed == 0 || isAutoAttackSelected(5)) {
+        selectAbilities(5, [{x: 4, y:0}, {x:2, y: 1}, {x:2, y: 1}]); // Tyro dualcast tornado
     }
 
     activateUnit(3); // 2xUltima
@@ -144,13 +144,13 @@ function tornado() {
     activateUnit(5); // tornadox2
 
     poll(isEsperGaugeFull, 10, 0.2);
-    if(isAutoAttackSelected(1)) {
+    if(orbsUsed == 1 || isAutoAttackSelected(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
     }
     activateUnit(1);
 }
 
-function executeArena() {
+function executeArena(orbsUsed) {
     // setup button
     tap(800, 1900);
     sleep(1);
@@ -184,7 +184,7 @@ function executeArena() {
         sleep(1);
 
         // multicastCWA();
-        tornado();
+        tornado(orbsUsed);
 
         sleep(1); // give time for the reload/repeat button to go blank
         poll(function(){ return isArenaDone() || isTurnReady() }, 30, 1);
@@ -213,9 +213,12 @@ function executeArena() {
 }
 
 function executeArenaLoop() {
+    var orbsUsed = 0;
     while(arenaOrbsLeft()) {
-        executeArena();
+        executeArena(orbsUsed);
+        orbsUsed++;
     }
+    return orbsUsed;
 }
 
 module.exports = {

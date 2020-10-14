@@ -146,7 +146,7 @@ function selectAbilities(unitPosition, abilities) {
 function pressAbilityButton(x, y) {
     tapMiddle({x: battleAbilityTopLeft[x][y].x, y: battleAbilityTopLeft[x][y].y,
                width: BATTLE_ABILITY_DIMENSIONS.width, height: BATTLE_ABILITY_DIMENSIONS.height}, 10000)
-    sleep(0.3);
+    sleep(0.4);
 }
 
 function isEsperGaugeFull() {
@@ -406,6 +406,7 @@ function selectVortex(x, y) {
         tapMiddle(EVENT_3_REGION);
     }
     poll(isBackButtonActive, 5, 0.5);
+    sleep(0.5);
 }
 
 // from Home, enter the Vortex
