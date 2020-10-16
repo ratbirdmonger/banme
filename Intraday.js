@@ -19,7 +19,7 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const { executeRaidLoop } = require(`${at.rootDir()}/banme/Events/10-01-Raid`);
+const { executeRaidLoop } = require(`${at.rootDir()}/banme/Events/10-15-Raid`);
 const { executeArenaLoop } = require(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = require(`${at.rootDir()}/banme/Expedition`);
 
@@ -27,7 +27,7 @@ appActivate("com.square-enix.ffbeww");
 
 // Raid
 enterVortex();
-selectVortex(0, 5);
+selectVortex(0, 0);
 poll(isBackButtonActive, 10, 0.5);
 sleep(0.5); // make sure the screen finishes fading in
 executeRaidLoop();

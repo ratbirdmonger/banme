@@ -61,23 +61,27 @@ activateUnit(5);
 activateUnit(6);
 
 sleep(1);
-poll(isTurnReady, 30, 1);
+// rounds 2 and 3
+while(true) {
+    poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
+    if(isTurnReady()) {
+        pressReload();
+        // unit 4 DKL - executioner, dark flow
+        selectAbilities(4, [{x:1, y:0}, {x:4, y:1}, {x:6, y:1}, {x:6, y:1}]);
+        selectAbilities(5, [{x:1, y:0}, {x:2, y:1}, {x:2, y:1}, {x:2, y:1}]);
 
-// round 2
-pressReload();
+        activateUnit(3); // flood
+        sleep(0.967);
+        activateUnit(4); // 3x AMoE
+        sleep(0.316)
+        activateUnit(2); // 2x CWA
+        sleep(0.05);
+        activateUnit(5); // 3x DR
+        activateUnit(1);
+        sleep(1);
+    } else {
+        break;
+    }
+}
 
-// unit 4 DKL - executioner, dark flow
-selectAbilities(4, [{x:1, y:0}, {x:4, y:1}, {x:6, y:1}, {x:6, y:1}]);
-selectAbilities(5, [{x:1, y:0}, {x:2, y:1}, {x:2, y:1}, {x:2, y:1}]);
-
-activateUnit(3); // flood
-sleep(0.967);
-activateUnit(4); // 3x AMoE
-sleep(0.316)
-activateUnit(2); // 2x CWA
-sleep(0.05);
-activateUnit(5); // 3x DR
-activateUnit(1);
-
-poll(isMainMenuTopBarVisible, 30, 1);
 dismissVictoryScreenDialogs();

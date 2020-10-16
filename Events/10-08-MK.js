@@ -32,7 +32,7 @@ usleep(1000000);
 
 if(!(readEventText() == "Leviathan")) {
     enterVortex();
-    selectVortex(0, 0);
+    selectVortex(0, 3);
 }
 
 // tap LGD - if low on NRG, pops up the recovery dialog

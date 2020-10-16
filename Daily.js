@@ -20,9 +20,7 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-const { executeEXTDaily } = require(`${at.rootDir()}/banme/Events/10-01-Daily`);
-
-//appActivate("com.square-enix.ffbeww");
+//const { executeEXTDaily } = require(`${at.rootDir()}/banme/Events/10-01-Daily`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -159,11 +157,11 @@ executeAdLoop();
 tapBackButton();
 tapBackButton();
 
-enterVortex();
-selectVortex(0,6);
-executeEXTDaily();
-tapBackButton();
-exitVortex();
+// enterVortex();
+// selectVortex(0,6);
+// executeEXTDaily();
+// tapBackButton();
+// exitVortex();
 
 buyGoldBundle();
   

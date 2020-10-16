@@ -96,22 +96,34 @@ function isRewardOkButtonActive() {
     return areColorsPresentInRegion(REWARD_OK_BUTTON_COLORS, REWARD_OK_BUTTON_REGION);
 }
 
-function multicastCWA() {
-    if(isAutoAttackSelected(4)) {
-        selectAbilities(4, [{x: 5, y: 1}]); // SElena using frozen hurricane
+function multicastCWA(orbsUsed) {
+    // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
+    var deadUnit = -1;
+    for(let i = 2; i < 5; i++) {
+        if(!isBattleUnitReady(i)) {
+            deadUnit = i;
+            break;
+        }
+    }    
+    if(deadUnit > 0) {
+        selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+        activateUnit(1);
     }
-    if(isAutoAttackSelected(2)) {
+    if(isBattleUnitReady(4) && (orbsUsed == 0 || isAutoAttackSelected(4))) {
+        selectAbilities(4, [{x: 5, y: 0}, {x: 2, y: 1}, {x: 2, y: 1}]); // Minwu 2xUltima
+    }
+    if(isBattleUnitReady(2) && (orbsUsed == 0 || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
     }
-    if(isAutoAttackSelected(5)) {
+    if(isBattleUnitReady(5) && (orbsUsed == 0 || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x: 2, y:1}, {x: 6, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]) // Kuja CWA firex3
     }
-    if(isAutoAttackSelected(3)) {
-        selectAbilities(3, [{x: 1, y:1}, {x:2, y: 1}, {x:3, y: 0}, {x:3, y:1}]); // Hein CWA fire/ice/lightning
+    if(isBattleUnitReady(3) && (orbsUsed == 0 || isAutoAttackSelected(3))) {
+        selectAbilities(3, [{x: 1, y:1}, {x:5, y: 1}, {x:6, y: 1}, {x:6, y:1}]); // Hein CWA fire/ice/lightning
     }
 
     activateUnit(4);
-    sleep(1);
+    sleep(1.5);
     activateUnit(2);
     activateUnit(3);
     activateUnit(5);
@@ -123,7 +135,6 @@ function multicastCWA() {
 }
 
 function tornado(orbsUsed) {
-
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
     var deadUnit = -1;
     for(let i = 2; i < 5; i++) {
@@ -198,8 +209,8 @@ function executeArena(orbsUsed) {
         pressReload();
         sleep(1);
 
-        // multicastCWA();
-        tornado(orbsUsed);
+        multicastCWA(orbsUsed);
+        //tornado(orbsUsed);
 
         sleep(1); // give time for the reload/repeat button to go blank
         poll(function(){ return isArenaDone() || isTurnReady() }, 30, 1);
