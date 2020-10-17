@@ -96,8 +96,9 @@ function isRewardOkButtonActive() {
     return areColorsPresentInRegion(REWARD_OK_BUTTON_COLORS, REWARD_OK_BUTTON_REGION);
 }
 
-function multicastCWA(orbsUsed) {
+function multicastCWA(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
+    var resetSkills = orbsUsed == 0 && firstTurn;
     var deadUnit = -1;
     for(let i = 2; i < 5; i++) {
         if(!isBattleUnitReady(i)) {
@@ -106,36 +107,38 @@ function multicastCWA(orbsUsed) {
         }
     }    
     if(deadUnit > 0) {
-        selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+        //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1}, {x: 6, y: 1, target: deadUnit}]); // Raise Dead+
         activateUnit(1);
     }
-    if(isBattleUnitReady(4) && (orbsUsed == 0 || isAutoAttackSelected(4))) {
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x: 5, y: 0}, {x: 2, y: 1}, {x: 2, y: 1}]); // Minwu 2xUltima
     }
-    if(isBattleUnitReady(2) && (orbsUsed == 0 || isAutoAttackSelected(2))) {
+    if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
     }
-    if(isBattleUnitReady(5) && (orbsUsed == 0 || isAutoAttackSelected(5))) {
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x: 2, y:1}, {x: 6, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}]) // Kuja CWA firex3
     }
-    if(isBattleUnitReady(3) && (orbsUsed == 0 || isAutoAttackSelected(3))) {
+    if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
         selectAbilities(3, [{x: 1, y:1}, {x:5, y: 1}, {x:6, y: 1}, {x:6, y:1}]); // Hein CWA fire/ice/lightning
     }
 
     activateUnit(4);
-    sleep(1.5);
+    sleep(2);
     activateUnit(2);
     activateUnit(3);
     activateUnit(5);
     poll(isEsperGaugeFull, 10, 0.2);
-    if(isAutoAttackSelected(1)) {
+    if(resetSkills || isAutoAttackSelected(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
     }
     activateUnit(1);
 }
 
-function tornado(orbsUsed) {
+function tornado(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
+    var resetSkills = orbsUsed == 0 && firstTurn;
     var deadUnit = -1;
     for(let i = 2; i < 5; i++) {
         if(!isBattleUnitReady(i)) {
@@ -148,16 +151,16 @@ function tornado(orbsUsed) {
         activateUnit(1);
     }
 
-    if(isBattleUnitReady(2) && (orbsUsed == 0 || isAutoAttackSelected(2))) {
+    if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 7, y: 1}, {x: 5, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // Rem triple cast firaja, tornadox2 
     }
-    if(isBattleUnitReady(4) && (orbsUsed == 0 || isAutoAttackSelected(4))) {
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x:7, y:0}, {x:4, y:1}, {x:4, y:1}]) // Terra dualcast ultima
     }
-    if(isBattleUnitReady(3) && (orbsUsed == 0 || isAutoAttackSelected(3))) {
+    if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
         selectAbilities(3, [{x: 6, y:0}, {x: 2, y: 1}, {x: 2, y: 1}]) // Minwu dualcast ultima
     }
-    if(isBattleUnitReady(5) && (orbsUsed == 0 || isAutoAttackSelected(5))) {
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x: 4, y:0}, {x:2, y: 1}, {x:2, y: 1}]); // Tyro dualcast tornado
     }    
 
@@ -170,7 +173,7 @@ function tornado(orbsUsed) {
     activateUnit(5); // tornadox2
 
     poll(isEsperGaugeFull, 10, 0.2);
-    if(isBattleUnitReady(1) && (orbsUsed == 0 || isAutoAttackSelected(1))) {
+    if(isBattleUnitReady(1) && (resetSkills || isAutoAttackSelected(1))) {
         selectAbilities(1, [{x: 0, y: 1}]); // healer summons Odin
     }
     activateUnit(1);
@@ -197,6 +200,7 @@ function executeArena(orbsUsed) {
     tap(800, 1800);
 
     let keepGoing = true;
+    let firstTurn = true;
     while(keepGoing) {
         let turnReady = poll(isTurnReady, 60, 1);
         if(!turnReady) {
@@ -209,7 +213,8 @@ function executeArena(orbsUsed) {
         pressReload();
         sleep(1);
 
-        multicastCWA(orbsUsed);
+        multicastCWA(orbsUsed, firstTurn);
+        firstTurn = false;
         //tornado(orbsUsed);
 
         sleep(1); // give time for the reload/repeat button to go blank
