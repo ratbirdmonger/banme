@@ -124,7 +124,6 @@ function multicastCWA(orbsUsed, firstTurn) {
         selectAbilities(3, [{x: 6, y:0}, {x:9, y: 0}, {x:9, y: 0}, {x:9, y: 0}]); // Terra CWAx3
     }
     
-
     activateUnit(4);
     sleep(2);
     activateUnit(2);
