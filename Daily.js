@@ -20,7 +20,8 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-//const { executeEXTDaily } = require(`${at.rootDir()}/banme/Events/10-01-Daily`);
+const { execute1007Ext } = require(`${at.rootDir()}/banme/Events/10-07-EXT`);
+const { execute1015Ext } = require(`${at.rootDir()}/banme/Events/10-15-Ext`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -149,6 +150,7 @@ function buyGoldBundle() {
     }
 }
 
+sleep(0.25);
 sendGiftsAndPressShare();
 
 tapMainMenuAdButton();
@@ -157,11 +159,17 @@ executeAdLoop();
 tapBackButton();
 tapBackButton();
 
-// enterVortex();
-// selectVortex(0,6);
-// executeEXTDaily();
-// tapBackButton();
-// exitVortex();
+enterVortex();
+selectVortex(0,4);
+execute1007Ext();
+tapBackButton();
+exitVortex();
+
+enterVortex();
+selectVortex(0,1);
+execute1015Ext();
+tapBackButton();
+exitVortex();
 
 buyGoldBundle();
   

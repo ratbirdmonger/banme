@@ -50,6 +50,11 @@ tapActiveMainMenuButton();
 poll(isBackButtonActive, 10, 0.5);
 executeExpeditionLoop();
 tapBackButton(); // back to main menu
+sleep(0.5);
+if(isDailyQuestCloseButtonActive()) {
+    tapDailyQuestCloseButton(); sleep(1);
+}
+// TODO: dismiss
 poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
 // TODO: optionally burn off some NRG on some farming

@@ -19,11 +19,11 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const PARTY_NAME = "ext";
+const PARTY_NAME = "Raid";
 
-function execute1007Ext() {
-    // select difficulty (there's only one)
-    tap(770, 670);
+function execute1015Ext() {
+    // select difficulty (there's only one, but it's at slot #2)
+    tap(770, 1010);
     sleep(1.5);
 
     // next
@@ -45,51 +45,24 @@ function execute1007Ext() {
 
     poll(isTurnReady, 30, 1);
 
-    // unit 1 10000 needles
-    selectAbilities(1, [{x:5, y:1}]);
-    // unit 2 2xCWA
-    selectAbilities(2, [{x:4, y:0}, {x:6, y:0}, {x:6, y:0}]);
-    // unit 3 flood
-    selectAbilities(3, [{x:6, y:1}]);
-    // unit 4 DKL - executioner, dark flow
-    selectAbilities(4, [{x:1, y:0}, {x:5, y:1}, {x:2, y:1}]);
-    // unit 5 WRF - LB (to unlock triple cast)
-    selectAbilities(5, [{x:0, y:0}]);
+    // unit 2 3xAMoE
+    selectAbilities(2, [{x:2, y:0}, {x:9, y:1}, {x:9, y:0}, {x:9, y:0}]);
+    // unit 5 2xAMoE
+    selectAbilities(5, [{x:2, y:0}, {x:7, y:1}, {x:7, y:1}]);
+    // unit 3 2xAMoE
+    selectAbilities(3, [{x:1, y:0}, {x:1, y:1}, {x:1, y:1}]);    
 
-    activateUnit(1);
     activateUnit(2);
-    activateUnit(3);
-    activateUnit(4);
     activateUnit(5);
-    activateUnit(6);
+    sleep(0.9);
+    activateUnit(3);
 
     sleep(1);
-    // rounds 2 and 3
-    while(true) {
-        poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
-        if(isTurnReady()) {
-            pressReload();
-            // unit 4 DKL - executioner, dark flow
-            selectAbilities(4, [{x:1, y:0}, {x:4, y:1}, {x:6, y:1}, {x:6, y:1}]);
-            selectAbilities(5, [{x:1, y:0}, {x:2, y:1}, {x:2, y:1}, {x:2, y:1}]);
-
-            activateUnit(3); // flood
-            sleep(0.967);
-            activateUnit(4); // 3x AMoE
-            sleep(0.316)
-            activateUnit(2); // 2x CWA
-            sleep(0.05);
-            activateUnit(5); // 3x DR
-            activateUnit(1);
-            sleep(1);
-        } else {
-            break;
-        }
-    }
+    poll(isMainMenuTopBarVisible, 30, 1);
 
     dismissVictoryScreenDialogs();
 }
 
 module.exports = {
-    execute1007Ext
+    execute1015Ext
 }
