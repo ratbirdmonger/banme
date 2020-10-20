@@ -39,12 +39,12 @@
 * Check for raid orbs, use them up. Executes whatever sequence you program in. 
     * For this week's raid (2020-9-30) my sequence is to steal & break then do a 3x chain with 2 units.
 * Check for arena orbs, use them up. Executes whatever sequence you program in. 
-    * My current sequence is: Bonus unit uses frozen hurricane, then 3 CWA triple-chainers chain, then when the esper gauge is full, summon Odin. Sometimes it takes multiple turns, which is fine. Once in a while (1 out of 50 battles) if I happen to be watching and I run into a 3+ Kuja/UDDarkFina team that goes first, I take over and manually do the battle. I'm not motivated enough to automate this.
+    * My current sequence is: Bonus unit uses frozen hurricane, then 3 CWA triple-chainers chain, then when the esper gauge is full, healer summons Odin. If the enemy is particularly bulky, it's ok, it will repeat the sequence. If someone dies, the healer will notice and raise the whole party instead of summoning Odin.
 * If there's energy left, do some MK farming or insignia farming
+
+## On-demand bullshit 
+* Item World - user selects the item, programs in the priority order of enhancements, then the script runs through all 10 orbs (or whatever is left) and automatically selects the best enhancements each turn, discarding abilities as necessary
 	
 ## To do if I get sufficiently annoyed
 * 3/4\* unit fusing. 
     * Not hard but will be a slow-running script: Click each unit and see if there are any "Trust up" units when you go to select units to fuse.
-* Item World
-    * Easy implementation - user selects the item, then script runs through all 10 orbs, pausing each battle for user to select the enhancements
-    * Harder implementation - user selects the item, programs in the priority order of enhancements, then the script runs through all 10 orbs and automatically selects the enhancements each turn
