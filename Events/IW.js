@@ -1,5 +1,7 @@
-const { touchDown, touchMove, touchUp, usleep, getColor, appActivate, keyDown, keyUp, toast, findImage } = at
+// burn all orbs in IW. if we reach the end, stop and let the user decide what to do
+// user needs to set PRIORITY_LIST
 
+const { touchDown, touchMove, touchUp, usleep, getColor, appActivate, keyDown, keyUp, toast, findImage } = at
 const {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
@@ -19,18 +21,23 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-usleep(500000);
-
 const IW_TOP_ABILITY_CAPTION_REGION = {x: 636, y: 907, width: 460, height: 40};
 const IW_LEFT_ABILITY_CAPTION_REGION = {x: 259, y: 1612, width: 460, height: 40};
 const IW_RIGHT_ABILITY_CAPTION_REGION = {x: 1022, y: 1612, width: 460, height: 40};
 
+const IW_ABILITY_CHOICE_REGIONS = [
+    IW_TOP_ABILITY_CAPTION_REGION, IW_LEFT_ABILITY_CAPTION_REGION, IW_RIGHT_ABILITY_CAPTION_REGION
+];
+const IW_OBTAIN_ABILITY_CONFIRM_REGION = {x: 874, y: 1238, width: 386, height: 113};
 const IW_ABILITIES_OBTAINED_REGION = {x: 22, y: 348, width: 536, height: 57};
 
 // slots for abilities that have already been obtained in one of the previous stages of this run
 const IW_OBTAINED_SLOT_1 = {x: 344, y: 458, width: 914, height: 33};
 const IW_OBTAINED_SLOT_2 = {x: 344, y: 559, width: 914, height: 33};
 const IW_OBTAINED_SLOT_3 = {x: 344, y: 662, width: 914, height: 33};
+const IW_OBTAINED_SLOTS = [
+    IW_OBTAINED_SLOT_1, IW_OBTAINED_SLOT_2, IW_OBTAINED_SLOT_3
+];
 
 function atIWAbilitiesObtainedScreen() {
     return readText(IW_ABILITIES_OBTAINED_REGION, 0.6, 1) == "Abilities Obtained";
@@ -44,7 +51,7 @@ const IW_FIRST_CHALLENGE_BUTTON_REGION = {x: 194, y: 1238, width: 548, height: 7
 
 // the leftmost orb in the first round
 const IW_FIRST_ORB_FIRST_REGION = {x: 528, y: 1005, width: 36, height: 34};
-// the leftmost orb in the subsequent rounds
+// the leftmost orb in the subsequent rounds - not the Battle screen but the next one
 const IW_FIRST_ORB_LATER_REGION = {x: 799, y: 1943, width: 36, height: 35};
 // bright red color that is repeated a bunch of times. empty orb doesn't have it.
 const IW_FIRST_ORB_FULL_COLORS = [{ color: 15277843, x: 0, y: 0 }]
@@ -196,20 +203,23 @@ function getAbilityScore(ability, priorityList) {
 }
 
 const MAG_PRIORITY_LIST = ["Rare", ["MAG", "HP"], ["DEF", "SPR"], "MP"];
-const PRIORITY_LIST = MAG_PRIORITY_LIST;
+const HYBRID_PRIORITY_LIST = ["Rare", ["ATK", "MAG", "HP"], ["DEF", "SPR"], "MP"];
+const ATK_PRIORITY_LIST = ["Rare", ["ATK", "HP"], ["DEF", "SPR"], "MP"];
+// TODO: DEF, SPR, HP priorities
 
-// need to handle first IW round and later rounds
-var canContinue = true;
-if(iwOrbLeftFirst()) {
-    tapMiddle(IW_FIRST_CHALLENGE_BUTTON_REGION);
-} else if(iwOrbLeftLater()) {
-    tapMiddle(IW_CHALLENGE_BUTTON_REGION);
-} else {
-    // no orbs
-    canContinue = false;
-}
+// set this depending on what weapon is being run
+const PRIORITY_LIST = ATK_PRIORITY_LIST;
 
-if(canContinue) {
+const DISMISS_ABILITIES_BUTTON_REGION = {x: 45, y: 1393, width: 674, height: 73};
+const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
+// dismiss all
+const CONFIRM_DISMISS_ALL_BUTTON_REGION = {x: 874, y: 1378, width: 520, height: 88}
+// dismiss one
+const CONFIRM_DISMISS_OBTAINED_BUTTON_REGION = {x: 870, y: 1244, width: 398, height: 107};
+
+
+
+function doOneIWBattle() {
     sleep(0.5);
     poll(isBackButtonActive, 5, 1, "Wait for active back button");
 
@@ -225,7 +235,7 @@ if(canContinue) {
 
     poll(isTurnReady, 30, 1, "Wait for turn ready");
 
-    // unit 1 (vaan) LB
+    // unit 1 vaan, or someone with a damaging LB
     selectAbilities(1, [{x: 0, y: 0}]);
     activateUnit(1);
     activateUnit(5);
@@ -267,6 +277,54 @@ if(canContinue) {
         new: [topChoice, leftChoice, rightChoice]
     };
 
-    alert(JSON.stringify(determineSelection(options, PRIORITY_LIST)));
+    var selection = determineSelection(options, PRIORITY_LIST);
+
+    console.log(JSON.stringify(options));
+    console.log(JSON.stringify(selection));
+
+    if(selection == null) {
+        // dismiss new abilities
+        tapMiddle(DISMISS_ABILITIES_BUTTON_REGION);
+        sleep(0.5);
+        tapMiddle(CONFIRM_DISMISS_ALL_BUTTON_REGION);
+        sleep(2);
+    } else {
+        if(selection.discard !== undefined) {
+            tapMiddle(SWITCH_ABILITY_OBTAINED);
+            sleep(0.5);
+            var abilityToDismissRegion = IW_OBTAINED_SLOTS[selection.discard];
+            tapMiddle(abilityToDismissRegion);
+            sleep(0.5);        
+            tapMiddle(CONFIRM_DISMISS_OBTAINED_BUTTON_REGION);
+            sleep(0.5);
+        }
+        var regionToTap = IW_ABILITY_CHOICE_REGIONS[selection.take];
+        tapMiddle(regionToTap);
+        sleep(0.5);
+        tapMiddle(IW_OBTAIN_ABILITY_CONFIRM_REGION);
+        sleep(2);
+        // tap somewhere to force the screen to move along
+        tapMiddle(IW_OBTAIN_ABILITY_CONFIRM_REGION);
+        sleep(2);
+    }
 }
 
+sleep(0.5);
+
+var canContinue = true;
+while(canContinue) {
+    if(iwOrbLeftFirst()) {
+        // battle 1 of IW
+        tapMiddle(IW_FIRST_CHALLENGE_BUTTON_REGION);
+    } else if(iwOrbLeftLater()) {
+        // battle 2-10 of IW
+        tapMiddle(IW_CHALLENGE_BUTTON_REGION);
+    } else {
+        // no orbs
+        canContinue = false;
+    }
+    
+    if(canContinue) {
+        doOneIWBattle();
+    }
+}
