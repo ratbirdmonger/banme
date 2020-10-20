@@ -26,7 +26,7 @@ const { execute1015Ext } = require(`${at.rootDir()}/banme/Events/10-15-Ext`);
 function sendGiftsAndPressShare() {
     // friends
     tap (1400, 1920);
-    sleep(1.5);
+    sleep(2);
 
     // gifts
     tap(1130, 920);
@@ -150,7 +150,7 @@ function buyGoldBundle() {
     }
 }
 
-sleep(0.25);
+sleep(0.5);
 sendGiftsAndPressShare();
 
 tapMainMenuAdButton();

@@ -28,7 +28,7 @@ function execute1007Ext() {
 
     // next
     tap(780, 1970);
-    sleep(1)
+    sleep(1.5)
 
     // "Unit Limited Quest" back button here 
     tap(715, 1525);
