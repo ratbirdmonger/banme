@@ -20,7 +20,6 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-const { execute1007Ext } = require(`${at.rootDir()}/banme/Events/10-07-EXT`);
 const { execute1015Ext } = require(`${at.rootDir()}/banme/Events/10-15-Ext`);
 
 function sendGiftsAndPressShare() {
@@ -152,6 +151,7 @@ function buyGoldBundle() {
 
 sleep(0.5);
 sendGiftsAndPressShare();
+buyGoldBundle();
 
 tapMainMenuAdButton();
 poll(isBackButtonActive, 10, 0.5, "Back button available");
@@ -160,16 +160,10 @@ tapBackButton();
 tapBackButton();
 
 enterVortex();
-selectVortex(0,4);
-execute1007Ext();
-tapBackButton();
-exitVortex();
-
-enterVortex();
-selectVortex(0,1);
+selectVortex(0,3);
 execute1015Ext();
 tapBackButton();
 exitVortex();
 
-buyGoldBundle();
+
   

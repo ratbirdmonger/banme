@@ -115,8 +115,12 @@ function activateUnit(unitPosition) {
 
 // unitPosition is as number from 1 to 6
 // abilities is a list of x and y pairs, and optional target
-function selectAbilities(unitPosition, abilities) {
+function selectAbilities(unitPosition, abilities, braveShift = false) {
     openUnitAbility(unitPosition);
+
+    if(braveShift == true) {
+        tapBraveShift();
+    }
 
     // we start at row 0. we can reach row, row+1, and row+2
     let row = 0;
@@ -508,6 +512,13 @@ function isBackButtonActive() {
     return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
 }
 
+const BRAVE_SHIFT_REGION = {x: 80, y: 1908, width: 970, height: 113};
+function tapBraveShift() {
+    tapMiddle(BRAVE_SHIFT_REGION);
+    sleep(3);
+}
+
+
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
@@ -516,7 +527,7 @@ module.exports = {
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
-    isBattleUnitReady,
+    isBattleUnitReady, tapBraveShift,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
