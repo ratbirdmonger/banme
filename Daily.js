@@ -21,6 +21,7 @@ const {
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
 const { execute1015Ext } = require(`${at.rootDir()}/banme/Events/10-15-Ext`);
+const { executeEW } = require(`${at.rootDir()}/banme/Events/2020-10-22-EW`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -165,5 +166,6 @@ execute1015Ext();
 tapBackButton();
 exitVortex();
 
-
-  
+executeEW();
+tapBackButton();
+exitVortex();
