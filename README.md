@@ -32,7 +32,7 @@
 ## Daily bullshit clearing
 * Buy the cactaur bundle. Double checks in place to make sure the wrong bundle doesn't get picked!
 * Send/receive gifts, click the share button
-* Watch and click through 7 ads - I will not publish the code for this because circumventing ads is a huge deal for ad exchanges and their partners. But I will give some hints - it works by doing image analysis on both corners of the screen to determine which one is most likely the X button. 
+* Watch and click through 7 ads. Ads gradually get more difficult to defeat as time goes on, so this feature will need updates in the future.
 
 ## Hourly bullshit clearing
 * Claim completed expeditions, launch new ones.
