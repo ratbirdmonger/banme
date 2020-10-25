@@ -100,6 +100,7 @@ function multicastCWA(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
     var resetSkills = orbsUsed == 0 && firstTurn;
     var deadUnit = -1;
+
     for(let i = 2; i < 5; i++) {
         if(!isBattleUnitReady(i)) {
             deadUnit = i;
@@ -108,7 +109,7 @@ function multicastCWA(orbsUsed, firstTurn) {
     }    
     if(deadUnit > 0) {
         //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
-        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1}, {x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1}, {x: 6, y: 1, target: deadUnit}]); // Raise Dead+, heal
         activateUnit(1);
     }
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
@@ -251,6 +252,7 @@ function executeArenaLoop() {
     return orbsUsed;
 }
 
+if(module === undefined) { var module = {}; executeArenaLoop(); }
 module.exports = {
     executeArenaLoop
 }

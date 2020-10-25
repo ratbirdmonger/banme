@@ -11,11 +11,11 @@ const {
 // it's almost certainly all wrong for any other resolution / aspect ratio
 const BATTLE_UNIT_REGIONS = {
     1: {x: 6, y: 1132, width: 751, height: 237},
-    2: {x: 6, y: 1375, width: 751, height: 237},
+    2: {x: 6, y: 1377, width: 751, height: 237},
     3: {x: 6, y: 1623, width: 751, height: 237},
-    4: {x: 765, y: 1132, width: 751, height: 237},
-    5: {x: 765, y: 1375, width: 751, height: 237},
-    6: {x: 765, y: 1623, width: 751, height: 237}   
+    4: {x: 762, y: 1132, width: 751, height: 237},
+    5: {x: 762, y: 1377, width: 751, height: 237},
+    6: {x: 762, y: 1623, width: 751, height: 237}   
 };
 
 // relative to top left, the unit action icon is at:
@@ -27,14 +27,20 @@ const UNIT_BORDER_OFFSET = {x: 115, y: 18};
 const UNIT_BORDER_REGION = {width: 184, height: 8};
 const UNIT_BORDER_READY_COLORS = [{ color: 5008543, x: 0, y: 0 }];
 
+// the tail part of the action "speech bubble". if the unit has already acted,
+//  or is incapacitated, then there is no speech bubble.
+const UNIT_ACTION_BOX_TAIL_OFFSET = {x: 27, y: 45};
+const UNIT_ACTION_BOX_TAIL_REGION = {width: 22, height: 15};
+const UNIT_ACTION_BOX_TAIL_COLORS = [{ color: 0x505050, x: 0, y: 0 }];
+
 function isBattleUnitReady(unitPosition) {
     var region = {
-        x: BATTLE_UNIT_REGIONS[unitPosition].x + UNIT_BORDER_OFFSET.x,
-        y: BATTLE_UNIT_REGIONS[unitPosition].y + UNIT_BORDER_OFFSET.y,
-        width: UNIT_BORDER_REGION.width,
-        height: UNIT_BORDER_REGION.height
+        x: BATTLE_UNIT_REGIONS[unitPosition].x + UNIT_ACTION_BOX_TAIL_OFFSET.x,
+        y: BATTLE_UNIT_REGIONS[unitPosition].y + UNIT_ACTION_BOX_TAIL_OFFSET.y,
+        width: UNIT_ACTION_BOX_TAIL_REGION.width,
+        height: UNIT_ACTION_BOX_TAIL_REGION.height
     }
-    return areColorsPresentInRegion(UNIT_BORDER_READY_COLORS, region);
+    return areColorsPresentInRegion(UNIT_ACTION_BOX_TAIL_COLORS, region);
 }
 
 function isAutoAttackSelected(unitPosition) {

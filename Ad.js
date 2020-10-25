@@ -114,16 +114,23 @@ function executeAdLoop() {
     while(isSpinButtonActive()) {
         // claim the reward if it's claimable
         // when the progress bar is long, 2 seconds isn't enough when first entering the screen
-        tapMiddle(AD_PRIZE_REGION);
-        sleep(2);
-        tap(803, 1070, 150000); // claim button
-        tap(1360, 784, 150000); // X button in case it's not claimable
-        sleep(0.5);
+
+        // TODO this doesn't actually work - the stupid moogle moves too slow once we get close to the reward
+        // tapMiddle(AD_PRIZE_REGION);
+        // sleep(2);
+        // tap(803, 1070, 150000); // claim button
+        // tap(1360, 784, 150000); // X button in case it's not claimable
+        // sleep(0.5);
 
         executeAd();
     }
 }
 
+function debug() {
+    findAndClickXButton("1st ad");
+}
+
+if(module === undefined) { var module = {}; debug(); }
 module.exports = {
     executeAdLoop, findAndClickXButton
 }

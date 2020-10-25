@@ -42,7 +42,7 @@ function executeRaid(count) {
     tap(780, 1950);
     sleep(1.5);
 
-    tapBonusFriendOrDefault([1, 0, 2]); // start with event 2, then event 1, then favorites
+    tapBonusFriendOrDefault([2, 0, 1]);
 
     // select party
     if(!selectParty(PARTY_NAME)) {
