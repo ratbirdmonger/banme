@@ -100,18 +100,29 @@ function multicastCWA(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
     var resetSkills = orbsUsed == 0 && firstTurn;
     var deadUnit = -1;
+    var usedCD = false;
 
     for(let i = 2; i < 5; i++) {
         if(!isBattleUnitReady(i)) {
             deadUnit = i;
             break;
         }
-    }    
+    }
+
     if(deadUnit > 0) {
         //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
-        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1}, {x: 6, y: 1, target: deadUnit}]); // Raise Dead+, heal
+        // Heal, Raise Dead+
+        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1, target: 1}, {x: 6, y: 1, target: deadUnit}]); 
         activateUnit(1);
+        sleep(1);
+        if(isBattleUnitReady(2)) {
+            // Rem heals & reraises
+            selectAbilities(2, [{x: 8, y: 1}, {x: 10, y: 1, target: 1}, {x: 16, y: 0, target: 1}]);
+            activateUnit(2);
+            sleep(1);
+        }
     }
+
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x: 1, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // Ibara 3xCWA
     }
@@ -129,6 +140,7 @@ function multicastCWA(orbsUsed, firstTurn) {
     activateUnit(2);
     activateUnit(3);
     activateUnit(5);
+    sleep(1);
     poll(isEsperGaugeFull, 10, 0.2);
     if(resetSkills || isAutoAttackSelected(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin

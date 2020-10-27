@@ -5,7 +5,7 @@ const {
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
     tapMainMenuAdButton, isBackButtonActive, readEventText,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
     // post-battle dialogs and checks
@@ -150,7 +150,36 @@ function buyGoldBundle() {
     }
 }
 
+function dailyGilHunt() {
+    enterVortex();
+    selectVortex(1,1); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
+    sleep(0.5);
+    tap(720, 670); // first slot when there's no event info banner
+    sleep(1);
+    selectNoCompanion();
+    tap(820, 1880); // tap depart
+    sleep(2);
+
+    while(true) {
+        poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
+        if(isTurnReady()) {
+            activateUnit(1); activateUnit(2); activateUnit(3); activateUnit(4); activateUnit(5); activateUnit(6);
+            sleep(1);
+        } else {
+            break;
+        }
+    }
+    
+    dismissVictoryScreenDialogs();
+    sleep(1);
+}
+
 sleep(0.5);
+
+dailyGilHunt();
+tapBackButton();
+exitVortex();
+
 sendGiftsAndPressShare();
 buyGoldBundle();
 

@@ -69,6 +69,21 @@ function findAndClickXButton(message) {
     tap(regions[result.n].x + result.x, regions[result.n].y + result.y);
 }
 
+const REWARD_NEXT_COUNTER_REGION = {x: 1006, y: 1691, width: 206, height: 50};
+const REWARD_NEXT_COUNTER_0_COLORS = [
+    { color: 15790319, x: 0, y: 0 },
+    { color: 16448250, x: 112, y: -1 },
+    { color: 66829, x: 85, y: -2 },
+    { color: 132624, x: 69, y: -2 },
+    { color: 132882, x: 77, y: -2 },
+    { color: 198677, x: 112, y: -16 },
+    { color: 16777215, x: 100, y: -16 }
+];
+
+function isRewardCounterZero() {
+    return areColorsPresentInRegion(REWARD_NEXT_COUNTER_0_COLORS, REWARD_NEXT_COUNTER_REGION);
+}
+
 function executeAd() {
     sleep(0.5);
 
@@ -113,14 +128,13 @@ function executeAd() {
 function executeAdLoop() {
     while(isSpinButtonActive()) {
         // claim the reward if it's claimable
-        // when the progress bar is long, 2 seconds isn't enough when first entering the screen
-
-        // TODO this doesn't actually work - the stupid moogle moves too slow once we get close to the reward
-        // tapMiddle(AD_PRIZE_REGION);
-        // sleep(2);
-        // tap(803, 1070, 150000); // claim button
-        // tap(1360, 784, 150000); // X button in case it's not claimable
-        // sleep(0.5);
+        if(isRewardCounterZero()) {
+            sleep(3); // give time for the stupid moogle to make its way
+            tapMiddle(AD_PRIZE_REGION);
+            sleep(3); // takes a long time for the window to come up
+            tap(774, 1234, 150000); // claim button
+            sleep(0.5);
+        }
 
         executeAd();
     }
@@ -130,7 +144,7 @@ function debug() {
     findAndClickXButton("1st ad");
 }
 
-if(module === undefined) { var module = {}; debug(); }
+if(module === undefined) { var module = {}; executeAdLoop(); }
 module.exports = {
     executeAdLoop, findAndClickXButton
 }

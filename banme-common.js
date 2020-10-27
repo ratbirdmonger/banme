@@ -282,6 +282,18 @@ function tapBonusFriendOrDefault(companionTabs = null) {
     sleep(1.5);
 }
 
+const SCROLL_BUTTON_INITIAL_LOCATION = {x: 1515, y: 650};
+const SCROLL_BUTTON_END_LOCATION = {x: 1515, y: 2023};
+
+function selectNoCompanion() {
+    // scroll all the way to the bottom, then select no companion
+    swipe(SCROLL_BUTTON_INITIAL_LOCATION.x, SCROLL_BUTTON_INITIAL_LOCATION.y, 
+        SCROLL_BUTTON_END_LOCATION.x, SCROLL_BUTTON_END_LOCATION.y);
+    sleep(0.5);
+    tap(800, 1920);
+    sleep(1);
+}
+
 const HOME_BUTTON_TEXT_REGION = { x: 1324, y: 346, width: 173, height: 78 };
 
 // if we're at a raid, MK, etc., screen then there's a Home button
@@ -530,7 +542,7 @@ module.exports = {
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
     tapMainMenuAdButton, isBackButtonActive, readEventText,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
     isBattleUnitReady, tapBraveShift,

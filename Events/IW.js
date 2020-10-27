@@ -7,9 +7,10 @@ const {
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
     tapMainMenuAdButton, isBackButtonActive, readEventText,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    isBattleUnitReady, tapBraveShift,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
@@ -63,9 +64,6 @@ function iwOrbLeftLater() {
 function iwOrbLeftFirst() {
     return areColorsPresentInRegion(IW_FIRST_ORB_FULL_COLORS, IW_FIRST_ORB_FIRST_REGION);
 }
-
-const SCROLL_BUTTON_INITIAL_LOCATION = {x: 1515, y: 775};
-const SCROLL_BUTTON_END_LOCATION = {x: 1515, y: 2023};
 
 // alert/toast/console.log does some kind of printf so we have to escape some stuff
 function escapeForAlert(str) {
@@ -223,12 +221,7 @@ function doOneIWBattle() {
     sleep(0.5);
     poll(isBackButtonActive, 5, 1, "Wait for active back button");
 
-    // scroll all the way to the bottom, then select no companion
-    swipe(SCROLL_BUTTON_INITIAL_LOCATION.x, SCROLL_BUTTON_INITIAL_LOCATION.y, 
-        SCROLL_BUTTON_END_LOCATION.x, SCROLL_BUTTON_END_LOCATION.y);
-    sleep(0.5);
-    tap(800, 1920);
-    sleep(1);
+    selectNoCompanion();
 
     // hit depart
     tap(800, 1920);
