@@ -3,7 +3,7 @@ const {
     // basic gestures
     swipe, sleep, tap, tapMiddle,
     // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll
+    readText, areColorsPresentInRegion, poll, findColorsInRegion
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 // all coordinates gathered by hand on an iPad 6th generation
@@ -457,6 +457,7 @@ function exitVortex() {
     sleep(0.25);
     tap(100, 70); // double tap because it has been getting stuck
     sleep(2);
+    closeHomeScreenAd();
 }
 
 // top-left back button that applies to almost all situations
@@ -535,6 +536,27 @@ function tapBraveShift() {
     tapMiddle(BRAVE_SHIFT_REGION);
     sleep(3);
 }
+
+// my best guess for where the X button might be for the home screen "ads"
+//   for example: summon the latest banner, watch some videos, etc.
+const HOME_SCREEN_AD_X_REGION = {x: 1296, y: 18, width: 202, height: 428};
+const HOME_SCREEN_AD_X_COLORS = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16777215, x: 21, y: -17 },
+    { color: 0, x: 26, y: -22 },
+    { color: 0, x: 14, y: 0 },
+    { color: 16777215, x: 20, y: 17 },
+    { color: 0, x: 27, y: 23 }
+];
+
+function closeHomeScreenAd() {
+    var result = findColorsInRegion(HOME_SCREEN_AD_X_COLORS, HOME_SCREEN_AD_X_REGION);
+    if(result != null) {
+        tap(result.x, result.y);
+    }
+    sleep(0.5);
+}
+
 
 
 module.exports = {
