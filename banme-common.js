@@ -557,8 +557,6 @@ function closeHomeScreenAd() {
     sleep(0.5);
 }
 
-
-
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 

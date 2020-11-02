@@ -19,14 +19,14 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const PARTY_NAME = "EW";
+const PARTY_NAME = "EW2";
 
 usleep(1000000);
 
-function executeEW() {
-    if(!(readEventText().includes("of the Tree"))) {
+function executeEW1029() {
+    if(!(readEventText().includes("Grave"))) {
         enterVortex();
-        selectVortex(0, 3);
+        selectVortex(0, 0);
     }
     
     tap(900, 1200);
@@ -48,40 +48,42 @@ function executeEW() {
     
     poll(isTurnReady, 30, 1);
     
-    // unit 2 Yoshikiri 3xBS
-    selectAbilities(2, [{x:1, y:1}, {x:5, y:1}, {x:5, y:1}, {x:5, y:1}]);
+    // unit 2 Ibara 3xBS
+    selectAbilities(2, [{x:1, y:0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}], true);
     
-    // unit 5 SElena 3xBS 
-    selectAbilities(5, [{x: 3, y: 0}, {x:5, y:1}, {x:5, y:1}, {x:5, y:1}]);
+    // unit 5 GLS 3xBS 
+    selectAbilities(5, [{x: 4, y: 0}, {x:5, y:1}, {x:5, y:1}, {x:5, y:1}]);
     
-    // unit 3 Ibara 3xBS
-    selectAbilities(3, [{x:1, y:0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}]);
-    
+    // unit 4 some random magic
+    selectAbilities(4, [{x: 2, y: 1}]);
+
     activateUnit(1);
-    activateUnit(4);
-    activateUnit(6);
-    sleep(1);
-    
-    activateUnit(2);
     activateUnit(3);
+    activateUnit(6);
+    sleep(3);
+
+    activateUnit(2);
     activateUnit(5);
-    sleep(1);
-    
+    activateUnit(4); 
+
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {
             pressReload();
             sleep(0.5);
     
+            // unit should have stayed in BS, so just select the same moves
+            selectAbilities(2, [{x:1, y:0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}]);
+
             activateUnit(1);
-            activateUnit(4);
-            activateUnit(6);
-            sleep(1);
-            
-            activateUnit(2);
             activateUnit(3);
+            activateUnit(6);
+            sleep(3);
+        
+            activateUnit(2);
             activateUnit(5);
-            sleep(1);
+            activateUnit(4); 
+            sleep(3);
         } else {
             break;
         }
@@ -90,7 +92,7 @@ function executeEW() {
     dismissVictoryScreenDialogs();
 }
 
-if(module === undefined) { var module = {}; executeEW(); }
+if(module === undefined) { var module = {}; executeEW1029(); }
 module.exports = {
-    executeEW
+    executeEW1029
 }

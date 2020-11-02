@@ -189,11 +189,11 @@ executeAdLoop();
 tapBackButton();
 tapBackButton();
 
-enterVortex();
-selectVortex(0,3);
-execute1015Ext();
-tapBackButton();
-exitVortex();
+// enterVortex();
+// selectVortex(0,3);
+// execute1015Ext();
+// tapBackButton();
+// exitVortex();
 
 executeEW();
 tapBackButton();

@@ -34,15 +34,15 @@ executeArenaLoop();
 tapBackButton(); // back to main menu
 poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
-// Raid
-enterVortex();
-selectVortex(0, 2);
-poll(isBackButtonActive, 10, 0.5, "Raid screen");
-sleep(0.5); // make sure the screen finishes fading in
-executeRaidLoop();
-tapBackButton();
-exitVortex(); // back to main menu
-poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
+// // Raid
+// enterVortex();
+// selectVortex(0, 2);
+// poll(isBackButtonActive, 10, 0.5, "Raid screen");
+// sleep(0.5); // make sure the screen finishes fading in
+// executeRaidLoop();
+// tapBackButton();
+// exitVortex(); // back to main menu
+// poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
 // Expeditions
 selectMainMenu("Expedition");

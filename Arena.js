@@ -102,26 +102,27 @@ function multicastCWA(orbsUsed, firstTurn) {
     var deadUnit = -1;
     var usedCD = false;
 
-    for(let i = 2; i < 5; i++) {
-        if(!isBattleUnitReady(i)) {
-            deadUnit = i;
-            break;
-        }
-    }
+    // temporarily disabled - doesn't work if someone has an ailment
+    // for(let i = 2; i < 5; i++) {
+    //     if(!isBattleUnitReady(i)) {
+    //         deadUnit = i;
+    //         break;
+    //     }
+    // }
 
-    if(deadUnit > 0) {
-        //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
-        // Heal, Raise Dead+
-        selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1, target: 1}, {x: 6, y: 1, target: deadUnit}]); 
-        activateUnit(1);
-        sleep(1);
-        if(isBattleUnitReady(2)) {
-            // Rem heals & reraises
-            selectAbilities(2, [{x: 8, y: 1}, {x: 10, y: 1, target: 1}, {x: 16, y: 0, target: 1}]);
-            activateUnit(2);
-            sleep(1);
-        }
-    }
+    // if(deadUnit > 0) {
+    //     //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
+    //     // Heal, Raise Dead+
+    //     selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1, target: 1}, {x: 6, y: 1, target: deadUnit}]); 
+    //     activateUnit(1);
+    //     sleep(1);
+    //     if(isBattleUnitReady(2)) {
+    //         // Rem heals & reraises
+    //         selectAbilities(2, [{x: 8, y: 1}, {x: 10, y: 1, target: 1}, {x: 16, y: 0, target: 1}]);
+    //         activateUnit(2);
+    //         sleep(1);
+    //     }
+    // }
 
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x: 1, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // Ibara 3xCWA
@@ -130,7 +131,7 @@ function multicastCWA(orbsUsed, firstTurn) {
         selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
     }
     if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
-        selectAbilities(5, [{x:4, y:1}, {x: 8, y: 0}, {x: 8, y: 0}, {x: 8, y: 0}]) // DS Sol CWAx3
+        selectAbilities(5, [{x:3, y:1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]) // DS Sol CWAx3
     }
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
         selectAbilities(3, [{x: 6, y:0}, {x:9, y: 0}, {x:9, y: 0}, {x:9, y: 0}]); // Terra CWAx3
