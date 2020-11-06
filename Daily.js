@@ -20,8 +20,6 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-const { execute1015Ext } = require(`${at.rootDir()}/banme/Events/10-15-Ext`);
-const { executeEW } = require(`${at.rootDir()}/banme/Events/2020-10-22-EW`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -189,12 +187,4 @@ executeAdLoop();
 tapBackButton();
 tapBackButton();
 
-// enterVortex();
-// selectVortex(0,3);
-// execute1015Ext();
-// tapBackButton();
-// exitVortex();
-
-executeEW();
-tapBackButton();
-exitVortex();
+// TODO the equipment enhance daily

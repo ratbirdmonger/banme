@@ -125,13 +125,13 @@ function multicastCWA(orbsUsed, firstTurn) {
     // }
 
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
-        selectAbilities(4, [{x: 1, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // Ibara 3xCWA
+        selectAbilities(4, [{x: 3, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}]); // Minwu 3xCWA
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
     }
     if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
-        selectAbilities(5, [{x:3, y:1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]) // DS Sol CWAx3
+        selectAbilities(5, [{x:2, y:0}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}]) // DS Sol CWAx3
     }
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
         selectAbilities(3, [{x: 6, y:0}, {x:9, y: 0}, {x:9, y: 0}, {x:9, y: 0}]); // Terra CWAx3

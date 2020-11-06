@@ -26,7 +26,7 @@ usleep(1000000);
 function executeEW1029() {
     if(!(readEventText().includes("Grave"))) {
         enterVortex();
-        selectVortex(0, 0);
+        selectVortex(0, 5);
     }
     
     tap(900, 1200);
@@ -64,7 +64,9 @@ function executeEW1029() {
 
     activateUnit(2);
     activateUnit(5);
-    activateUnit(4); 
+    activateUnit(4);
+
+    sleep(1);
 
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
