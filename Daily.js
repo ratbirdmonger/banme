@@ -148,12 +148,14 @@ function buyGoldBundle() {
     }
 }
 
-function dailyGilHunt() {
-    enterVortex();
-    selectVortex(1,1); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
+function trivialEvent(hasChallenges = true) {
     sleep(0.5);
     tap(720, 670); // first slot when there's no event info banner
     sleep(1);
+    if(hasChallenges) {
+        tap(780, 1960);
+        sleep(1);
+    }
     selectNoCompanion();
     tap(820, 1880); // tap depart
     sleep(2);
@@ -172,7 +174,21 @@ function dailyGilHunt() {
     sleep(1);
 }
 
+function dailyGilHunt() {
+    enterVortex();
+    selectVortex(1,1); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
+    sleep(0.5);
+    trivialEvent(false);
+}
+
 sleep(0.5);
+
+// equipment enhancement
+enterVortex();
+selectVortex(0,7);
+trivialEvent();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();
@@ -186,5 +202,3 @@ poll(isBackButtonActive, 10, 0.5, "Back button available");
 executeAdLoop();
 tapBackButton();
 tapBackButton();
-
-// TODO the equipment enhance daily

@@ -96,6 +96,37 @@ function isRewardOkButtonActive() {
     return areColorsPresentInRegion(REWARD_OK_BUTTON_COLORS, REWARD_OK_BUTTON_REGION);
 }
 
+function multicastSR(orbsUsed, firstTurn) {
+    var resetSkills = orbsUsed == 0 && firstTurn;
+    var deadUnit = -1;
+    var usedCD = false;
+
+    if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
+        selectAbilities(2, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true) // Cloud
+    }
+    if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
+        selectAbilities(3, [{x: 2, y:0}, {x:4, y: 1}, {x:4, y: 1}, {x:4, y: 1}]); // Locke
+    }    
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
+        selectAbilities(4, [{x: 3, y: 0}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}]); // King Rain
+    }
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
+        selectAbilities(5, [{x:4, y:0}, {x: 5, y: 1}, {x: 5, y: 1}, {x: 5, y: 1}]) // Tyro
+    }
+    
+
+    activateUnit(2);
+    activateUnit(3);
+    activateUnit(4);
+    activateUnit(5);
+    // sleep(1);
+    // poll(isEsperGaugeFull, 10, 0.2);
+    // if((resetSkills || isAutoAttackSelected(1)) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+    //     selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    // }
+    activateUnit(1);
+}
+
 function multicastCWA(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
     var resetSkills = orbsUsed == 0 && firstTurn;
@@ -125,7 +156,7 @@ function multicastCWA(orbsUsed, firstTurn) {
     // }
 
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
-        selectAbilities(4, [{x: 3, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}]); // Minwu 3xCWA
+        selectAbilities(4, [{x: 3, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // DS Sol CWAx3
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
@@ -143,7 +174,7 @@ function multicastCWA(orbsUsed, firstTurn) {
     activateUnit(5);
     sleep(1);
     poll(isEsperGaugeFull, 10, 0.2);
-    if(resetSkills || isAutoAttackSelected(1)) {
+    if((resetSkills || isAutoAttackSelected(1)) && isEsperGaugeFull() && isBattleUnitReady(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
     }
     activateUnit(1);
@@ -186,7 +217,7 @@ function tornado(orbsUsed, firstTurn) {
     activateUnit(5); // tornadox2
 
     poll(isEsperGaugeFull, 10, 0.2);
-    if(isBattleUnitReady(1) && (resetSkills || isAutoAttackSelected(1))) {
+    if((resetSkills || isAutoAttackSelected(1)) && isEsperGaugeFull() && isBattleUnitReady(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // healer summons Odin
     }
     activateUnit(1);
@@ -226,9 +257,8 @@ function executeArena(orbsUsed) {
         pressReload();
         sleep(1);
 
-        multicastCWA(orbsUsed, firstTurn);
+        multicastSR(orbsUsed, firstTurn);
         firstTurn = false;
-        //tornado(orbsUsed);
 
         sleep(1); // give time for the reload/repeat button to go blank
         poll(function(){ return isArenaDone() || isTurnReady() }, 30, 1);
