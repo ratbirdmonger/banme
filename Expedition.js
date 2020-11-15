@@ -180,6 +180,7 @@ function executeExpeditionLoop() {
     sleep(0.5); // wait for dialog to fade out
 }
 
+if(module === undefined) { var module = {}; executeExpeditionLoop(); }
 module.exports = {
     executeExpeditionLoop
 }

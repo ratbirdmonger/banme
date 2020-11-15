@@ -42,8 +42,10 @@ function sendGiftsAndPressShare() {
     tap(880, 400);
     sleep(0.5);
 
-    // back
+    // back (double tap - doesn't register sometimes)
     tap(180, 320);
+    sleep(0.1);
+    tap(180, 320);    
     sleep(2.5);
 
     if(isDailyQuestCloseButtonActive()) {
@@ -176,7 +178,7 @@ function trivialEvent(hasChallenges = true) {
 
 function dailyGilHunt() {
     enterVortex();
-    selectVortex(1,1); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
+    selectVortex(1,0); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
     sleep(0.5);
     trivialEvent(false);
 }
