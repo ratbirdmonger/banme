@@ -19,7 +19,6 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const { executeRaidLoop } = require(`${at.rootDir()}/banme/Events/10-15-Raid`);
 const { executeArenaLoop } = require(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = require(`${at.rootDir()}/banme/Expedition`);
 
