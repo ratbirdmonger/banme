@@ -50,7 +50,7 @@ function isAutoAttackSelected(unitPosition) {
         width: UNIT_ACTION_ICON_REGION.width, height: UNIT_ACTION_ICON_REGION.height
      }
 
-     return isImagePresentInRegion('Images/battle-action-sword.png', actionIconRegion);
+     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/battle-action-sword.png`, actionIconRegion);
 }
 
 // const BACK_BUTTON_ACTIVE_COLORS = [
@@ -69,7 +69,7 @@ function isAutoAttackSelected(unitPosition) {
 var BACK_BUTTON_REGION = {x: 98, y: 315, width: 119, height: 49};
 
 function isBackButtonActive() {
-     return isImagePresentInRegion('Images/back-button.png', BACK_BUTTON_REGION, 0.8);
+     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, BACK_BUTTON_REGION, 0.8);
 }
 
 function isImagePresentInRegion(imagePath, region, threshold = 0.95, method = 1) {

@@ -3,7 +3,7 @@ const { touchDown, touchMove, touchUp, usleep, getColor, appActivate, keyDown, k
 const {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
-    tapMainMenuAdButton, isBackButtonActive, readEventText,
+    tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
@@ -51,12 +51,15 @@ const EXPEDITION_NEXT_BUTTON_COLORS = [
     { color: 15066857, x: 23, y: -1 }
 ];
 
-const EXPEDITION_MOOGLE_DEPART_BUTTON_COLORS =  [
-    { color: 16579836, x: 0, y: 0 },
-    { color: 9796, x: 16, y: 0 },
-    { color: 34786, x: 1, y: -54 }
-];
+// the "Moogle" word in the "Exploring the Moogle Cave" caption at the top
+const EXPEDITION_MOOGLE_REGION = { x: 545, y: 329, width: 147, height: 65};
+
+// depart button for moogle cave
 const EXPEDITION_MOOGLE_DEPART_REGION = {x: 500, y: 1800, width: 540, height: 140};
+
+function isInMoogleExpedition() {
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/moogle-expedition.png`, EXPEDITION_MOOGLE_REGION);
+}
 
 function isExpeditionNextButtonActive() {
     return areColorsPresentInRegion(EXPEDITION_NEXT_BUTTON_COLORS, EXPEDITION_NEXT_BUTTON_REGION);
@@ -69,16 +72,10 @@ function isExpeditionOngoingButtonSelected() {
     return areColorsPresentInRegion(EXPEDITION_BUTTON_ENABLED_COLORS, EXPEDITION_ONGOING_BUTTON_REGION);
 }
 
-const EXPEDITION_CANCEL_ONGOING_NO_BUTTON_COLORS = [
-    { color: 16777215, x: 0, y: 0 },
-    { color: 6990, x: 9, y: 0 },
-    { color: 19394, x: 0, y: -45 }
-];
 const EXPEDITION_CANCEL_ONGOING_NO_BUTTON_REGION = {x: 269, y: 1064, width: 393, height: 109};
 
 function isCancelOngoingNoButtonActive() {
-    return areColorsPresentInRegion(EXPEDITION_CANCEL_ONGOING_NO_BUTTON_COLORS,
-        EXPEDITION_CANCEL_ONGOING_NO_BUTTON_REGION);
+    return isImagePresentInRegion('Images/no-button-expedition.png', EXPEDITION_CANCEL_ONGOING_NO_BUTTON_REGION);
 }
 
 // assumes we are at the expedition screen. leaves us in the same place
@@ -136,7 +133,7 @@ function executeExpeditionLoop() {
     while(!isCancelOngoingNoButtonActive()) {
         //   check for active depart button, if so it's Moogle Cave, so send it along
         //   else press the empty unit slot and select the first 5 (handle party dialog)
-        if(areColorsPresentInRegion(EXPEDITION_MOOGLE_DEPART_BUTTON_COLORS, EXPEDITION_MOOGLE_DEPART_REGION)) {
+        if(isInMoogleExpedition()) {
             tapMiddle(EXPEDITION_MOOGLE_DEPART_REGION);
         } else {
             // tap the middle empty unit slot
