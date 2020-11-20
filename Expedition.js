@@ -14,7 +14,7 @@ const {
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
@@ -163,7 +163,7 @@ function executeExpeditionLoop() {
             tap(1260, 995);
             sleep(0.6);
             // tap Depart
-            tap(740, 1540);
+            doubleTap(740, 1540);
         }
         // the back button flashes briefly after hitting depart, so wait for it to go away, then start polling
         sleep(1); 

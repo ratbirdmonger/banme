@@ -81,11 +81,11 @@ const OK_BUTTON_2_COLORS = [
 const OK_BUTTON_REGION = {x: 542, y: 1747, width: 451, height: 210}
 
 const REWARD_OK_BUTTON_REGION = {x: 601, y: 1288, width: 332, height: 97 };
+// two white pixels from the OK and one light blue pixel from the border
 const REWARD_OK_BUTTON_COLORS =  [
-    { color: 2350, x: 0, y: 0 },
-    { color: 16777215, x: 15, y: -1 },
-    { color: 16777215, x: 42, y: -1 },
-    { color: 2623, x: 72, y: -1 }
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16777215, x: -26, y: 1 },
+    { color: 12574975, x: 0, y: -51 }
 ];
 
 function isOkButtonActive() {

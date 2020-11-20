@@ -50,14 +50,37 @@ function isAutoAttackSelected(unitPosition) {
         width: UNIT_ACTION_ICON_REGION.width, height: UNIT_ACTION_ICON_REGION.height
      }
 
-     const [result, error] = findImage({
-         targetImagePath: 'Images/battle-action-sword.png',
-         threshold: 0.95,
-         region: actionIconRegion,
-         method: 1 // 2 is more sophisticated
-     })
+     return isImagePresentInRegion('Images/battle-action-sword.png', actionIconRegion);
+}
 
-     return result.length == 1;
+// const BACK_BUTTON_ACTIVE_COLORS = [
+//     { color: 16777215, x: 0, y: 0 },
+//     { color: 7762, x: 0, y: -10 },
+//     { color: 5219825, x: 0, y: -82 }
+// ];
+
+// const BACK_BUTTON_REGION = {x: 20, y: 254, width: 266, height: 159};
+
+// // the back button that displays under the title bar. applies to raids, events, etc. except for the top level vortex. 
+// function isBackButtonActive() {
+//     return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
+// }
+
+var BACK_BUTTON_REGION = {x: 98, y: 315, width: 119, height: 49};
+
+function isBackButtonActive() {
+     return isImagePresentInRegion('Images/back-button.png', BACK_BUTTON_REGION, 0.8);
+}
+
+function isImagePresentInRegion(imagePath, region, threshold = 0.95, method = 1) {
+    const [result, error] = findImage({
+        targetImagePath: imagePath,
+        threshold: threshold,
+        region: region,
+        method: method // 2 is more sophisticated
+    })
+
+    return result.length == 1;
 }
 
 const repeatButton = {x: 473, y: 1951};
@@ -326,19 +349,27 @@ function selectParty(partyName) {
     return false;
 }
 
-const DAILY_QUEST_CLOSE_REGION = {x: 236, y:1441, width:324, height:90}
+const DAILY_QUEST_CLOSE_REGION = {x: 215, y:1423, width:364, height:128}
+// white pixel from L in Close, dark pixel to the right, black pixel in top border
 const DAILY_QUEST_CLOSE_BUTTON_COLORS = [
-    { color: 4182, x: 0, y: 0 },
-    { color: 15856116, x: 0, y: -11 },
-    { color: 2358, x: 0, y: -22 }
+    { color: 1836, x: 0, y: 0 },
+    { color: 16777215, x: -8, y: 0 },
+    { color: 0, x: 0, y: -59 }
 ];
 
 // white pixels from e and x in Next and a dark pixel above x
+// const NEXT_BUTTON_COLORS = [
+//     { color: 16777215, x: 0, y: 0 },
+//     { color: 3646, x: 1, y: -16 },
+//     { color: 16777215, x: -22, y: -1 }
+// ];
+// changed 11-19-2020
+// white pixels from e and x in Next and a light blue pixel from the border
 const NEXT_BUTTON_COLORS = [
     { color: 16777215, x: 0, y: 0 },
-    { color: 3646, x: 1, y: -16 },
-    { color: 16777215, x: -22, y: -1 }
-];
+    { color: 16777215, x: 22, y: 1 },
+    { color: 7057902, x: 22, y: -68 }
+]
 
 // a mission that has 5 rewards uses this Next button
 const NEXT_BUTTON_2_COLORS = [
@@ -425,24 +456,28 @@ const VORTEX_TAB_REGIONS = [
 
 // when in the Vortex, x is the tab and y is the row within the tab
 // example: Special -> Training the Soul: (2, 1)
-function selectVortex(x, y) {
-    tapMiddle(VORTEX_TAB_REGIONS[x]);
-    sleep(0.7);
-    let row = 0;
-    // if we're at row 0 then we can also see row 1 and row 2
-    for(; row < y - 2; row++) {
-        swipe(EVENT_2_REGION.x, EVENT_2_REGION.y, EVENT_1_REGION.x, EVENT_1_REGION.y);
-        sleep(0.1);
+function selectVortex(x = null, y = null) {
+    if(x != null) {
+        tapMiddle(VORTEX_TAB_REGIONS[x]);
+        sleep(0.7);
     }
-    if(row == y) {
-        tapMiddle(EVENT_1_REGION);
-    } else if(row == y-1) {
-        tapMiddle(EVENT_2_REGION);
-    } else {
-        tapMiddle(EVENT_3_REGION);
+    if(y != null) {
+        let row = 0;
+        // if we're at row 0 then we can also see row 1 and row 2
+        for(; row < y - 2; row++) {
+            swipe(EVENT_2_REGION.x, EVENT_2_REGION.y, EVENT_1_REGION.x, EVENT_1_REGION.y);
+            sleep(0.1);
+        }
+        if(row == y) {
+            tapMiddle(EVENT_1_REGION);
+        } else if(row == y-1) {
+            tapMiddle(EVENT_2_REGION);
+        } else {
+            tapMiddle(EVENT_3_REGION);
+        }
+        poll(isBackButtonActive, 5, 0.5);
+        sleep(0.5);
     }
-    poll(isBackButtonActive, 5, 0.5);
-    sleep(0.5);
 }
 
 // from Home, enter the Vortex
@@ -518,19 +553,6 @@ function readEventText() {
     return readText(EVENT_TEXT_REGION);
 }
 
-const BACK_BUTTON_ACTIVE_COLORS = [
-    { color: 16777215, x: 0, y: 0 },
-    { color: 16523, x: 0, y: -25 },
-    { color: 5963, x: 37, y: -1 }
-];
-
-const BACK_BUTTON_REGION = {x: 50, y: 280, width: 207, height: 115};
-
-// the back button that displays under the title bar. applies to raids, events, etc. except for the top level vortex. 
-function isBackButtonActive() {
-    return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
-}
-
 const BRAVE_SHIFT_REGION = {x: 80, y: 1908, width: 970, height: 113};
 function tapBraveShift() {
     tapMiddle(BRAVE_SHIFT_REGION);
@@ -560,7 +582,7 @@ function closeHomeScreenAd() {
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
-    tapMainMenuAdButton, isBackButtonActive, readEventText,
+    tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands

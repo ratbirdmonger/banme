@@ -14,9 +14,9 @@ const {
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll
+    readText, areColorsPresentInRegion, poll, findColorsInRegion
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
@@ -42,10 +42,8 @@ function sendGiftsAndPressShare() {
     tap(880, 400);
     sleep(0.5);
 
-    // back (double tap - doesn't register sometimes)
-    tap(180, 320);
-    sleep(0.1);
-    tap(180, 320);    
+    // back
+    doubleTap(180, 320);
     sleep(2.5);
 
     if(isDailyQuestCloseButtonActive()) {
@@ -65,8 +63,10 @@ function sendGiftsAndPressShare() {
     tap(1220, 350);
     sleep(2);
 
-    // back to home
+    // back to home (double tap again)
     tap(150, 1900);
+    sleep(0.1);
+    tap(180, 320);    
     sleep(2);
 
     if(isDailyQuestCloseButtonActive()) {
@@ -176,21 +176,35 @@ function trivialEvent(hasChallenges = true) {
     sleep(1);
 }
 
+const DAILY_GIL_HUNT_BANNER_COLORS = [
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16443204, x: -3, y: 30 }
+];
+const BANNER_REGION = {x: 37, y: 472, width: 1461, height: 1493};
 function dailyGilHunt() {
     enterVortex();
-    selectVortex(1,0); // TODO verify that we're actually in the Gil Hunt. or select it intentionally
-    sleep(0.5);
+    selectVortex(1,null);
+    var result = findColorsInRegion(DAILY_GIL_HUNT_BANNER_COLORS, BANNER_REGION);
+    if(result != null) {
+        tap(result.x, result.y);
+    } else {
+        alert("Couldn't find daily gil hunt");
+        at.stop();
+    }
+    sleep(1);
     trivialEvent(false);
 }
 
 sleep(0.5);
 
-// equipment enhancement
-enterVortex();
-selectVortex(0,7);
-trivialEvent();
-tapBackButton();
-exitVortex();
+// daily materials
+// enterVortex();
+// selectVortex(0,7);
+// trivialEvent();
+// tapBackButton();
+// exitVortex();
+
+// TODO Daily Bonus Challenge
 
 dailyGilHunt();
 tapBackButton();
