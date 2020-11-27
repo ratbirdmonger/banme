@@ -20,6 +20,7 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
+const { execute1119Ext } = require(`${at.rootDir()}/banme/Events/2020-11-19-Ext`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -197,14 +198,11 @@ function dailyGilHunt() {
 
 sleep(0.5);
 
-// daily materials
-// enterVortex();
-// selectVortex(0,7);
-// trivialEvent();
-// tapBackButton();
-// exitVortex();
-
-// TODO Daily Bonus Challenge
+enterVortex();
+selectVortex(0, 3);
+execute1119Ext();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();

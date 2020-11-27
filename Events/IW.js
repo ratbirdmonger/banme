@@ -207,7 +207,7 @@ const HP_PRIORITY_LIST = ["Rare", "HP", ["DEF", "SPR"], "MP"];
 // TODO: DEF, SPR, HP priorities
 
 // set this depending on what weapon is being run
-const PRIORITY_LIST = HP_PRIORITY_LIST;
+const PRIORITY_LIST = ATK_PRIORITY_LIST;
 
 const DISMISS_ABILITIES_BUTTON_REGION = {x: 45, y: 1393, width: 674, height: 73};
 const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
@@ -215,8 +215,6 @@ const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
 const CONFIRM_DISMISS_ALL_BUTTON_REGION = {x: 874, y: 1378, width: 520, height: 88}
 // dismiss one
 const CONFIRM_DISMISS_OBTAINED_BUTTON_REGION = {x: 870, y: 1244, width: 398, height: 107};
-
-
 
 function doOneIWBattle() {
     sleep(0.5);

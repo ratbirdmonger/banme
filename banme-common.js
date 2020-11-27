@@ -251,7 +251,8 @@ function findBonusUnit() {
             var region = { x: FRIEND_TOP_LEFT[i].x, y: FRIEND_TOP_LEFT[i].y, 
                 height: FRIEND_REGION_WITH_BONUS.height, width: FRIEND_REGION_WITH_BONUS.width };
 
-            if(areColorsPresentInRegion(bonusColors,region)) {
+            if(isImagePresentInRegion(`${at.rootDir()}/banme/Images/drop-bonus.png`, region) ||
+               isImagePresentInRegion(`${at.rootDir()}/banme/Images/status-bonus.png`, region)) {
                 found = true;
                 return i;
             }
@@ -384,7 +385,8 @@ const NEXT_BUTTON_REGION = {x: 594, y: 1785, width: 350, height: 200}
 // post-battle next button
 function isNextButtonActive() {
     return areColorsPresentInRegion(NEXT_BUTTON_COLORS, NEXT_BUTTON_REGION) 
-    || areColorsPresentInRegion(NEXT_BUTTON_2_COLORS, NEXT_BUTTON_REGION);
+    || areColorsPresentInRegion(NEXT_BUTTON_2_COLORS, NEXT_BUTTON_REGION) 
+    || isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button.png`, NEXT_BUTTON_REGION);
 }
 
 // light and dark pixels from R and e

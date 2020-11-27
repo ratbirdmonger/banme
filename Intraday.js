@@ -36,7 +36,7 @@ poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main me
 
 // Raid
 enterVortex();
-selectVortex(0, 0);
+selectVortex(0, 2);
 poll(isBackButtonActive, 10, 0.5, "Raid screen");
 sleep(0.5); // make sure the screen finishes fading in
 executeRaid20201119Loop();
@@ -54,7 +54,4 @@ sleep(0.5);
 if(isDailyQuestCloseButtonActive()) {
     tapDailyQuestCloseButton(); sleep(1);
 }
-// TODO: dismiss
 poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
-
-// TODO: optionally burn off some NRG on some farming
