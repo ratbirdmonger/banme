@@ -53,23 +53,22 @@ function isAutoAttackSelected(unitPosition) {
      return isImagePresentInRegion(`${at.rootDir()}/banme/Images/battle-action-sword.png`, actionIconRegion);
 }
 
-// const BACK_BUTTON_ACTIVE_COLORS = [
-//     { color: 16777215, x: 0, y: 0 },
-//     { color: 7762, x: 0, y: -10 },
-//     { color: 5219825, x: 0, y: -82 }
-// ];
-
-// const BACK_BUTTON_REGION = {x: 20, y: 254, width: 266, height: 159};
-
-// // the back button that displays under the title bar. applies to raids, events, etc. except for the top level vortex. 
-// function isBackButtonActive() {
-//     return areColorsPresentInRegion(BACK_BUTTON_ACTIVE_COLORS, BACK_BUTTON_REGION);
-// }
-
+// the back button that displays under the title bar. applies to raids, events, etc. except for the top level vortex. 
 var BACK_BUTTON_REGION = {x: 98, y: 315, width: 119, height: 49};
+// the back button in the Energy Recovery dialog when we're out of energy
+var ENERGY_RECOVERY_BACK_BUTTON_REGION = {x: 876, y: 1219, width: 400, height: 113}
 
 function isBackButtonActive() {
-     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, BACK_BUTTON_REGION, 0.8);
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, BACK_BUTTON_REGION, 0.8);
+}
+
+function isEnergyRecoveryBackButtonActive() {
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, ENERGY_RECOVERY_BACK_BUTTON_REGION, 0.8);
+}
+
+function tapEnergyRecoveryBackButton() {
+    tapMiddle(ENERGY_RECOVERY_BACK_BUTTON_REGION);
+    sleep(0.5);
 }
 
 function isImagePresentInRegion(imagePath, region, threshold = 0.95, method = 1) {
@@ -584,7 +583,8 @@ function closeHomeScreenAd() {
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
-    tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion,
+    tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion, isEnergyRecoveryBackButtonActive,
+    tapEnergyRecoveryBackButton,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands

@@ -21,6 +21,7 @@ const {
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
 const { execute1119Ext } = require(`${at.rootDir()}/banme/Events/2020-11-19-Ext`);
+const { execute1126Ext } = require(`${at.rootDir()}/banme/Events/2020-11-26-Ext`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -197,6 +198,12 @@ function dailyGilHunt() {
 }
 
 sleep(0.5);
+
+enterVortex();
+selectVortex(0, 1);
+execute1126Ext();
+tapBackButton();
+exitVortex();
 
 enterVortex();
 selectVortex(0, 3);

@@ -45,9 +45,11 @@ function execute1126Ext() {
 
     poll(isTurnReady, 30, 1);
 
-    //unit 3 break x 2
-    selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
-    selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
+    // Rikku breaks
+    selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}]);
+
+    // Tifa and Cloud chain
+    selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}]);
     selectAbilities(5, [{x:1, y:1}, {x:4, y:1}, {x:4, y:1}, {x:4, y:1}]);
 
     activateUnit(3);
