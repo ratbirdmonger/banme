@@ -24,39 +24,24 @@ const EVENT_TEXT = "Scala"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
 const VORTEX_X = 0; const VORTEX_Y = 0;
 
-function turn1() {
-    // Rikku break
-    selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
+function executeTurn(turn) {
+    if(turn == 1) {
+        // Rikku break
+        selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
+        // Tifa 3xSR
+        selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
+        // Cloud shifts, then 3xSR AoE 
+        selectAbilities(5, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true)
 
-    // Tifa 
-    selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
-
-    // Cloud shifts, then AoE 
-    selectAbilities(5, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true) // Cloud
-
-    activateUnit(3);
-    sleep(2);
-    activateUnit(2);
-    activateUnit(5);
-
-    activateUnit(1);
-    activateUnit(4);
-    activateUnit(6);
-}
-
-function turnNext() {
-    pressReload();
-    sleep(0.5);
-
-    // unit should have stayed in BS, so just select the same moves
-    activateUnit(3);
-    sleep(2);
-    activateUnit(2);
-    activateUnit(5);
-
-    activateUnit(1);
-    activateUnit(4);
-    activateUnit(6);
+        activateUnit(3); sleep(2);
+        activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+    } else {
+        // Cloud should have stayed in BS, so just select the same moves
+        pressReload(); sleep(0.5);
+    
+        activateUnit(3);sleep(2);
+        activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+    }
 }
 
 function tapDifficulty(hasBanner) {
@@ -84,6 +69,7 @@ function executeMK1126() {
     tapDifficulty(true);
 
     if(isEnergyRecoveryBackButtonActive()) {
+        // ran out of energy, time to stop
         tapEnergyRecoveryBackButton();
         return false;
     }
@@ -102,15 +88,14 @@ function executeMK1126() {
     // tap depart
     tap(820, 1880);
     
+    var turn = 1;
     poll(isTurnReady, 30, 1);
-    turn1();
-    sleep(1);
+    executeTurn(turn++); sleep(1);
 
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {
-            turnNext();
-            sleep(1);
+            executeTurn(turn++); sleep(1);
         } else {
             break;
         }

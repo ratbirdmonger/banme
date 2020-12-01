@@ -62,13 +62,13 @@ function sendGiftsAndPressShare() {
     sleep(1.5);
 
     // close the share screen
-    tap(1220, 350);
+    doubleTap(1220, 350);
     sleep(2);
 
     // back to home (double tap again)
     tap(150, 1900);
     sleep(0.1);
-    tap(180, 320);    
+    doubleTap(180, 320);    
     sleep(2);
 
     if(isDailyQuestCloseButtonActive()) {

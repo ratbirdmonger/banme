@@ -216,16 +216,9 @@ const FRIEND_TOP_LEFT = [
     {x: 44, y: 1717}
 ];
 
-// region from the top left pixel of a friend unit that could have the status/drop bonus overlay
-const FRIEND_REGION_WITH_BONUS = { height: 285, width: 285 };
-
-// pixels from bonus green arrow for status/drop bonus
-const bonusColors = [
-    { color: 50688, x: 0, y: 0 },
-    { color: 50688, x: 0, y: -1 },
-    { color: 50688, x: 0, y: -2 },
-    { color: 50688, x: 0, y: -3 }
-];
+const BONUS_ARROW_REGION = {
+    x_offset: 224, y_offset: 205, width: 45, height: 50
+}
 
 // a few white/black pixels to match the "Depart without companion" option in the "pick a companion" dialog
 const departWithoutCompanionColors = [
@@ -247,8 +240,9 @@ function findBonusUnit() {
         // look for the bonus every 200ms 5 times, since it fades in and out
         let found = false;
         for(let i = 0; i <= 3; i++) {
-            var region = { x: FRIEND_TOP_LEFT[i].x, y: FRIEND_TOP_LEFT[i].y, 
-                height: FRIEND_REGION_WITH_BONUS.height, width: FRIEND_REGION_WITH_BONUS.width };
+            var region = { x: FRIEND_TOP_LEFT[i].x + BONUS_ARROW_REGION.x_offset, 
+                y: FRIEND_TOP_LEFT[i].y + BONUS_ARROW_REGION.y_offset, 
+                height: BONUS_ARROW_REGION.height, width: BONUS_ARROW_REGION.width};
 
             if(isImagePresentInRegion(`${at.rootDir()}/banme/Images/drop-bonus.png`, region) ||
                isImagePresentInRegion(`${at.rootDir()}/banme/Images/status-bonus.png`, region)) {
