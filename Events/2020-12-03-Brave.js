@@ -20,38 +20,37 @@ const {
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const PARTY_NAME = "Behemoth";
-const EVENT_TEXT = "Scala"
-const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 3;
+const PARTY_NAME = "Brave";
+const EVENT_TEXT = "Brave"
+const VORTEX_X = 4; const VORTEX_Y = 1;
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
-        // Rikku break
-        selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
-        // Tifa 3xSR
-        selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
-        // Cloud shifts, then 3xSR AoE 
-        selectAbilities(5, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true)
+        // Ibara break, damage
+        selectAbilities(4, [{x: 1, y: 0}, {x: 5, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}])
+        // Physalis 3xCWA
+        selectAbilities(2, [{x:1, y:1}, {x:2, y:0}, {x:2, y:0}, {x:2, y:0}])
+        // Rem 3xCWA
+        selectAbilities(5, [{x:10, y:0}, {x:13, y:0}, {x:14, y:0}, {x:14, y:0}])
 
-        activateUnit(3); sleep(2);
+        // Xon BREAK
+        selectAbilities(3, [{x:2, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}]);
+        activateUnit(3);
+        sleep(35);
+
         activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
     } else {
-        // Cloud should have stayed in BS, so just select the same moves
-        pressReload(); sleep(0.5);
-    
-        activateUnit(3);sleep(2);
-        activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+        alert("should've been done!");
+        at.stop();
     }
 }
 
-function executeMK1126() {
+function executeBrave1203() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
-        hasBanner: true,
-        companionTabPriority: COMPANION_TAB_PRIORITY,
+        hasBanner: false,
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
     };
@@ -59,7 +58,7 @@ function executeMK1126() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeMK1126()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeBrave1203()) { }; }
 module.exports = {
-    executeMK1126
+    executeBrave1203
 }

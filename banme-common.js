@@ -192,7 +192,7 @@ function selectAbilities(unitPosition, abilities, braveShift = false) {
 function pressAbilityButton(x, y) {
     tapMiddle({x: battleAbilityTopLeft[x][y].x, y: battleAbilityTopLeft[x][y].y,
                width: BATTLE_ABILITY_DIMENSIONS.width, height: BATTLE_ABILITY_DIMENSIONS.height}, 10000)
-    sleep(0.4);
+    sleep(0.5);
 }
 
 function isEsperGaugeFull() {
@@ -217,7 +217,7 @@ const FRIEND_TOP_LEFT = [
 ];
 
 const BONUS_ARROW_REGION = {
-    x_offset: 224, y_offset: 205, width: 45, height: 50
+    x_offset: 224, y_offset: 200, width: 45, height: 60
 }
 
 // a few white/black pixels to match the "Depart without companion" option in the "pick a companion" dialog
@@ -574,6 +574,87 @@ function closeHomeScreenAd() {
     sleep(0.5);
 }
 
+// arguments:
+//   vortexX, vortexY (Optional) - location of the banner in the vortex. 
+//     X is which of the 5 tabs, Y is which banner down the list
+//   eventText (Optional) - if vortexX and vortexY are present, and eventText is present,
+//     verify that eventText is a substring of the banner text
+//     if not, assume we're at Home and navigate through the vortex
+//   hasBanner (Required) - if the event has an informational banner or not. changes where we tap to start.
+//   companionTabPriority (Optional) - array of integers for which tab to find the bonus unit in
+//     if not present, pick any old unit
+//   PARTY_NAME (Optional) - if present, select the party with this name
+//   executeTurnFunction(turn) (Mandatory) - a function that executes commands for each turn
+function executeEvent(arguments) {
+    if('vortexX' in arguments) {
+        let vortexX = arguments.vortexX;
+        let vortexY = arguments.vortexY;
+        if('eventText' in arguments) {
+            let eventText = arguments.eventText;
+            if(!(readEventText().includes(eventText))) {
+                enterVortex();
+                selectVortex(vortexX, vortexY);
+            }
+        } else {
+            enterVortex();
+            selectVortex(vortexX, vortexY);
+        }
+    }
+
+    if(arguments.hasBanner) {
+        tap(900, 1200); // top option when there's a banner
+    } else {
+        tap(770, 675); // top option when there's no banner
+    }
+    sleep(1.5);
+    
+    if(isEnergyRecoveryBackButtonActive()) {
+        // ran out of energy, time to stop
+        tapEnergyRecoveryBackButton();
+        return false;
+    }
+
+    // tap next
+    tap(780, 1960);
+    sleep(1.5);
+    
+    if('companionTabPriority' in arguments) {
+        let companionTabPriority = arguments.companionTabPriority;
+        tapBonusFriendOrDefault(companionTabPriority);
+    } else {
+        selectNoCompanion();
+    }
+
+    if('partyName' in arguments) {
+        let partyName = arguments.partyName;
+        if(!selectParty(partyName)) {
+            alert(`Could not find ${partyName}`);
+            at.stop();
+        }
+    }
+
+    // tap depart
+    tap(820, 1880);
+
+    var turn = 1;
+    poll(isTurnReady, 30, 1);
+    let executeTurnFunction = arguments.executeTurnFunction;
+    executeTurnFunction(turn++); sleep(1);
+
+    while(true) {
+        poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
+        if(isTurnReady()) {
+            executeTurnFunction(turn++); sleep(1);
+        } else {
+            break;
+        }
+    }
+    
+    dismissVictoryScreenDialogs();
+
+    return true;
+}
+
 module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
@@ -583,7 +664,7 @@ module.exports = {
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
-    isBattleUnitReady, tapBraveShift,
+    isBattleUnitReady, tapBraveShift, executeEvent,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    

@@ -7,7 +7,7 @@ const {
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
-    pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
+    pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected, executeEvent,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
@@ -20,7 +20,6 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-const { execute1119Ext } = require(`${at.rootDir()}/banme/Events/2020-11-19-Ext`);
 const { execute1126Ext } = require(`${at.rootDir()}/banme/Events/2020-11-26-Ext`);
 
 function sendGiftsAndPressShare() {
@@ -197,17 +196,31 @@ function dailyGilHunt() {
     trivialEvent(false);
 }
 
+function enhancementQuest() {
+    let arguments = {
+        vortexX: 0, vortexY: 1,
+        eventText: "Enhancement",
+        hasBanner: false,
+        partyName: "Behemoth",
+        executeTurnFunction: function(turn) {
+            // Rikku break
+            selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
+            // Tifa 3xSR
+            selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
+            // Cloud shifts, then 3xSR AoE 
+            selectAbilities(5, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true)
+    
+            activateUnit(3); sleep(2);
+            activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+        }
+    };
+
+    executeEvent(arguments);
+}
+
 sleep(0.5);
 
-enterVortex();
-selectVortex(0, 1);
-execute1126Ext();
-tapBackButton();
-exitVortex();
-
-enterVortex();
-selectVortex(0, 3);
-execute1119Ext();
+enhancementQuest();
 tapBackButton();
 exitVortex();
 
