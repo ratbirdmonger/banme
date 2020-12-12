@@ -101,12 +101,12 @@ function multicastSR(orbsUsed, firstTurn) {
     var deadUnit = -1;
     var usedCD = false;
 
+    // if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
+    //     selectAbilities(2, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true) // Cloud
+    // }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-        selectAbilities(2, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true) // Cloud
-    }
-    // if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-    //     selectAbilities(3, [{x: 2, y:0}, {x:4, y: 1}, {x:4, y: 1}, {x:4, y: 1}]); // Locke
-    // }    
+        selectAbilities(2, [{x: 1, y:0}, {x:3, y: 0}, {x:3, y: 0}]); // Locke
+    }    
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x: 3, y: 0}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}]); // King Rain
     }
@@ -121,7 +121,7 @@ function multicastSR(orbsUsed, firstTurn) {
     activateUnit(5);
     sleep(1);
     poll(isEsperGaugeFull, 10, 0.2);
-    if((resetSkills || isAutoAttackSelected(3)) && isEsperGaugeFull() && isBattleUnitReady(3)) {
+    if(isAutoAttackSelected(3) && isEsperGaugeFull() && isBattleUnitReady(3)) {
         selectAbilities(3, [{x: 0, y: 1}]); // bonus unit summoning Odin
     }
     activateUnit(3);

@@ -13,15 +13,17 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
+    safeRequire,
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll
+    readText, areColorsPresentInRegion, poll, findColorsInRegion,
+    // debug
+    debug
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
-const { executeArenaLoop } = require(`${at.rootDir()}/banme/Arena`);
-const { executeExpeditionLoop } = require(`${at.rootDir()}/banme/Expedition`);
-const { executeRaid20201119Loop } = require(`${at.rootDir()}/banme/Events/2020-11-19-Raid`);
+const { executeArenaLoop } = safeRequire(`${at.rootDir()}/banme/Arena`);
+const { executeExpeditionLoop } = safeRequire(`${at.rootDir()}/banme/Expedition`);
 
 appActivate("com.square-enix.ffbeww");
 

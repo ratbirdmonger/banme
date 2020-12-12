@@ -20,7 +20,6 @@ const {
 } = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const { executeAdLoop } = require(`${at.rootDir()}/banme/Ad`);
-const { execute1126Ext } = require(`${at.rootDir()}/banme/Events/2020-11-26-Ext`);
 
 function sendGiftsAndPressShare() {
     // friends
@@ -198,20 +197,26 @@ function dailyGilHunt() {
 
 function enhancementQuest() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
-        eventText: "Enhancement",
+        vortexX: 0, vortexY: 6,
+        eventText: "Girl",
         hasBanner: false,
-        partyName: "Behemoth",
+        partyName: "MK",
         executeTurnFunction: function(turn) {
-            // Rikku break
-            selectAbilities(3, [{x: 3, y: 0}, {x: 7, y: 1}, {x: 8, y: 0}])
-            // Tifa 3xSR
-            selectAbilities(2, [{x:3, y:0}, {x:9, y:0}, {x:9, y:0}, {x:9, y:0}])
-            // Cloud shifts, then 3xSR AoE 
-            selectAbilities(5, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true)
-    
-            activateUnit(3); sleep(2);
-            activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+            // Locke break 2xSR
+            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 1}, {x: 5, y: 0}])
+            // Sabin 2xSR
+            selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
+            // Shadow 2xSR 
+            selectAbilities(2, [{x:3, y:0}, {x:9, y:1}, {x:9, y:1}])
+            // Terra 3xCWA
+            selectAbilities(5, [{x:3, y:0}, {x:4, y:0}, {x:4, y:0}, {x:4, y:0}])
+            // Terra 3xCWA
+            selectAbilities(3, [{x:8, y:0}, {x:11, y:0}, {x:11, y:0}, {x:11, y:0}])
+
+            activateUnit(1); activateUnit(4); activateUnit(2);
+            sleep(0.5);
+            activateUnit(5); activateUnit(3);
+            activateUnit(6);
         }
     };
 
@@ -219,10 +224,15 @@ function enhancementQuest() {
 }
 
 sleep(0.5);
-
 enhancementQuest();
 tapBackButton();
 exitVortex();
+
+// enterVortex();
+// selectVortex(0, 2);
+// execute1126Ext();
+// tapBackButton();
+// exitVortex();
 
 dailyGilHunt();
 tapBackButton();

@@ -1,4 +1,11 @@
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
+const {
+    safeRequire,
+    // basic gestures
+    swipe, sleep, tap, tapMiddle,
+    // color & text recognition, polling
+    readText, areColorsPresentInRegion, poll
+} = require(`${at.rootDir()}/bot-common/bot-common`);
 
 const {
     // menu navigation 
@@ -12,17 +19,11 @@ const {
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
- } = require(`${at.rootDir()}/banme/banme-common`);
-const {
-    // basic gestures
-    swipe, sleep, tap, tapMiddle,
-    // color & text recognition, polling
-    readText, areColorsPresentInRegion, poll
-} = require(`${at.rootDir()}/bot-common/bot-common`);
+ } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "Brave";
 const EVENT_TEXT = "Brave"
-const VORTEX_X = 4; const VORTEX_Y = 1;
+const VORTEX_X = 4; const VORTEX_Y = 0;
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
@@ -31,7 +32,7 @@ function executeTurnFunction(turn) {
         // Physalis 3xCWA
         selectAbilities(2, [{x:1, y:1}, {x:2, y:0}, {x:2, y:0}, {x:2, y:0}])
         // Rem 3xCWA
-        selectAbilities(5, [{x:10, y:0}, {x:13, y:1}, {x:14, y:0}, {x:14, y:0}])
+        selectAbilities(5, [{x:10, y:1}, {x:13, y:0}, {x:14, y:1}, {x:14, y:1}])
 
         // Xon BREAK
         selectAbilities(3, [{x:2, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}]);
@@ -58,7 +59,7 @@ function executeBrave1203() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeBrave1203()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeBrave1210()) { }; }
 module.exports = {
-    executeBrave1203
+    executeBrave1210
 }
