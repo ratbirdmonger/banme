@@ -29,11 +29,11 @@ const VORTEX_X = 0; const VORTEX_Y = 0;
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // Locke break
-        selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 1}, {x: 5, y: 0}])
+        selectAbilities(1, [{x: 3, y: 0}, {x: 6, y: 0}, {x: 5, y: 1}])
         // Sabin 2xSR
         selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
         // Shadow 2xSR 
-        selectAbilities(2, [{x:3, y:0}, {x:9, y:1}, {x:9, y:1}])
+        selectAbilities(2, [{x:3, y:0}, {x:10, y:0}, {x:10, y:0}])
 
         activateUnit(1); 
         sleep(0.5);

@@ -32,7 +32,7 @@ function executeTurnFunction(turn) {
         // Physalis 3xCWA
         selectAbilities(2, [{x:1, y:1}, {x:2, y:0}, {x:2, y:0}, {x:2, y:0}])
         // Rem 3xCWA
-        selectAbilities(5, [{x:10, y:1}, {x:13, y:0}, {x:14, y:1}, {x:14, y:1}])
+        selectAbilities(5, [{x:10, y:0}, {x:12, y:1}, {x:14, y:0}, {x:14, y:0}])
 
         // Xon BREAK
         selectAbilities(3, [{x:2, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}]);
@@ -46,7 +46,7 @@ function executeTurnFunction(turn) {
     }
 }
 
-function executeBrave1203() {
+function executeBrave1210() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,

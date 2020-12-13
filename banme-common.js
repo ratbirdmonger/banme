@@ -556,22 +556,14 @@ function tapBraveShift() {
 
 // my best guess for where the X button might be for the home screen "ads"
 //   for example: summon the latest banner, watch some videos, etc.
-const HOME_SCREEN_AD_X_REGION = {x: 1296, y: 18, width: 202, height: 428};
-const HOME_SCREEN_AD_X_COLORS = [
-    { color: 16777215, x: 0, y: 0 },
-    { color: 16777215, x: 21, y: -17 },
-    { color: 0, x: 26, y: -22 },
-    { color: 0, x: 14, y: 0 },
-    { color: 16777215, x: 20, y: 17 },
-    { color: 0, x: 27, y: 23 }
-];
+const MAIN_SCREEN_AD_X_REGION = {x: 1305, y: 133, width: 174, height: 245};
 
 function closeHomeScreenAd() {
-    var result = findColorsInRegion(HOME_SCREEN_AD_X_COLORS, HOME_SCREEN_AD_X_REGION);
-    if(result != null) {
-        tap(result.x, result.y);
+    var result = isImagePresentInRegion(`${at.rootDir()}/banme/Images/main-page-ad-x.png`, MAIN_SCREEN_AD_X_REGION);
+    if(result) {
+        tapMiddle(MAIN_SCREEN_AD_X_REGION);
     }
-    sleep(0.5);
+    sleep(0.5);    
 }
 
 // arguments:
