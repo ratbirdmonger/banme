@@ -3,7 +3,7 @@ const { intToRgb } = utils
 const {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
-    tapMainMenuAdButton, isBackButtonActive, readEventText,
+    tapMainMenuAdButton, isBackButtonActive, readEventText, tapBottomLeftHomeButton,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
     // battle commands
@@ -125,23 +125,34 @@ function executeAd() {
     sleep(2);
 }
 
+// precondition: at home screen
+// postcondition: at home screen, all available ads have been watched
 function executeAdLoop() {
-    while(isSpinButtonActive()) {
-        // claim the reward if it's claimable
-        if(isRewardCounterZero()) {
-            sleep(3); // give time for the stupid moogle to make its way
-            tapMiddle(AD_PRIZE_REGION);
-            sleep(3); // takes a long time for the window to come up
-            tap(774, 1234, 150000); // claim button
-            sleep(0.5);
+    let triesLeft = 2;
+    while(triesLeft > 0) {
+        tapMainMenuAdButton();
+        poll(isBackButtonActive, 10, 0.5, "Back button available");
+
+        while(isSpinButtonActive()) {
+            if(triesLeft == 1) {
+                // there's an ad available, so reset the counter
+                triesLeft = 2;
+            }
+            // claim the reward if it's claimable
+            if(isRewardCounterZero()) {
+                sleep(3); // give time for the stupid moogle to make its way
+                tapMiddle(AD_PRIZE_REGION);
+                sleep(3); // takes a long time for the window to come up
+                tap(774, 1234, 150000); // claim button
+                sleep(0.5);
+            }
+
+            executeAd();
         }
-
-        executeAd();
+        // ran out of ads but maybe we just need to reset. if this happens twice then there really aren't any ads
+        triesLeft--;
+        tapBottomLeftHomeButton();
     }
-}
-
-function debug() {
-    findAndClickXButton("1st ad");
 }
 
 if(module === undefined) { var module = {}; executeAdLoop(); }

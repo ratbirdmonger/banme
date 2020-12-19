@@ -127,6 +127,32 @@ function multicastSR(orbsUsed, firstTurn) {
     activateUnit(3);
 }
 
+function singleCastSR(orbsUsed, firstTurn) {
+    var resetSkills = orbsUsed == 0 && firstTurn;
+
+    if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
+        selectAbilities(2, [{x: 3, y: 0}]); // Locke
+    }    
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
+        selectAbilities(4, [{x: 6, y: 1}]); // King Rain
+    }
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
+        selectAbilities(5, [{x: 5, y: 1}]) // Tyro
+    }
+    selectAbilities(1, [{x: 2, y: 0, target: 1}], true) // Faisy always brave shifts, heals
+    
+    activateUnit(1);
+    activateUnit(2);
+    activateUnit(4);
+    activateUnit(5);
+    sleep(0.2);
+    poll(isEsperGaugeFull, 10, 0.2);
+    if(isAutoAttackSelected(3) && isEsperGaugeFull() && isBattleUnitReady(3)) {
+        selectAbilities(3, [{x: 0, y: 1}]); // bonus unit summoning Odin
+    }
+    activateUnit(3);
+}
+
 function multicastCWA(orbsUsed, firstTurn) {
     // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
     var resetSkills = orbsUsed == 0 && firstTurn;
@@ -257,7 +283,7 @@ function executeArena(orbsUsed) {
         pressReload();
         sleep(1);
 
-        multicastSR(orbsUsed, firstTurn);
+        singleCastSR(orbsUsed, firstTurn);
         firstTurn = false;
 
         sleep(1); // give time for the reload/repeat button to go blank

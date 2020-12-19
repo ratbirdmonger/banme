@@ -24,6 +24,7 @@ const {
 
 const { executeArenaLoop } = safeRequire(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = safeRequire(`${at.rootDir()}/banme/Expedition`);
+const { executeRaid1217 } = safeRequire(`${at.rootDir()}/banme/Events/2020-12-17-Raid`);
 
 appActivate("com.square-enix.ffbeww");
 
@@ -37,14 +38,10 @@ tapBackButton(); // back to main menu
 poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
 // Raid
-// enterVortex();
-// selectVortex(0, 2);
-// poll(isBackButtonActive, 10, 0.5, "Raid screen");
-// sleep(0.5); // make sure the screen finishes fading in
-// executeRaid20201119Loop();
-// tapBackButton();
-// exitVortex(); // back to main menu
-// poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
+while(executeRaid1217());
+tapBackButton();
+exitVortex(); // back to main menu
+poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
 // Expeditions
 selectMainMenu("Expedition");

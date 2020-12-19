@@ -203,19 +203,17 @@ function enhancementQuest() {
         partyName: "MK",
         executeTurnFunction: function(turn) {
             // Locke break 2xSR
-            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 1}, {x: 5, y: 0}])
+            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 1}, {x: 6, y: 0}, {x: 5, y: 0}])
             // Sabin 2xSR
             selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
             // Shadow 2xSR 
-            selectAbilities(2, [{x:3, y:0}, {x:9, y:1}, {x:9, y:1}])
-            // Terra 3xCWA
-            selectAbilities(5, [{x:3, y:0}, {x:4, y:0}, {x:4, y:0}, {x:4, y:0}])
-            // Terra 3xCWA
-            selectAbilities(3, [{x:8, y:0}, {x:11, y:0}, {x:11, y:0}, {x:11, y:0}])
+            selectAbilities(2, [{x:3, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}])
+            // Terra
+            selectAbilities(5, [{x:8, y:0}])
 
-            activateUnit(1); activateUnit(4); activateUnit(2);
+            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(5); 
             sleep(0.5);
-            activateUnit(5); activateUnit(3);
+            activateUnit(3);
             activateUnit(6);
         }
     };
@@ -224,9 +222,10 @@ function enhancementQuest() {
 }
 
 sleep(0.5);
-enhancementQuest();
-tapBackButton();
-exitVortex();
+
+// enhancementQuest();
+// tapBackButton();
+// exitVortex();
 
 // enterVortex();
 // selectVortex(0, 2);
@@ -241,8 +240,4 @@ exitVortex();
 sendGiftsAndPressShare();
 buyGoldBundle();
 
-tapMainMenuAdButton();
-poll(isBackButtonActive, 10, 0.5, "Back button available");
 executeAdLoop();
-tapBackButton();
-tapBackButton();

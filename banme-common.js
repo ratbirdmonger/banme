@@ -57,6 +57,8 @@ function isAutoAttackSelected(unitPosition) {
 var BACK_BUTTON_REGION = {x: 98, y: 315, width: 119, height: 49};
 // the back button in the Energy Recovery dialog when we're out of energy
 var ENERGY_RECOVERY_BACK_BUTTON_REGION = {x: 876, y: 1219, width: 400, height: 113}
+// the back button in the Energy Recovery dialog when we're out of energy in raids
+var ENERGY_RECOVERY_RAID_BACK_BUTTON_REGION = {x: 568, y: 1215, width: 404, height: 120}
 
 function isBackButtonActive() {
     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, BACK_BUTTON_REGION, 0.8);
@@ -66,9 +68,24 @@ function isEnergyRecoveryBackButtonActive() {
     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, ENERGY_RECOVERY_BACK_BUTTON_REGION, 0.8);
 }
 
+function isRaidEnergyRecoveryBackButtonActive() {
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, ENERGY_RECOVERY_RAID_BACK_BUTTON_REGION, 0.8);
+}
+
 function tapEnergyRecoveryBackButton() {
     tapMiddle(ENERGY_RECOVERY_BACK_BUTTON_REGION);
     sleep(0.5);
+}
+
+function tapRaidEnergyRecoveryBackButton() {
+    tapMiddle(ENERGY_RECOVERY_RAID_BACK_BUTTON_REGION);
+    sleep(0.5);
+}
+
+// the home button in the bottom left, not visible in many menus but visible in Ad screen
+function tapBottomLeftHomeButton() {
+    tapMiddle({x: 43, y: 1852, width: 179, height: 154});
+    sleep(1);
 }
 
 function isImagePresentInRegion(imagePath, region, threshold = 0.95, method = 1) {
@@ -543,7 +560,7 @@ function tapMainMenuAdButton() {
 }
 
 // inside an event's difficulty selection, there is an event title
-const EVENT_TEXT_REGION = { x: 288, y: 343, width: 543, height: 55};
+const EVENT_TEXT_REGION = { x: 288, y: 343, width: 600, height: 55};
 function readEventText() {
     return readText(EVENT_TEXT_REGION);
 }
@@ -572,7 +589,10 @@ function closeHomeScreenAd() {
 //   eventText (Optional) - if vortexX and vortexY are present, and eventText is present,
 //     verify that eventText is a substring of the banner text
 //     if not, assume we're at Home and navigate through the vortex
-//   hasBanner (Required) - if the event has an informational banner or not. changes where we tap to start.
+//   selectLocation (Required) - "top", "middle", "low"  changes where we tap to start.
+//     top - events with no info banner, like EXT events
+//     middle - events with a info banner but no ranking display, like MK events
+//     bottom - events with both an info banner and a ranking display, like raids
 //   companionTabPriority (Optional) - array of integers for which tab to find the bonus unit in
 //     if not present, pick any old unit
 //   PARTY_NAME (Optional) - if present, select the party with this name
@@ -593,16 +613,21 @@ function executeEvent(arguments) {
         }
     }
 
-    if(arguments.hasBanner) {
+    if(arguments.selectLocation == "middle") {
         tap(900, 1200); // top option when there's a banner
+    } else if (arguments.selectLocation == "top") {
+        tap(900, 675); // option when there's no banner
     } else {
-        tap(770, 675); // top option when there's no banner
+        tap(900, 1500); // option with both banner and ranking
     }
     sleep(1.5);
     
     if(isEnergyRecoveryBackButtonActive()) {
         // ran out of energy, time to stop
         tapEnergyRecoveryBackButton();
+        return false;
+    } else if(isRaidEnergyRecoveryBackButtonActive()) {
+        tapRaidEnergyRecoveryBackButton();
         return false;
     }
 
@@ -651,7 +676,7 @@ module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
     tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion, isEnergyRecoveryBackButtonActive,
-    tapEnergyRecoveryBackButton,
+    tapEnergyRecoveryBackButton, tapBottomLeftHomeButton, isRaidEnergyRecoveryBackButtonActive, tapRaidEnergyRecoveryBackButton,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands

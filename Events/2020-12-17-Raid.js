@@ -22,43 +22,28 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Girl"
+const EVENT_TEXT = "Eight"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 4;
+const VORTEX_X = 0; const VORTEX_Y = 0;
 
 function executeTurnFunction(turn) {
-    if(turn == 1) {
-        // Locke break
-        selectAbilities(1, [{x: 3, y: 0}, {x: 6, y: 0}, {x: 5, y: 1}])
-        // Sabin 2xSR
-        selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
-        // Shadow 2xSR 
-        selectAbilities(2, [{x:3, y:0}, {x:10, y:0}, {x:10, y:0}])
+    // Locke break
+    selectAbilities(1, [{x: 3, y: 0}, {x: 6, y: 0}, {x: 5, y: 1}])
+    // Sabin 2xSR
+    selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
+    // Shadow 2xSR 
+    selectAbilities(2, [{x:3, y:0}, {x:10, y:0}, {x:10, y:0}])
 
-        activateUnit(1); 
-        sleep(0.5);
-        activateUnit(4); activateUnit(2);
-        sleep(1.5);
-
-        activateUnit(3); activateUnit(6); activateUnit(5);
-    } else {
-        pressReload(); sleep(0.5);
-    
-        activateUnit(1); 
-        sleep(0.5);
-        activateUnit(4); activateUnit(2);
-        sleep(1.5);
-
-        activateUnit(3); activateUnit(6); activateUnit(5);
-    }
+    activateUnit(1); activateUnit(4); activateUnit(2);
+    activateUnit(3); activateUnit(6); activateUnit(5);
 }
 
-function executeMK1210() {
+function executeRaid1217() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
-        selectionLocation: "middle",
+        selectionLocation: "bottom",
         companionTabPriority: COMPANION_TAB_PRIORITY,
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
@@ -67,7 +52,7 @@ function executeMK1210() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeMK1210()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid1217()) { }; }
 module.exports = {
-    executeMK1210
+    executeRaid1217
 }

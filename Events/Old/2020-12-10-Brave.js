@@ -36,10 +36,12 @@ function executeTurnFunction(turn) {
 
         // Xon BREAK
         selectAbilities(3, [{x:2, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}]);
-        activateUnit(3);
+        // Vaan steal
+        selectAbilities(1, [{x:0, y:0}]);
+        activateUnit(3); activateUnit(1);
         sleep(35);
 
-        activateUnit(2); activateUnit(5); activateUnit(1); activateUnit(4); activateUnit(6);
+        activateUnit(2); activateUnit(5); activateUnit(4); activateUnit(6);
     } else {
         alert("should've been done!");
         at.stop();
