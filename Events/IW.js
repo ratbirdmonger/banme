@@ -17,7 +17,7 @@ const {
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
@@ -208,7 +208,7 @@ const HP_PRIORITY_LIST = ["Rare", "HP", ["DEF", "SPR"], "MP"];
 // TODO: DEF, SPR, HP priorities
 
 // set this depending on what weapon is being run
-const PRIORITY_LIST = HP_PRIORITY_LIST;
+const PRIORITY_LIST = MAG_PRIORITY_LIST;
 
 const DISMISS_ABILITIES_BUTTON_REGION = {x: 45, y: 1393, width: 674, height: 73};
 const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
@@ -294,10 +294,10 @@ function doOneIWBattle() {
         var regionToTap = IW_ABILITY_CHOICE_REGIONS[selection.take];
         tapMiddle(regionToTap);
         sleep(0.5);
-        tapMiddle(IW_OBTAIN_ABILITY_CONFIRM_REGION);
+        doubleTap(IW_OBTAIN_ABILITY_CONFIRM_REGION.x, IW_OBTAIN_ABILITY_CONFIRM_REGION.y);
         sleep(2);
         // tap somewhere to force the screen to move along
-        tapMiddle(IW_OBTAIN_ABILITY_CONFIRM_REGION);
+        doubleTap(IW_OBTAIN_ABILITY_CONFIRM_REGION.x, IW_OBTAIN_ABILITY_CONFIRM_REGION.y);
         sleep(2);
     }
 }

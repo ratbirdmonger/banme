@@ -14,7 +14,7 @@ const {
  } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap, doubleTapMiddle,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
@@ -88,11 +88,11 @@ function executeAd() {
     sleep(0.5);
 
     // spin 1
-    tapMiddle(AD_SPIN_BUTTON_REGION);
+    doubleTapMiddle(AD_SPIN_BUTTON_REGION);
     sleep(1);
     
     // spin 2 & wait
-    tap(890, 1240);
+    doubleTap(890, 1240);
     sleep(40);
     
     findAndClickXButton("1st ad");

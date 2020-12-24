@@ -1,5 +1,4 @@
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
-
 const {
     safeRequire,
     // basic gestures
@@ -7,6 +6,7 @@ const {
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
+
 const {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
@@ -21,32 +21,42 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "MK";
-const EVENT_TEXT = "Eight"
-const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const PARTY_NAME = "Brave";
+const EVENT_TEXT = "Brave"
+const VORTEX_X = 4; const VORTEX_Y = 0;
 
 function executeTurnFunction(turn) {
-    // Locke break
-    selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 0}, {x: 5, y: 0},  {x: 5, y: 0}])
-    // Sabin 2xSR
-    selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
-    // Shadow 2xSR 
-    selectAbilities(2, [{x:3, y:1}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}])
-    // Strago steal
-    selectAbilities(3, [{x:8, y:1}])
+    if(turn == 1) {
+        // Xon BREAK
+        selectAbilities(1, [{x:2, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}]);
+        // Strago pilfer
+        selectAbilities(4, [{x: 9, y: 1}]);
 
-    activateUnit(1); activateUnit(4); activateUnit(2);
-    activateUnit(3); activateUnit(6); activateUnit(5);
+        // Shadow break. damage
+        selectAbilities(2, [{x: 3, y: 1}, {x: 13, y: 0}, {x: 13, y: 0}, {x: 13, y: 0}])
+        // Cloud 3xSR
+        selectAbilities(5, [{x:3, y:0}, {x:6, y:0}, {x:6, y:0}, {x:6, y:0}])
+        // Terra 3xCWA
+        selectAbilities(3, [{x:3, y:0}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}])
+
+
+        // steal, break
+        activateUnit(1); activateUnit(4);
+        sleep(35);
+
+        activateUnit(2); activateUnit(5); activateUnit(3); activateUnit(6);
+    } else {
+        alert("should've been done!");
+        at.stop();
+    }
 }
 
-function executeRaid1217() {
+function executeBrave1217() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
-        selectionLocation: "bottom",
-        companionTabPriority: COMPANION_TAB_PRIORITY,
+        selectLocation: "top",
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
     };
@@ -54,7 +64,7 @@ function executeRaid1217() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid1217()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeBrave1217()) { }; }
 module.exports = {
-    executeRaid1217
+    executeBrave1217
 }

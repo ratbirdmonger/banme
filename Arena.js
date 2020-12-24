@@ -139,7 +139,9 @@ function singleCastSR(orbsUsed, firstTurn) {
     if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x: 5, y: 1}]) // Tyro
     }
-    selectAbilities(1, [{x: 2, y: 0, target: 1}], true) // Faisy always brave shifts, heals
+    if(isBattleUnitReady(1) && (resetSkills || isAutoAttackSelected(1))) {
+        selectAbilities(1, [{x: 6, y: 1}]) // Faisy
+    }
     
     activateUnit(1);
     activateUnit(2);

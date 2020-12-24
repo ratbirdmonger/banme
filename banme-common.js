@@ -59,6 +59,8 @@ var BACK_BUTTON_REGION = {x: 98, y: 315, width: 119, height: 49};
 var ENERGY_RECOVERY_BACK_BUTTON_REGION = {x: 876, y: 1219, width: 400, height: 113}
 // the back button in the Energy Recovery dialog when we're out of energy in raids
 var ENERGY_RECOVERY_RAID_BACK_BUTTON_REGION = {x: 568, y: 1215, width: 404, height: 120}
+// the back button in the Unit Limited Quest dialog
+var UNIT_LIMITED_QUEST_BACK_BUTTON_REGION = {x: 560, y: 1483, width: 425, height: 134}
 
 function isBackButtonActive() {
     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, BACK_BUTTON_REGION, 0.8);
@@ -70,6 +72,10 @@ function isEnergyRecoveryBackButtonActive() {
 
 function isRaidEnergyRecoveryBackButtonActive() {
     return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, ENERGY_RECOVERY_RAID_BACK_BUTTON_REGION, 0.8);
+}
+
+function isUnitLimitedQuestBackButtonActive() {
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/back-button.png`, UNIT_LIMITED_QUEST_BACK_BUTTON_REGION, 0.8);
 }
 
 function tapEnergyRecoveryBackButton() {
@@ -555,7 +561,7 @@ function selectCompanionTab(x) {
 // at the home screen, clicks the FREE!! button for viewing ads
 const MAIN_MENU_AD_BUTTON = {x: 175, y: 274};
 function tapMainMenuAdButton() {
-    tap(MAIN_MENU_AD_BUTTON.x, MAIN_MENU_AD_BUTTON.y);
+    doubleTap(MAIN_MENU_AD_BUTTON.x, MAIN_MENU_AD_BUTTON.y);
     sleep(2);
 }
 
@@ -634,21 +640,27 @@ function executeEvent(arguments) {
     // tap next
     tap(780, 1960);
     sleep(1.5);
-    
-    if('companionTabPriority' in arguments) {
-        let companionTabPriority = arguments.companionTabPriority;
-        tapBonusFriendOrDefault(companionTabPriority);
-    } else {
-        selectNoCompanion();
-    }
 
-    if('partyName' in arguments) {
-        let partyName = arguments.partyName;
-        if(!selectParty(partyName)) {
-            alert(`Could not find ${partyName}`);
-            at.stop();
+    // "Unit Limited Quest" back button here. these don't allow companions
+    if(isUnitLimitedQuestBackButtonActive()) {
+        tap(715, 1525);
+        sleep(1);
+    } else {
+        if('companionTabPriority' in arguments) {
+            let companionTabPriority = arguments.companionTabPriority;
+            tapBonusFriendOrDefault(companionTabPriority);
+        } else {
+            selectNoCompanion();
         }
-    }
+    
+        if('partyName' in arguments) {
+            let partyName = arguments.partyName;
+            if(!selectParty(partyName)) {
+                alert(`Could not find ${partyName}`);
+                at.stop();
+            }
+        }
+    }  
 
     // tap depart
     tap(820, 1880);
@@ -676,6 +688,7 @@ module.exports = {
     // menu navigation 
     enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
     tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion, isEnergyRecoveryBackButtonActive,
+    isUnitLimitedQuestBackButtonActive,
     tapEnergyRecoveryBackButton, tapBottomLeftHomeButton, isRaidEnergyRecoveryBackButtonActive, tapRaidEnergyRecoveryBackButton,
     // pre-battle dialogs
     selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,

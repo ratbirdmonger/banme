@@ -221,17 +221,36 @@ function enhancementQuest() {
     executeEvent(arguments);
 }
 
+function ext20201216() {
+    let arguments = {
+        vortexX: 0, vortexY: 1,
+        eventText: "Blue",
+        selectLocation: "top",
+        partyName: "MK",
+        executeTurnFunction: function(turn) {
+            // Locke break 3xSR
+            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
+            // Sabin 2xSR
+            selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
+            // Shadow 2xSR 
+            selectAbilities(2, [{x:3, y:1}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}])
+            // Terra
+            selectAbilities(5, [{x:5, y:0}, {x:7, y:0}, {x:7, y:0}, {x:7, y:0}])
+            // Terra
+            selectAbilities(3, [{x:4, y:1}])            
+
+            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(5); activateUnit(3);
+        }
+    };
+
+    executeEvent(arguments);
+}
+
 sleep(0.5);
 
-// enhancementQuest();
-// tapBackButton();
-// exitVortex();
-
-// enterVortex();
-// selectVortex(0, 2);
-// execute1126Ext();
-// tapBackButton();
-// exitVortex();
+ext20201216();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();
