@@ -101,8 +101,9 @@ function multicastSR(orbsUsed, firstTurn) {
     var deadUnit = -1;
     var usedCD = false;
 
-    // if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-    //     selectAbilities(2, [{x:1, y:1}, {x:5, y:0}, {x:5, y:0}, {x:5, y:0}], true) // Cloud
+    // commented out - Sabin gets a triple cast if he's attacked, so just reload him
+    // if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
+    //     selectAbilities(3, [{x:2, y:1}, {x:6, y:0}, {x:6, y:0}]) // Sabin
     // }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 1, y:0}, {x:3, y: 0}, {x:3, y: 0}]); // Locke
@@ -114,17 +115,16 @@ function multicastSR(orbsUsed, firstTurn) {
         selectAbilities(5, [{x:4, y:0}, {x: 5, y: 1}, {x: 5, y: 1}, {x: 5, y: 1}]) // Tyro
     }
     
-    activateUnit(1);
     activateUnit(2);
-    // activateUnit(3);
+    activateUnit(3);
     activateUnit(4);
     activateUnit(5);
     sleep(1);
     poll(isEsperGaugeFull, 10, 0.2);
-    if(isAutoAttackSelected(3) && isEsperGaugeFull() && isBattleUnitReady(3)) {
-        selectAbilities(3, [{x: 0, y: 1}]); // bonus unit summoning Odin
+    if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+        selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
     }
-    activateUnit(3);
+    activateUnit(1);
 }
 
 function singleCastSR(orbsUsed, firstTurn) {
@@ -251,7 +251,37 @@ function tornado(orbsUsed, firstTurn) {
     activateUnit(1);
 }
 
-function executeArena(orbsUsed) {
+function counters(orbsUsed, firstTurn) {
+    var resetSkills = orbsUsed == 0 && firstTurn;
+    var deadUnit = -1;
+    var usedCD = false;
+
+    if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
+        selectAbilities(3, [{x:5, y:0}, {x:11, y:1}, {x:11, y:1}]) // Lucas
+    }
+    if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
+        selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
+    }    
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
+        selectAbilities(4, [{x: 4, y: 0}, {x: 10, y: 1}, {x: 10, y: 1}]); // Lucas
+    }
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
+        selectAbilities(5, [{x:6, y:0}, {x: 12, y: 1}, {x: 12, y: 1}]) // Lucas
+    }
+    
+    activateUnit(2);
+    activateUnit(3);
+    activateUnit(4);
+    activateUnit(5);
+    sleep(1);
+    poll(isEsperGaugeFull, 10, 0.2);
+    if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+        selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+    }
+    activateUnit(1);
+}
+
+function executeArena(orbsUsed, battleFunction) {
     // setup button
     tap(800, 1900);
     sleep(1);
@@ -285,7 +315,7 @@ function executeArena(orbsUsed) {
         pressReload();
         sleep(1);
 
-        singleCastSR(orbsUsed, firstTurn);
+        battleFunction(orbsUsed, firstTurn);
         firstTurn = false;
 
         sleep(1); // give time for the reload/repeat button to go blank
@@ -314,10 +344,12 @@ function executeArena(orbsUsed) {
     }
 }
 
+var BATTLE_FUNCTION = counters;
+
 function executeArenaLoop() {
     var orbsUsed = 0;
     while(arenaOrbsLeft()) {
-        executeArena(orbsUsed);
+        executeArena(orbsUsed, BATTLE_FUNCTION);
         orbsUsed++;
     }
     return orbsUsed;

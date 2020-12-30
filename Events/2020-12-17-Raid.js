@@ -24,7 +24,7 @@ const {
 const PARTY_NAME = "MK";
 const EVENT_TEXT = "Eight"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const VORTEX_X = 0; const VORTEX_Y = 1;
 
 function executeTurnFunction(turn) {
     // Locke break

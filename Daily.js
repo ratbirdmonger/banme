@@ -223,7 +223,7 @@ function enhancementQuest() {
 
 function ext20201216() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
+        vortexX: 0, vortexY: 2,
         eventText: "Blue",
         selectLocation: "top",
         partyName: "MK",

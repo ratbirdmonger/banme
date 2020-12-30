@@ -652,15 +652,15 @@ function executeEvent(arguments) {
         } else {
             selectNoCompanion();
         }
-    
-        if('partyName' in arguments) {
-            let partyName = arguments.partyName;
-            if(!selectParty(partyName)) {
-                alert(`Could not find ${partyName}`);
-                at.stop();
-            }
-        }
     }  
+
+    if('partyName' in arguments) {
+        let partyName = arguments.partyName;
+        if(!selectParty(partyName)) {
+            alert(`Could not find ${partyName}`);
+            at.stop();
+        }
+    }
 
     // tap depart
     tap(820, 1880);
