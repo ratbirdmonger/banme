@@ -398,6 +398,9 @@ const NEXT_BUTTON_2_COLORS = [
 // Next button shifts slightly across screens, make the height a bit bigger to accommodate both
 const NEXT_BUTTON_REGION = {x: 594, y: 1785, width: 350, height: 200}
 
+// Next button at the very bottom of the screen, used for Mission Challenges screen
+const BOTTOM_NEXT_BUTTON_REGION = {x: 623, y: 1912, width: 283, height: 128};
+
 // post-battle next button
 function isNextButtonActive() {
     return areColorsPresentInRegion(NEXT_BUTTON_COLORS, NEXT_BUTTON_REGION) 
@@ -589,6 +592,10 @@ function closeHomeScreenAd() {
     sleep(0.5);    
 }
 
+// sometimes an event requires a special item to be consumed, and pops up a confirmation screen.
+// this is the Yes button.
+var SPECIAL_ITEM_YES_BUTTON_REGION = {x: 874, y: 1464, width: 461, height: 168};
+
 // arguments:
 //   vortexX, vortexY (Optional) - location of the banner in the vortex. 
 //     X is which of the 5 tabs, Y is which banner down the list
@@ -600,7 +607,8 @@ function closeHomeScreenAd() {
 //     middle - events with a info banner but no ranking display, like MK events
 //     bottom - events with both an info banner and a ranking display, like raids
 //   companionTabPriority (Optional) - array of integers for which tab to find the bonus unit in
-//     if not present, pick any old unit
+//     if not an array, pick the first available
+//     if not present, try to pick no companion at all
 //   PARTY_NAME (Optional) - if present, select the party with this name
 //   executeTurnFunction(turn) (Mandatory) - a function that executes commands for each turn
 function executeEvent(arguments) {
@@ -637,9 +645,11 @@ function executeEvent(arguments) {
         return false;
     }
 
-    // tap next
-    tap(780, 1960);
-    sleep(1.5);
+    // tap next if there is a Mission Challenges screen
+    if(isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button.png`, BOTTOM_NEXT_BUTTON_REGION)) {
+        tap(BOTTOM_NEXT_BUTTON_REGION);
+        sleep(1.5);
+    }
 
     // "Unit Limited Quest" back button here. these don't allow companions
     if(isUnitLimitedQuestBackButtonActive()) {
@@ -648,7 +658,13 @@ function executeEvent(arguments) {
     } else {
         if('companionTabPriority' in arguments) {
             let companionTabPriority = arguments.companionTabPriority;
-            tapBonusFriendOrDefault(companionTabPriority);
+            if(Array.isArray(companionTabPriority)) {
+                tapBonusFriendOrDefault(companionTabPriority);
+            } else {
+                // tap the first possible unit
+                tap(770, 820);
+                sleep(1);
+            }
         } else {
             selectNoCompanion();
         }
@@ -664,6 +680,12 @@ function executeEvent(arguments) {
 
     // tap depart
     tap(820, 1880);
+    // wait for the "special item" dialog to pop in, if there is one
+    sleep(1); 
+
+    if(isImagePresentInRegion(`${at.rootDir()}/banme/Images/red-yes-button.png`, SPECIAL_ITEM_YES_BUTTON_REGION)) {
+        tapMiddle(SPECIAL_ITEM_YES_BUTTON_REGION);
+    }
 
     var turn = 1;
     poll(isTurnReady, 30, 1);
