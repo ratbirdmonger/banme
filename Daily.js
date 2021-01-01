@@ -248,9 +248,9 @@ function ext20201216() {
 
 sleep(0.5);
 
-ext20201216();
-tapBackButton();
-exitVortex();
+// ext20201216();
+// tapBackButton();
+// exitVortex();
 
 dailyGilHunt();
 tapBackButton();
