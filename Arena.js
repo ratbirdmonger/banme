@@ -263,7 +263,7 @@ function counters(orbsUsed, firstTurn) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
     }    
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
-        selectAbilities(4, [{x: 4, y: 0}, {x: 10, y: 1}, {x: 10, y: 1}]); // Lucas
+        selectAbilities(4, [{x: 5, y: 1}, {x: 12, y: 0}, {x: 12, y: 0}]); // Lucas
     }
     if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
         selectAbilities(5, [{x:6, y:0}, {x: 12, y: 1}, {x: 12, y: 1}]) // Lucas

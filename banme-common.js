@@ -331,7 +331,7 @@ function selectNoCompanion() {
         SCROLL_BUTTON_END_LOCATION.x, SCROLL_BUTTON_END_LOCATION.y);
     sleep(0.5);
     tap(800, 1920);
-    sleep(1);
+    sleep(1.5);
 }
 
 const HOME_BUTTON_TEXT_REGION = { x: 1324, y: 346, width: 173, height: 78 };
@@ -647,7 +647,7 @@ function executeEvent(arguments) {
 
     // tap next if there is a Mission Challenges screen
     if(isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button.png`, BOTTOM_NEXT_BUTTON_REGION)) {
-        tap(BOTTOM_NEXT_BUTTON_REGION);
+        tapMiddle(BOTTOM_NEXT_BUTTON_REGION);
         sleep(1.5);
     }
 

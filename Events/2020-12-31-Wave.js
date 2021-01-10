@@ -22,9 +22,9 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Save"
+const EVENT_TEXT = "Save" // "Save Your Elf"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 3;
+const VORTEX_X = 0; const VORTEX_Y = 2;
 const SELECT_LOCATION = "middle";
 
 function executeTurnFunction(turn) {
