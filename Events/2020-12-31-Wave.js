@@ -29,8 +29,10 @@ const SELECT_LOCATION = "middle";
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
+        pressReload();
+
         // Christine
-        selectAbilities(4, [{x: 5, y: 0}, {x: 14, y: 0}, {x: 14, y: 0}])
+        selectAbilities(4, [{x: 5, y: 1}, {x: 14, y: 1}, {x: 14, y: 1}])
 
         // Lucas
         selectAbilities(2, [{x:4, y:0}, {x:10, y:1}, {x:10, y:1}])

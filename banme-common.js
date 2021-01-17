@@ -520,6 +520,7 @@ function exitVortex() {
 function tapBackButton() {
     tap(140, 320); // Back button
     sleep(2);
+    closeHomeScreenAd();
 }
 
 const MAIN_MENU_LABEL_REGION = {x: 591, y: 1634, width: 357, height: 55 }
@@ -719,5 +720,6 @@ module.exports = {
     isBattleUnitReady, tapBraveShift, executeEvent,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
-    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs,
+    closeHomeScreenAd    
 }

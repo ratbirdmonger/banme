@@ -257,7 +257,7 @@ function counters(orbsUsed, firstTurn) {
     var usedCD = false;
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:5, y:0}, {x:11, y:1}, {x:11, y:1}]) // Lucas
+        selectAbilities(3, [{x:13, y:0}]) // Kunshira
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
@@ -301,26 +301,22 @@ function executeArena(orbsUsed, battleFunction) {
     // start battle
     tap(800, 1800);
 
-    let keepGoing = true;
     let firstTurn = true;
-    while(keepGoing) {
-        let turnReady = poll(isTurnReady, 60, 1);
-        if(!turnReady) {
-            // some assholes will put barrage on a dual wielding unit with a long animation
-            alert("Tried to wait for turn ready but it never happened")
-            at.stop();
+    while(true) {
+        poll(function(){ return isArenaDone() || isTurnReady() }, 60, 1);
+        if(isTurnReady()) {
+            // try to save time doing a reload but if previous MP drain disabled our attacks we need to reset the attacks
+            pressReload();
+            sleep(1);
+
+            battleFunction(orbsUsed, firstTurn);
+            firstTurn = false;
+
+            sleep(1); // give time for the reload/repeat button to go blank
+        } else {
+            // arena is done
+            break;
         }
-
-        // try to save time doing a reload but if previous MP drain disabled our attacks we need to reset the attacks
-        pressReload();
-        sleep(1);
-
-        battleFunction(orbsUsed, firstTurn);
-        firstTurn = false;
-
-        sleep(1); // give time for the reload/repeat button to go blank
-        poll(function(){ return isArenaDone() || isTurnReady() }, 30, 1);
-        keepGoing = isTurnReady();
     }
 
     // results screen
