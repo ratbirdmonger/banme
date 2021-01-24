@@ -257,7 +257,7 @@ function counters(orbsUsed, firstTurn) {
     var usedCD = false;
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:13, y:0}]) // Kunshira
+        selectAbilities(3, [{x:13, y:0}]) // Kunshira - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
@@ -269,11 +269,12 @@ function counters(orbsUsed, firstTurn) {
         selectAbilities(5, [{x:6, y:0}, {x: 12, y: 1}, {x: 12, y: 1}]) // Lucas
     }
     
+    activateUnit(3); // Bushido first to dispel cover/mirage
+    sleep(1);
     activateUnit(2);
-    activateUnit(3);
     activateUnit(4);
     activateUnit(5);
-    sleep(1);
+    sleep(0.5);
     poll(isEsperGaugeFull, 10, 0.2);
     if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
         selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin

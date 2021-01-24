@@ -197,49 +197,41 @@ function dailyGilHunt() {
 
 function enhancementQuest() {
     let arguments = {
-        vortexX: 0, vortexY: 6,
-        eventText: "Girl",
+        vortexX: 0, vortexY: 5,
+        eventText: "Enhancement",
         hasBanner: false,
+        selectLocation: "top",
         partyName: "MK",
         executeTurnFunction: function(turn) {
-            // Locke break 2xSR
-            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 1}, {x: 6, y: 0}, {x: 5, y: 0}])
-            // Sabin 2xSR
-            selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
-            // Shadow 2xSR 
-            selectAbilities(2, [{x:3, y:1}, {x:10, y:0}, {x:10, y:0}, {x:10, y:0}])
-            // Terra
-            selectAbilities(5, [{x:8, y:0}])
+        // Physalis
+        selectAbilities(2, [{x: 3, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
 
-            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(5); 
-            sleep(0.5);
-            activateUnit(3);
-            activateUnit(6);
+        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };
 
     executeEvent(arguments);
 }
 
-function ext20201216() {
+function execute20210121Ext() {
     let arguments = {
-        vortexX: 0, vortexY: 2,
-        eventText: "Blue",
+        vortexX: 0, vortexY: 1,
+        eventText: "2021",
+        hasBanner: false,
         selectLocation: "top",
         partyName: "MK",
         executeTurnFunction: function(turn) {
-            // Locke break 3xSR
-            selectAbilities(1, [{x: 2, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
-            // Sabin 2xSR
-            selectAbilities(4, [{x:1, y:0}, {x:4, y:0}, {x:4, y:0}])
-            // Shadow 2xSR 
-            selectAbilities(2, [{x:3, y:1}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}])
-            // Terra
-            selectAbilities(5, [{x:5, y:0}, {x:7, y:0}, {x:7, y:0}, {x:7, y:0}])
-            // Terra
-            selectAbilities(3, [{x:4, y:1}])            
+            // Physalis
+            selectAbilities(2, [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+            // Lasswell
+            selectAbilities(5, [{x:4, y:0}, {x:10, y:0}, {x:10, y:0}, {x:11, y:1}])
+            // Sol
+            selectAbilities(3, [{x:2, y:0}, {x:2, y:1}, {x:2, y:1}, {x:2, y:1}])
 
-            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(5); activateUnit(3);
+            activateUnit(5); 
+            sleep(1);
+
+            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(3); activateUnit(6);
         }
     };
 
@@ -248,9 +240,13 @@ function ext20201216() {
 
 sleep(0.5);
 
-// ext20201216();
-// tapBackButton();
-// exitVortex();
+execute20210121Ext();
+tapBackButton();
+exitVortex();
+
+enhancementQuest();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();

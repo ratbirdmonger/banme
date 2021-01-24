@@ -234,16 +234,16 @@ function getAbilityScore(ability, priorityList) {
     }
 }
 
-const MAG_PRIORITY_LIST = ["Rare", ["MAG", "HP"], ["DEF", "SPR"], "MP"];
+const MAG_PRIORITY_LIST = ["Unique", "Rare", ["MAG", "HP"], ["DEF", "SPR"], "MP"];
 const MAG_NO_RARE_PRIORITY_LIST = [["MAG", "HP"], ["DEF", "SPR"], "MP"];
 const HYBRID_PRIORITY_LIST = ["Rare", ["ATK", "MAG", "HP"], ["DEF", "SPR"], "MP"];
-const ATK_PRIORITY_LIST = ["Rare", ["ATK", "HP"], ["DEF", "SPR"], "MP"];
+const ATK_PRIORITY_LIST = ["Unique", "Rare", ["ATK", "HP"], ["DEF", "SPR"], "MP"];
 const HP_PRIORITY_LIST = ["Unique", "Rare", "HP", ["DEF", "SPR"], "MP"];
 const HP_SPR_PRIORITY_LIST = ["Unique", "Rare", ["HP", "SPR"], "DEF", "MP"];
 // TODO: DEF, SPR, HP priorities
 
 // set this depending on what weapon is being run
-const PRIORITY_LIST = HP_PRIORITY_LIST;
+const PRIORITY_LIST = MAG_PRIORITY_LIST;
 
 const DISMISS_ABILITIES_BUTTON_REGION = {x: 45, y: 1393, width: 674, height: 73};
 const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
