@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp, getColor, getColors } = at
 const { intToRgb } = utils
 const {
@@ -160,8 +161,9 @@ function trivialEvent(hasChallenges = true) {
     }
     selectNoCompanion();
     tap(820, 1880); // tap depart
-    sleep(2);
 
+    // This isn't a good way to do it, if there's a delay starting then we would skip straight to assuming victory
+    sleep(3);
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {
@@ -197,8 +199,8 @@ function dailyGilHunt() {
 
 function enhancementQuest() {
     let arguments = {
-        vortexX: 0, vortexY: 5,
-        eventText: "Enhancement",
+        vortexX: 0, vortexY: 2,
+        eventText: "Craft",
         hasBanner: false,
         selectLocation: "top",
         partyName: "MK",
@@ -215,11 +217,11 @@ function enhancementQuest() {
 
 function execute20210121Ext() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
+        vortexX: 0, vortexY: 6,
         eventText: "2021",
         hasBanner: false,
         selectLocation: "top",
-        partyName: "MK",
+        partyName: "EXT",
         executeTurnFunction: function(turn) {
             // Physalis
             selectAbilities(2, [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
@@ -240,13 +242,13 @@ function execute20210121Ext() {
 
 sleep(0.5);
 
-execute20210121Ext();
-tapBackButton();
-exitVortex();
+// execute20210121Ext();
+// tapBackButton();
+// exitVortex();
 
-enhancementQuest();
-tapBackButton();
-exitVortex();
+// enhancementQuest();
+// tapBackButton();
+// exitVortex();
 
 dailyGilHunt();
 tapBackButton();

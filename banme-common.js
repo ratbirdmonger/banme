@@ -91,7 +91,7 @@ function tapRaidEnergyRecoveryBackButton() {
 // the home button in the bottom left, not visible in many menus but visible in Ad screen
 function tapBottomLeftHomeButton() {
     tapMiddle({x: 43, y: 1852, width: 179, height: 154});
-    sleep(1);
+    sleep(2);
 }
 
 function isImagePresentInRegion(imagePath, region, threshold = 0.95, method = 1) {

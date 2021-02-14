@@ -1,5 +1,5 @@
-const _ = require('lodash');
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
+
 const {
     safeRequire,
     // basic gestures
@@ -22,36 +22,35 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Visions"
+const EVENT_TEXT = "Battle"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 5;
-const SELECT_LOCATION = "middle";
+const VORTEX_X = 0; const VORTEX_Y = 3;
 
 function executeTurnFunction(turn) {
-    if(turn == 1) {
-        pressReload();
+    // Vaan
+    selectAbilities(1, [{x: 0, y: 0}])
 
-        // Vaan
-        selectAbilities(1, [{x: 0, y: 0}])
+    // Physalis
+    selectAbilities(2, [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+    // Sol
+    selectAbilities(3, [{x:2, y:0}, {x: 2, y: 1}, {x: 2, y: 1}, {x: 2, y: 1}])
 
-        // Physalis
-        selectAbilities(2, [{x: 3, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
+    // PGL SPR break
+    selectAbilities(5, [{x:10, y:0}])
 
-        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-    } else {
-        pressReload();
-        
-        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-    }
+    activateUnit(5);
+    sleep(0.5);
 
+    activateUnit(1); activateUnit(4); activateUnit(2);
+    activateUnit(3); activateUnit(6); 
 }
 
-function executeMK0121() {
+function executeRaid20210128() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
-        selectLocation: SELECT_LOCATION,
+        selectLocation: "bottom",
         companionTabPriority: COMPANION_TAB_PRIORITY,
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
@@ -60,7 +59,7 @@ function executeMK0121() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeMK0121()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid20210128()) { }; }
 module.exports = {
-    executeMK0121
+    executeRaid20210128
 }

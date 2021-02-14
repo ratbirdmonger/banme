@@ -71,13 +71,12 @@ function findAndClickXButton(message) {
 
 const REWARD_NEXT_COUNTER_REGION = {x: 1006, y: 1691, width: 206, height: 50};
 const REWARD_NEXT_COUNTER_0_COLORS = [
-    { color: 15790319, x: 0, y: 0 },
-    { color: 16448250, x: 112, y: -1 },
-    { color: 66829, x: 85, y: -2 },
-    { color: 132624, x: 69, y: -2 },
-    { color: 132882, x: 77, y: -2 },
-    { color: 198677, x: 112, y: -16 },
-    { color: 16777215, x: 100, y: -16 }
+    { color: 16777215, x: 0, y: 0 },
+    { color: 16777215, x: -21, y: 1 },
+    { color: 198677, x: -37, y: 3 },
+    { color: 198676, x: -47, y: 3 },
+    { color: 198676, x: -59, y: 3 },
+    { color: 67086, x: -70, y: 3 }
 ];
 
 function isRewardCounterZero() {
@@ -93,7 +92,7 @@ function executeAd() {
     
     // spin 2 & wait
     doubleTap(890, 1240);
-    sleep(40);
+    sleep(43); // added 3 for these stupid X-Hero ads
     
     findAndClickXButton("1st ad");
     
