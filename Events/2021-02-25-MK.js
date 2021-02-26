@@ -29,24 +29,27 @@ const SELECT_LOCATION = "middle";
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
-        // breaker
+        // Vanille breaks
         selectAbilities(1, [{x: 6, y: 1}, {x: 10, y: 1}, {x: 11, y: 0}])
 
-        // DPS
+        // Rightning LB to kill multiple enemies
         selectAbilities(5, [{x: 0, y: 0}])
+
+        // NV Lightning does damage
         selectAbilities(2, [{x: 5, y: 1}, {x:7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
+
+        // some other Lightning adds some crappy DPS, not really needed
         selectAbilities(3, [{x: 6, y: 0}])
 
+        // break first, then DPS
         activateUnit(1); sleep(1);
         _.forEach(_.range(2,7), function(i) {activateUnit(i)});
     } else {
-        pressReload();
-        
+        // no cooldowns were used previously so reload & repeat
+        pressReload();        
         activateUnit(1); sleep(1);
-
         _.forEach(_.range(2,7), function(i) {activateUnit(i)});
     }
-
 }
 
 function executeMK0225() {
