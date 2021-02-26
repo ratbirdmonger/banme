@@ -92,7 +92,7 @@ function executeAd() {
     
     // spin 2 & wait
     doubleTap(890, 1240);
-    sleep(43); // added 3 for these stupid X-Hero ads
+    sleep(46); // stupid X-Hero ads
     
     findAndClickXButton("1st ad");
     

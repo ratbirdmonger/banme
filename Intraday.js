@@ -24,7 +24,6 @@ const {
 
 const { executeArenaLoop } = safeRequire(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = safeRequire(`${at.rootDir()}/banme/Expedition`);
-const { executeRaid20210128 } = safeRequire(`${at.rootDir()}/banme/Events/2021-01-28-Raid`);
 
 appActivate("com.square-enix.ffbeww");
 

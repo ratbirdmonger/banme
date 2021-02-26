@@ -257,7 +257,7 @@ function counters(orbsUsed, firstTurn) {
     var usedCD = false;
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:8, y:0}]) // C&P - Bushido
+        selectAbilities(3, [{x:13, y:0}]) // DPFina - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
