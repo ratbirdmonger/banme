@@ -24,13 +24,13 @@ const {
 const PARTY_NAME = "MK";
 const EVENT_TEXT = "Song"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const VORTEX_X = 0; const VORTEX_Y = 3;
 const SELECT_LOCATION = "middle";
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // Vanille breaks
-        selectAbilities(1, [{x: 6, y: 1}, {x: 10, y: 1}, {x: 11, y: 0}])
+        selectAbilities(1, [{x: 7, y: 0}, {x: 11, y: 0}, {x: 11, y: 1}])
 
         // Rightning LB to kill multiple enemies
         selectAbilities(5, [{x: 0, y: 0}])
@@ -38,8 +38,11 @@ function executeTurnFunction(turn) {
         // NV Lightning does damage
         selectAbilities(2, [{x: 5, y: 1}, {x:7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
 
-        // some other Lightning adds some crappy DPS, not really needed
-        selectAbilities(3, [{x: 6, y: 0}])
+        // Fang damage
+        selectAbilities(3, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}])
+
+        // Lumina pilfers
+        selectAbilities(4, [{x: 6, y: 1}])
 
         // break first, then DPS
         activateUnit(1); sleep(1);

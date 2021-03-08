@@ -201,7 +201,6 @@ function enhancementQuest() {
     let arguments = {
         vortexX: 0, vortexY: 2,
         eventText: "Craft",
-        hasBanner: false,
         selectLocation: "top",
         partyName: "MK",
         executeTurnFunction: function(turn) {
@@ -215,25 +214,32 @@ function enhancementQuest() {
     executeEvent(arguments);
 }
 
-function execute20210121Ext() {
+function execute20210226Ext() {
     let arguments = {
-        vortexX: 0, vortexY: 6,
-        eventText: "2021",
-        hasBanner: false,
+        vortexX: 0, vortexY: 1,
+        eventText: "Snow",
         selectLocation: "top",
-        partyName: "EXT",
+        partyName: "MK",
+        companionTabPriority: false, // friends not allowed
         executeTurnFunction: function(turn) {
-            // Physalis
-            selectAbilities(2, [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
-            // Lasswell
-            selectAbilities(5, [{x:4, y:0}, {x:10, y:0}, {x:10, y:0}, {x:11, y:1}])
-            // Sol
-            selectAbilities(3, [{x:2, y:0}, {x:2, y:1}, {x:2, y:1}, {x:2, y:1}])
+            // Vanille breaks
+            selectAbilities(1, [{x: 7, y: 0}, {x: 11, y: 0}, {x: 11, y: 1}])
 
-            activateUnit(5); 
-            sleep(1);
+            // Rightning add some chains
+            selectAbilities(5, [{x: 5, y: 1}, {x: 9, y: 1}, {x: 9, y: 1}])
 
-            activateUnit(1); activateUnit(4); activateUnit(2); activateUnit(3); activateUnit(6);
+            // NV Lightning does damage
+            selectAbilities(2, [{x: 5, y: 1}, {x:7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
+
+            // Fang damage
+            selectAbilities(3, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}])
+
+            // Lumina pilfers
+            selectAbilities(4, [{x: 6, y: 1}])
+
+            // break first, then DPS
+            activateUnit(1); sleep(1);
+            _.forEach(_.range(2,7), function(i) {activateUnit(i)});
         }
     };
 
@@ -242,9 +248,9 @@ function execute20210121Ext() {
 
 sleep(0.5);
 
-// execute20210121Ext();
-// tapBackButton();
-// exitVortex();
+execute20210226Ext();
+tapBackButton();
+exitVortex();
 
 // enhancementQuest();
 // tapBackButton();

@@ -454,9 +454,9 @@ function dismissVictoryScreenDialogs(endFunction = atEventScreen) {
         } else if(isDontRequestButtonActive()) {
             tapDontRequestButton(); sleep(1);
         } else {
-            // tap center of screen to hurry things along
+            // tap bottom right of screen to hurry things along
             // if the event screen doesn't load up fast enough and we click here, nothing bad happens
-            tap(760, 1250);
+            tap(1535, 2047);
             sleep(0.25);
         }
     }
@@ -608,6 +608,7 @@ var SPECIAL_ITEM_YES_BUTTON_REGION = {x: 874, y: 1464, width: 461, height: 168};
 //     middle - events with a info banner but no ranking display, like MK events
 //     bottom - events with both an info banner and a ranking display, like raids
 //   companionTabPriority (Optional) - array of integers for which tab to find the bonus unit in
+//     if false, don't pick a unit
 //     if not an array, pick the first available
 //     if not present, try to pick no companion at all
 //   PARTY_NAME (Optional) - if present, select the party with this name
@@ -659,7 +660,9 @@ function executeEvent(arguments) {
     } else {
         if('companionTabPriority' in arguments) {
             let companionTabPriority = arguments.companionTabPriority;
-            if(Array.isArray(companionTabPriority)) {
+            if(companionTabPriority == false) {
+                // don't do anything at all, friends not allowed in this event
+            } else  if(Array.isArray(companionTabPriority)) {
                 tapBonusFriendOrDefault(companionTabPriority);
             } else {
                 // tap the first possible unit

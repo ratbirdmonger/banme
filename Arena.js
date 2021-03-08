@@ -1,16 +1,19 @@
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp, stop } = at
 const { 
     // menu navigation 
-    enterVortex, selectVortex, tapBackButton, exitVortex, selectMainMenu, getMainMenuLabel,
-    tapActiveMainMenuButton, tapMainMenuAdButton, isBackButtonActive, readEventText,
+    enterVortex, selectVortex, tapBackButton, exitVortex, getMainMenuLabel, selectMainMenu, tapActiveMainMenuButton, 
+    tapMainMenuAdButton, isBackButtonActive, readEventText, isImagePresentInRegion, isEnergyRecoveryBackButtonActive,
+    isUnitLimitedQuestBackButtonActive,
+    tapEnergyRecoveryBackButton, tapBottomLeftHomeButton, isRaidEnergyRecoveryBackButtonActive, tapRaidEnergyRecoveryBackButton,
     // pre-battle dialogs
-    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName,
+    selectParty, tapBonusFriendOrDefault, selectCompanionTab, getPartyName, selectNoCompanion,
     // battle commands
     pressRepeat, pressReload, openUnitAbility, selectAbilities, activateUnit, isEsperGaugeFull, isTurnReady, isAutoAttackSelected,
-    isBattleUnitReady,
+    isBattleUnitReady, tapBraveShift, executeEvent,
     // post-battle dialogs and checks
     isMainMenuTopBarVisible, isDailyQuestCloseButtonActive, atEventScreen,   
-    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs    
+    isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs,
+    closeHomeScreenAd
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
@@ -89,7 +92,8 @@ const REWARD_OK_BUTTON_COLORS =  [
 ];
 
 function isOkButtonActive() {
-    return areColorsPresentInRegion(OK_BUTTON_COLORS, OK_BUTTON_REGION) || areColorsPresentInRegion(OK_BUTTON_2_COLORS, OK_BUTTON_REGION);
+    //return areColorsPresentInRegion(OK_BUTTON_COLORS, OK_BUTTON_REGION) || areColorsPresentInRegion(OK_BUTTON_2_COLORS, OK_BUTTON_REGION);
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/arena-ok.png`, OK_BUTTON_REGION);
 }
 
 function isRewardOkButtonActive() {
@@ -257,7 +261,7 @@ function counters(orbsUsed, firstTurn) {
     var usedCD = false;
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:13, y:0}]) // DPFina - Bushido
+        selectAbilities(3, [{x:9, y:1}]) // Edel - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
@@ -293,7 +297,7 @@ function executeArena(orbsUsed, battleFunction) {
 
     // select first opponent
     tap(1000, 1000);
-    sleep(1);
+    sleep(1.5);
 
     // confirm
     tap(1000, 1150);
@@ -335,7 +339,7 @@ function executeArena(orbsUsed, battleFunction) {
             tapMiddle(REWARD_OK_BUTTON_REGION);
             sleep(2.5);
         } else {
-            tapMiddle(OK_BUTTON_REGION);
+            tap(800, 1000);
             sleep(0.5);
         }
     }
