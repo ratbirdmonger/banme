@@ -325,13 +325,13 @@ function executeArena(orbsUsed, battleFunction) {
     }
 
     // results screen
+    let okPressedTimes = 0;
     while(!atArenaScreen()) {
-        let okPressedTimes = 0;
         if(isOkButtonActive()) {
             tapMiddle(OK_BUTTON_REGION);
             okPressedTimes++;
             if(okPressedTimes == 2) {
-                sleep(4); // give time to get back to the arena screen
+                sleep(2.5); // give time to get back to the arena screen
             } else {
                 sleep(1);
             }
@@ -339,8 +339,8 @@ function executeArena(orbsUsed, battleFunction) {
             tapMiddle(REWARD_OK_BUTTON_REGION);
             sleep(2.5);
         } else {
-            tap(800, 1000);
-            sleep(0.5);
+            tap(800, 1000); // tap away from the buttons to move things along
+            sleep(0.25);
         }
     }
 }
