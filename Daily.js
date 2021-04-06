@@ -153,8 +153,8 @@ function buyGoldBundle() {
 
 function trivialEvent(hasChallenges = true) {
     sleep(0.5);
-    tap(720, 670); // first slot when there's no event info banner
-    sleep(1);
+    doubleTap(720, 670); // first slot when there's no event info banner
+    sleep(1.5);
     if(hasChallenges) {
         tap(780, 1960);
         sleep(1);
@@ -199,68 +199,57 @@ function dailyGilHunt() {
 
 function enhancementQuest() {
     let arguments = {
-        vortexX: 0, vortexY: 2,
-        eventText: "Craft",
-        selectLocation: "top",
-        partyName: "MK",
+        vortexX: 0, vortexY: 0,
+        eventText: "Bad",
+        selectLocation: "middle",
+        partyName: "Wave",
         executeTurnFunction: function(turn) {
-        // Physalis
-        selectAbilities(2, [{x: 3, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
-
-        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };
 
     executeEvent(arguments);
 }
 
-function execute20210226Ext() {
-    let arguments = {
-        vortexX: 0, vortexY: 1,
-        eventText: "Snow",
-        selectLocation: "top",
-        partyName: "MK",
-        companionTabPriority: false, // friends not allowed
-        executeTurnFunction: function(turn) {
-            // Vanille breaks
-            selectAbilities(1, [{x: 7, y: 0}, {x: 11, y: 0}, {x: 11, y: 1}])
+// function executeFF5Daily() {
+//     let arguments = {
+//         vortexX: 0, vortexY: 8,
+//         eventText: "Elite",
+//         selectLocation: "top",
+//         partyName: "Five",
+//         companionTabPriority: false, // friends not allowed
+//         executeTurnFunction: function(turn) {
+//             if(turn == 1) {
+//                 // DPS
+//                 selectAbilities(1, [{x: 2, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}])
+        
+//                 _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+//             } else {
+//                 // no cooldowns were used previously so reload & repeat
+//                 pressReload();
+//                 _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+//             }
+//         }
+//     };
 
-            // Rightning add some chains
-            selectAbilities(5, [{x: 5, y: 1}, {x: 9, y: 1}, {x: 9, y: 1}])
-
-            // NV Lightning does damage
-            selectAbilities(2, [{x: 5, y: 1}, {x:7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
-
-            // Fang damage
-            selectAbilities(3, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}])
-
-            // Lumina pilfers
-            selectAbilities(4, [{x: 6, y: 1}])
-
-            // break first, then DPS
-            activateUnit(1); sleep(1);
-            _.forEach(_.range(2,7), function(i) {activateUnit(i)});
-        }
-    };
-
-    executeEvent(arguments);
-}
+//     executeEvent(arguments);
+// }
 
 sleep(0.5);
 
-execute20210226Ext();
-tapBackButton();
-exitVortex();
-
-// enhancementQuest();
+// executeFF5Daily();
 // tapBackButton();
 // exitVortex();
+
+enhancementQuest();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();
 exitVortex();
 
 sendGiftsAndPressShare();
-buyGoldBundle();
+//buyGoldBundle();
 
 executeAdLoop();

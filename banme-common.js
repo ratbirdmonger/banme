@@ -245,9 +245,9 @@ const BONUS_ARROW_REGION = {
 
 // a few white/black pixels to match the "Depart without companion" option in the "pick a companion" dialog
 const departWithoutCompanionColors = [
-    { color: 2575, x: 0, y: 0 },
-    { color: 15658991, x: 278, y: 1 },
-    { color: 4633, x: 283, y: 1 }
+    { color: 15658991, x: 0, y: 0 },
+    { color: 4377, x: 5, y: 0 },
+    { color: 15790320, x: 24, y: 0 }
 ];
 
 // vertical distance between adjacent friends in the "pick a companion" dialog
@@ -405,7 +405,8 @@ const BOTTOM_NEXT_BUTTON_REGION = {x: 623, y: 1912, width: 283, height: 128};
 function isNextButtonActive() {
     return areColorsPresentInRegion(NEXT_BUTTON_COLORS, NEXT_BUTTON_REGION) 
     || areColorsPresentInRegion(NEXT_BUTTON_2_COLORS, NEXT_BUTTON_REGION) 
-    || isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button.png`, NEXT_BUTTON_REGION);
+    || isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button.png`, NEXT_BUTTON_REGION) 
+    || isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button-2.png`, NEXT_BUTTON_REGION);
 }
 
 // light and dark pixels from R and e
@@ -662,6 +663,7 @@ function executeEvent(arguments) {
             let companionTabPriority = arguments.companionTabPriority;
             if(companionTabPriority == false) {
                 // don't do anything at all, friends not allowed in this event
+                sleep(1); // need to sleep to give the next screen time to load
             } else  if(Array.isArray(companionTabPriority)) {
                 tapBonusFriendOrDefault(companionTabPriority);
             } else {
@@ -692,10 +694,7 @@ function executeEvent(arguments) {
     }
 
     var turn = 1;
-    poll(isTurnReady, 30, 1);
     let executeTurnFunction = arguments.executeTurnFunction;
-    executeTurnFunction(turn++); sleep(1);
-
     while(true) {
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {

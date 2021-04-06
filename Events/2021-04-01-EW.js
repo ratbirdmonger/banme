@@ -1,5 +1,6 @@
-const _ = require('lodash');
 const { touchDown, touchMove, touchUp, usleep, appActivate, keyDown, keyUp } = at
+const _ = require('lodash');
+
 const {
     safeRequire,
     // basic gestures
@@ -21,37 +22,32 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "MK";
-const EVENT_TEXT = "Visions"
+const PARTY_NAME = "Wave";
+const EVENT_TEXT = "Bad"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 5;
-const SELECT_LOCATION = "middle";
+const VORTEX_X = 0; const VORTEX_Y = 0;
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
-        pressReload();
-
-        // Vaan
-        selectAbilities(1, [{x: 0, y: 0}])
-
-        // Physalis
-        selectAbilities(2, [{x: 3, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
+        selectAbilities(2, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+        selectAbilities(5, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
+        selectAbilities(3, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
 
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();
-        
+
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     }
 
 }
 
-function executeMK0121() {
+function executeEW20210401() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
-        selectLocation: SELECT_LOCATION,
+        selectLocation: "middle",
         companionTabPriority: COMPANION_TAB_PRIORITY,
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
@@ -60,7 +56,7 @@ function executeMK0121() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeMK0121()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeEW20210401()) { }; }
 module.exports = {
-    executeMK0121
+    executeEW20210401
 }
