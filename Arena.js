@@ -256,10 +256,10 @@ function counters(orbsUsed, firstTurn) {
     let unit1Acted = false;
     // check if the non-death immune Lucas died
     if(!isBattleUnitReady(4)) {
-        // yep, he died
+        // yep, he died. better check the other one.
         if(!isBattleUnitReady(3)) {
-            // ah crap the other Lucas . Raise them both
-            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 3}]); // ST Raise
+            // ah crap the other one died too. Raise them both!
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 3}]);
         } else {
             // only the first Lucas died, so raise him and heal everyone else
             selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 2, y: 0, target: 1}]);
