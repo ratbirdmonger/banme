@@ -199,11 +199,29 @@ function dailyGilHunt() {
 
 function enhancementQuest() {
     let arguments = {
-        vortexX: 0, vortexY: 0,
+        vortexX: 0, vortexY: 2,
         eventText: "Bad",
         selectLocation: "middle",
         partyName: "Wave",
         executeTurnFunction: function(turn) {
+            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+        }
+    };
+
+    executeEvent(arguments);
+}
+
+function enhancementQuest2() {
+    let arguments = {
+        vortexX: 0, vortexY: 3,
+        eventText: "Craft",
+        selectLocation: "top",
+        partyName: "Wave",
+        executeTurnFunction: function(turn) {
+            selectAbilities(2, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+            selectAbilities(5, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
+            selectAbilities(3, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
+    
             _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };
@@ -237,11 +255,11 @@ function enhancementQuest() {
 
 sleep(0.5);
 
-// executeFF5Daily();
-// tapBackButton();
-// exitVortex();
-
 enhancementQuest();
+tapBackButton();
+exitVortex();
+
+enhancementQuest2();
 tapBackButton();
 exitVortex();
 

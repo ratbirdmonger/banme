@@ -693,9 +693,12 @@ function executeEvent(arguments) {
         tapMiddle(SPECIAL_ITEM_YES_BUTTON_REGION);
     }
 
+    // give time for the main menu to fade out
+    sleep(3);
     var turn = 1;
     let executeTurnFunction = arguments.executeTurnFunction;
     while(true) {
+        // turn ready or back at main menu because the enemy died on its own
         poll(function() {return isTurnReady() || isMainMenuTopBarVisible()}, 30, 1);
         if(isTurnReady()) {
             executeTurnFunction(turn++); sleep(1);

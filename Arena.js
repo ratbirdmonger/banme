@@ -249,17 +249,22 @@ function tornado(orbsUsed, firstTurn) {
     activateUnit(1);
 }
 
+// 1 - Faisy, 2 - Dark Veritas, 3 - Bonus, 4 & 5 - Lucas
 function counters(orbsUsed, firstTurn) {
     var resetSkills = orbsUsed == 0 && firstTurn;    
-    var deadUnit = -1;
 
+    let unit1Acted = false;
+    // check if the non-death immune Lucas died
     if(!isBattleUnitReady(4)) {
+        // yep, he died
         if(!isBattleUnitReady(3)) {
+            // ah crap the other Lucas . Raise them both
             selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 3}]); // ST Raise
         } else {
+            // only the first Lucas died, so raise him and heal everyone else
             selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 2, y: 0, target: 1}]);
         }
-        activateUnit(1);
+        activateUnit(1); unit1Acted = true;
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
@@ -281,11 +286,13 @@ function counters(orbsUsed, firstTurn) {
     activateUnit(4);
     activateUnit(5);
     sleep(0.5);
-    poll(isEsperGaugeFull, 10, 0.2);
-    if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
-        selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+    if(!unit1Acted) {    
+        poll(isEsperGaugeFull, 10, 0.2);
+        if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+            selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+        }
+        activateUnit(1);
     }
-    activateUnit(1);
 }
 
 function executeArena(orbsUsed, battleFunction) {

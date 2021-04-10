@@ -25,7 +25,7 @@ const {
 const PARTY_NAME = "Wave";
 const EVENT_TEXT = "Bad"
 const COMPANION_TAB_PRIORITY = [1, 2, 0];
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const VORTEX_X = 0; const VORTEX_Y = 2;
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
