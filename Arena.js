@@ -268,7 +268,7 @@ function counters(orbsUsed, firstTurn) {
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:16, y:0}]) // Bonus - Bushido
+        selectAbilities(3, [{x:13, y:1}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
@@ -326,7 +326,7 @@ function executeArena(orbsUsed, battleFunction) {
             battleFunction(orbsUsed, firstTurn);
             firstTurn = false;
 
-            sleep(1); // give time for the reload/repeat button to go blank
+            sleep(3); // give time for the reload/repeat button to go blank
         } else {
             // arena is done
             break;

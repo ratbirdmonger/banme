@@ -197,30 +197,16 @@ function dailyGilHunt() {
     trivialEvent(false);
 }
 
-function enhancementQuest() {
+// needs buffed stats
+function executeDaily() {
     let arguments = {
-        vortexX: 0, vortexY: 2,
-        eventText: "Bad",
-        selectLocation: "middle",
-        partyName: "Wave",
-        executeTurnFunction: function(turn) {
-            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-        }
-    };
-
-    executeEvent(arguments);
-}
-
-function enhancementQuest2() {
-    let arguments = {
-        vortexX: 0, vortexY: 3,
-        eventText: "Craft",
+        vortexX: 0, vortexY: 1,
+        eventText: "Unbound",
         selectLocation: "top",
         partyName: "Wave",
         executeTurnFunction: function(turn) {
-            selectAbilities(2, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
-            selectAbilities(5, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
-            selectAbilities(3, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
+            selectAbilities(4, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
+            selectAbilities(5, [{x: 2, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
     
             _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
@@ -229,37 +215,38 @@ function enhancementQuest2() {
     executeEvent(arguments);
 }
 
-// function executeFF5Daily() {
-//     let arguments = {
-//         vortexX: 0, vortexY: 8,
-//         eventText: "Elite",
-//         selectLocation: "top",
-//         partyName: "Five",
-//         companionTabPriority: false, // friends not allowed
-//         executeTurnFunction: function(turn) {
-//             if(turn == 1) {
-//                 // DPS
-//                 selectAbilities(1, [{x: 2, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}])
-        
-//                 _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-//             } else {
-//                 // no cooldowns were used previously so reload & repeat
-//                 pressReload();
-//                 _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-//             }
-//         }
-//     };
+// needs buffed stats
+function executeFF15Daily() {
+    let arguments = {
+        vortexX: 0, vortexY: 6,
+        eventText: "Ravus",
+        selectLocation: "top",
+        partyName: "MK",
+        companionTabPriority: false, // friends not allowed
+        executeTurnFunction: function(turn) {
+            if(turn == 1) {
+                // DPS
+                selectAbilities(2, [{x: 1, y: 1}, {x: 3, y: 0}, {x: 3, y: 0}])
 
-//     executeEvent(arguments);
-// }
+                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            } else {
+                // no cooldowns were used previously so reload & repeat
+                pressReload();
+                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            }
+        }
+    };
+
+    executeEvent(arguments);
+}
 
 sleep(0.5);
 
-enhancementQuest();
+executeDaily();
 tapBackButton();
 exitVortex();
 
-enhancementQuest2();
+executeFF15Daily();
 tapBackButton();
 exitVortex();
 
