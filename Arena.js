@@ -154,56 +154,48 @@ function singleCastSR(orbsUsed, firstTurn) {
 }
 
 function multicastCWA(orbsUsed, firstTurn) {
-    // healer should recover if anyone is incapacitated. ideally this would handle both death and ailments
-    var resetSkills = orbsUsed == 0 && firstTurn;
-    var deadUnit = -1;
-    var usedCD = false;
+    var resetSkills = orbsUsed == 0 && firstTurn;    
 
-    // temporarily disabled - doesn't work if someone has an ailment
-    // for(let i = 2; i < 5; i++) {
-    //     if(!isBattleUnitReady(i)) {
-    //         deadUnit = i;
-    //         break;
+    let unit1Acted = false;
+    // // check if the non-death immune Lucas died
+    // if(!isBattleUnitReady(4)) {
+    //     // yep, he died. better check the other one.
+    //     if(!isBattleUnitReady(3)) {
+    //         // ah crap the other one died too. Raise them both!
+    //         selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 3}]);
+    //     } else {
+    //         // only the first Lucas died, so raise him and heal everyone else
+    //         selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 2, y: 0, target: 1}]);
     //     }
+    //     activateUnit(1); unit1Acted = true;
     // }
 
-    // if(deadUnit > 0) {
-    //     //selectAbilities(1, [{x: 6, y: 1, target: deadUnit}]); // Raise Dead+
-    //     // Heal, Raise Dead+
-    //     selectAbilities(1, [{x: 1, y: 0}, {x: 1, y: 1, target: 1}, {x: 6, y: 1, target: deadUnit}]); 
-    //     activateUnit(1);
-    //     sleep(1);
-    //     if(isBattleUnitReady(2)) {
-    //         // Rem heals & reraises
-    //         selectAbilities(2, [{x: 8, y: 1}, {x: 10, y: 1, target: 1}, {x: 16, y: 0, target: 1}]);
-    //         activateUnit(2);
-    //         sleep(1);
-    //     }
-    // }
-
-    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
-        selectAbilities(4, [{x: 3, y: 1}, {x: 7, y: 0}, {x: 7, y: 0}, {x: 7, y: 0}]); // DS Sol CWAx3
+    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
+        selectAbilities(5, [{x:9, y:1}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-        selectAbilities(2, [{x:9, y:0}, {x:13, y:0}, {x:13, y:0}, {x:13, y:0}]) // Rem CWA daggersx3
-    }
-    if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
-        selectAbilities(5, [{x:2, y:0}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}]) // DS Sol CWAx3
+        selectAbilities(2, [{x: 6, y: 0}, {x: 11, y: 0}, {x: 11, y: 0}, {x: 11, y: 0}]); // White Lily
+    }    
+    if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
+        selectAbilities(4, [{x: 2, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // Lucas
     }
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x: 6, y:0}, {x:9, y: 0}, {x:9, y: 0}, {x:9, y: 0}]); // Terra CWAx3
+        selectAbilities(3, [{x:8, y:0}, {x: 11, y: 0}, {x: 11, y: 0}, {x: 11, y: 0}]) // MW Terra
     }
     
-    activateUnit(4);
-    activateUnit(2);
-    activateUnit(3);
-    activateUnit(5);
+    activateUnit(5); // Bushido first to dispel cover/mirage
     sleep(1);
-    poll(isEsperGaugeFull, 10, 0.2);
-    if((resetSkills || isAutoAttackSelected(1)) && isEsperGaugeFull() && isBattleUnitReady(1)) {
-        selectAbilities(1, [{x: 0, y: 1}]); // Someone summoning Odin
+    activateUnit(2);
+    activateUnit(4);
+    activateUnit(3);
+    sleep(0.5);
+    if(!unit1Acted) {    
+        poll(isEsperGaugeFull, 10, 0.2);
+        if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+            selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+        }
+        activateUnit(1);
     }
-    activateUnit(1);
 }
 
 function tornado(orbsUsed, firstTurn) {
@@ -268,7 +260,7 @@ function counters(orbsUsed, firstTurn) {
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:13, y:1}]) // Bonus - Bushido
+        selectAbilities(3, [{x:8, y:0}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x: 9, y:1}]); // Dark Veritas
@@ -354,7 +346,7 @@ function executeArena(orbsUsed, battleFunction) {
     }
 }
 
-var BATTLE_FUNCTION = counters;
+var BATTLE_FUNCTION = multicastCWA;
 
 function executeArenaLoop() {
     var orbsUsed = 0;

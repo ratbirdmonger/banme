@@ -259,8 +259,8 @@ function reachedEndOfFriendList() {
 
 // return the index of the friend unit with a bonus (from 0 to 3) or -1 if none found
 function findBonusUnit() {
-    for(let j = 0; j < 10; j++) {
-        // look for the bonus every 200ms 5 times, since it fades in and out
+    for(let j = 0; j < 15; j++) {
+        // look for the bonus every 200ms 15 times, since it fades in and out
         let found = false;
         for(let i = 0; i <= 3; i++) {
             var region = { x: FRIEND_TOP_LEFT[i].x + BONUS_ARROW_REGION.x_offset, 

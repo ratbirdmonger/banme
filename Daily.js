@@ -200,7 +200,7 @@ function dailyGilHunt() {
 // needs buffed stats
 function executeDaily() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
+        vortexX: 0, vortexY: 3,
         eventText: "Unbound",
         selectLocation: "top",
         partyName: "Wave",
@@ -218,8 +218,8 @@ function executeDaily() {
 // needs buffed stats
 function executeFF15Daily() {
     let arguments = {
-        vortexX: 0, vortexY: 6,
-        eventText: "Ravus",
+        vortexX: 0, vortexY: 1,
+        eventText: "Reaper",
         selectLocation: "top",
         partyName: "MK",
         companionTabPriority: false, // friends not allowed
