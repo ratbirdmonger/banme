@@ -355,8 +355,9 @@ const SHIFT_PARTY_LEFT_BUTTON = {x: 20, y: 732};
 const SHIFT_PARTY_RIGHT_BUTTON = {x: 1510, y: 732};
 
 // try to select the party with the specified name
+// do one extra rotation because sometimes the friend selection gets stuck and we lose a button press
 function selectParty(partyName) {
-    for(let i = 0; i < 5; i++) {
+    for(let i = 0; i < 6; i++) {
         if(getPartyName() == partyName) {
             return true;
         } 
@@ -409,19 +410,12 @@ function isNextButtonActive() {
     || isImagePresentInRegion(`${at.rootDir()}/banme/Images/next-button-2.png`, NEXT_BUTTON_REGION);
 }
 
-// light and dark pixels from R and e
-const DONT_REQUEST_BUTTON_COLORS = [
-    { color: 16777215, x: 0, y: 0 },
-    { color: 16777215, x: 25, y: 6 },
-    { color: 75365, x: -3, y: -11 },
-    { color: 140136, x: 37, y: 0 }
-]
-
-const DONT_REQUEST_BUTTON_REGION = {x: 40, y: 1395, width: 700, height: 205};
+// The Do of the "Don't Request" button, expanded out 20 pixels
+const DONT_REQUEST_BUTTON_DO_REGION = {x: 110, y: 1448, width: 112, height: 103};
 
 // friend request dialog
 function isDontRequestButtonActive() {
-    return areColorsPresentInRegion(DONT_REQUEST_BUTTON_COLORS, DONT_REQUEST_BUTTON_REGION);
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/dont-request.png`, DONT_REQUEST_BUTTON_DO_REGION)
 }
 
 // daily quest complete dialog
@@ -436,7 +430,7 @@ function tapNextButton() {
 
 // tap the Don't Request button in the friend request dialog
 function tapDontRequestButton() {
-    tapMiddle(DONT_REQUEST_BUTTON_REGION);
+    tapMiddle(DONT_REQUEST_BUTTON_DO_REGION);
 }
 
 // click the close button in the daily quest complete dialog

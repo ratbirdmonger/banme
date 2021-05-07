@@ -159,7 +159,8 @@ function trivialEvent(hasChallenges = true) {
         tap(780, 1960);
         sleep(1);
     }
-    selectNoCompanion();
+    
+    doubleTap(80, 800); // tap first available companion
     tap(820, 1880); // tap depart
 
     // This isn't a good way to do it, if there's a delay starting then we would skip straight to assuming victory
@@ -204,6 +205,7 @@ function executeDaily() {
         eventText: "Unbound",
         selectLocation: "top",
         partyName: "Wave",
+        companionTabPriority: 0,
         executeTurnFunction: function(turn) {
             selectAbilities(4, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
             selectAbilities(5, [{x: 2, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
@@ -218,7 +220,7 @@ function executeDaily() {
 // needs buffed stats
 function executeFF15Daily() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
+        vortexX: 0, vortexY: 3,
         eventText: "Reaper",
         selectLocation: "top",
         partyName: "MK",
@@ -242,9 +244,9 @@ function executeFF15Daily() {
 
 sleep(0.5);
 
-executeDaily();
-tapBackButton();
-exitVortex();
+// executeDaily();
+// tapBackButton();
+// exitVortex();
 
 executeFF15Daily();
 tapBackButton();

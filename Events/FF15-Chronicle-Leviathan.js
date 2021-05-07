@@ -33,7 +33,7 @@ function executeTurnFunction(turn) {
         selectAbilities(3, [{x: 1, y: 1}, {x: 11, y: 0}, {x: 11, y: 0}, {x: 11, y: 0}])
         selectAbilities(4, [{x: 3, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
         selectAbilities(5, [{x: 6, y: 1}, {x: 12, y: 0}, {x: 12, y: 0}, {x: 12, y: 0}])
-        selectAbilities(1, [{x: 5, y: 0}, {x: 5, y: 1}, {x: 5, y: 1}, {x: 5, y: 1}])
+        selectAbilities(1, [{x: 0, y: 1}]) // some random esper
 
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
@@ -50,6 +50,7 @@ function executeFF15Levia() {
         eventText: EVENT_TEXT,
         selectLocation: SELECT_LOCATION,
         partyName: PARTY_NAME,
+        companionTabPriority: [0, 1, 2],
         executeTurnFunction: executeTurnFunction
     };
 

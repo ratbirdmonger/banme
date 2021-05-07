@@ -95,34 +95,48 @@ function isRewardOkButtonActive() {
 }
 
 function multicastSR(orbsUsed, firstTurn) {
-    var resetSkills = orbsUsed == 0 && firstTurn;
-    var deadUnit = -1;
-    var usedCD = false;
+    var resetSkills = orbsUsed == 0 && firstTurn;    
 
-    // commented out - Sabin gets a triple cast if he's attacked, so just reload him
-    // if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-    //     selectAbilities(3, [{x:2, y:1}, {x:6, y:0}, {x:6, y:0}]) // Sabin
-    // }
+    let unit1Acted = false;
+    // check if someone died
+    if(!isBattleUnitReady(4)) {
+        // yep, he died. better check the other one.
+        if(!isBattleUnitReady(5)) {
+            // ah crap the other one died too. Raise them both!
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 5}]);
+        } else {
+            // only the first one died, so raise him and heal everyone else
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 2, y: 0, target: 1}]);
+        }
+        activateUnit(1); unit1Acted = true;
+    }
+
+    if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
+        selectAbilities(3, [{x:9, y:1}]) // Bonus - Bushido
+    }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-        selectAbilities(2, [{x: 1, y:0}, {x:3, y: 0}, {x:3, y: 0}]); // Locke
+        selectAbilities(2, [{x:1, y:1}, {x:7, y: 0}, {x:7, y: 0}]); // ardyn
     }    
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
-        selectAbilities(4, [{x: 3, y: 0}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}]); // King Rain
+        selectAbilities(4, [{x:2, y:0}, {x: 7, y: 1}, {x: 7, y: 1}]); // edel
     }
     if(isBattleUnitReady(5) && (resetSkills || isAutoAttackSelected(5))) {
-        selectAbilities(5, [{x:4, y:0}, {x: 5, y: 1}, {x: 5, y: 1}, {x: 5, y: 1}]) // Tyro
+        selectAbilities(5, [{x:3, y:0}, {x: 8, y: 1}, {x: 8, y: 1}]) // edel
     }
     
+    activateUnit(3); // Bushido first to dispel cover/mirage
+    sleep(1);
     activateUnit(2);
-    activateUnit(3);
     activateUnit(4);
     activateUnit(5);
-    sleep(1);
-    poll(isEsperGaugeFull, 10, 0.2);
-    if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
-        selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+    sleep(0.5);
+    if(!unit1Acted) {    
+        poll(isEsperGaugeFull, 10, 0.2);
+        if(isAutoAttackSelected(1) && isEsperGaugeFull() && isBattleUnitReady(1)) {
+            selectAbilities(1, [{x: 0, y: 1}]); // bonus unit summoning Odin
+        }
+        activateUnit(1);
     }
-    activateUnit(1);
 }
 
 function singleCastSR(orbsUsed, firstTurn) {
@@ -346,7 +360,7 @@ function executeArena(orbsUsed, battleFunction) {
     }
 }
 
-var BATTLE_FUNCTION = multicastCWA;
+var BATTLE_FUNCTION = multicastSR;
 
 function executeArenaLoop() {
     var orbsUsed = 0;

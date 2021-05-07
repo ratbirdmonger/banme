@@ -23,8 +23,8 @@ const {
 
 const PARTY_NAME = "MK";
 const EVENT_TEXT = "Sacrifices"
-const COMPANION_TAB_PRIORITY = [0, 2, 1];
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const COMPANION_TAB_PRIORITY = [1, 2, 0];
+const VORTEX_X = 0; const VORTEX_Y = 2;
 const SELECT_LOCATION = "bottom";
 
 function executeTurnFunction(turn) {
