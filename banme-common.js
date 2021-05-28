@@ -420,7 +420,7 @@ function isDontRequestButtonActive() {
 
 // daily quest complete dialog
 function isDailyQuestCloseButtonActive() {
-    return areColorsPresentInRegion(DAILY_QUEST_CLOSE_BUTTON_COLORS, DAILY_QUEST_CLOSE_REGION);
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/daily-quest-close.png`, DAILY_QUEST_CLOSE_REGION);
 }
 
 // taps the post-battle next button 
@@ -628,7 +628,7 @@ function executeEvent(arguments) {
         tap(900, 1200); // top option when there's a banner
     } else if (arguments.selectLocation == "top") {
         tap(900, 675); // option when there's no banner
-    } else {
+    } else { // bottom
         tap(900, 1500); // option with both banner and ranking
     }
     sleep(1.5);
@@ -658,7 +658,7 @@ function executeEvent(arguments) {
             if(companionTabPriority == false) {
                 // don't do anything at all, friends not allowed in this event
                 sleep(1); // need to sleep to give the next screen time to load
-            } else  if(Array.isArray(companionTabPriority)) {
+            } else if(Array.isArray(companionTabPriority)) {
                 tapBonusFriendOrDefault(companionTabPriority);
             } else {
                 // tap the first possible unit

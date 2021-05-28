@@ -161,6 +161,7 @@ function trivialEvent(hasChallenges = true) {
     }
     
     doubleTap(80, 800); // tap first available companion
+    sleep(1);
     tap(820, 1880); // tap depart
 
     // This isn't a good way to do it, if there's a delay starting then we would skip straight to assuming victory
@@ -201,16 +202,22 @@ function dailyGilHunt() {
 // needs buffed stats
 function executeDaily() {
     let arguments = {
-        vortexX: 0, vortexY: 3,
-        eventText: "Unbound",
+        vortexX: 0, vortexY: 7,
+        eventText: "Darkness",
         selectLocation: "top",
         partyName: "Wave",
         companionTabPriority: 0,
         executeTurnFunction: function(turn) {
-            selectAbilities(4, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
-            selectAbilities(5, [{x: 2, y: 0}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
-    
-            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            if(turn == 1) {
+                selectAbilities(4, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1},  {x: 3, y: 1}])
+                selectAbilities(5, [{x: 2, y: 0}, {x: 4, y: 0}, {x: 4, y: 0},  {x: 4, y: 0}])
+        
+                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            } else {
+                // no cooldowns were used previously so reload & repeat
+                pressReload();
+                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+            }
         }
     };
 
@@ -218,18 +225,18 @@ function executeDaily() {
 }
 
 // needs buffed stats
-function executeFF15Daily() {
+function executeDaily2() {
     let arguments = {
-        vortexX: 0, vortexY: 3,
-        eventText: "Reaper",
+        vortexX: 0, vortexY: 1,
+        eventText: "Nova",
         selectLocation: "top",
         partyName: "MK",
         companionTabPriority: false, // friends not allowed
         executeTurnFunction: function(turn) {
             if(turn == 1) {
                 // DPS
-                selectAbilities(2, [{x: 1, y: 1}, {x: 3, y: 0}, {x: 3, y: 0}])
-
+                selectAbilities(5, [{x: 1, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
+        
                 _.forEach(_.range(1,7), function(i) {activateUnit(i)});
             } else {
                 // no cooldowns were used previously so reload & repeat
@@ -244,13 +251,13 @@ function executeFF15Daily() {
 
 sleep(0.5);
 
-// executeDaily();
-// tapBackButton();
-// exitVortex();
-
-executeFF15Daily();
+executeDaily();
 tapBackButton();
 exitVortex();
+
+// executeDaily2();
+// tapBackButton();
+// exitVortex();
 
 dailyGilHunt();
 tapBackButton();

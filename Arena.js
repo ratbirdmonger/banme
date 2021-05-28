@@ -112,10 +112,12 @@ function multicastSR(orbsUsed, firstTurn) {
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:9, y:1}]) // Bonus - Bushido
+        selectAbilities(3, [{x:11, y:0}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-        selectAbilities(2, [{x:1, y:1}, {x:7, y: 0}, {x:7, y: 0}]); // ardyn
+        // selectAbilities(2, [{x:4, y:1}, {x:11, y: 0}, {x:11, y: 0}]); // lucas
+        // selectAbilities(2, [{x:1, y:1}, {x:8, y: 1}, {x:8, y: 1}]); // lilith
+        selectAbilities(2, [{x:1, y:1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // edel
     }    
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x:2, y:0}, {x: 7, y: 1}, {x: 7, y: 1}]); // edel
@@ -125,8 +127,9 @@ function multicastSR(orbsUsed, firstTurn) {
     }
     
     activateUnit(3); // Bushido first to dispel cover/mirage
-    sleep(1);
     activateUnit(2);
+
+    sleep(2);
     activateUnit(4);
     activateUnit(5);
     sleep(0.5);
