@@ -21,44 +21,26 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "MK";
-const EVENT_TEXT = "Grand"
-const COMPANION_TAB_PRIORITY = [2, 1, 0];
-const VORTEX_X = 0; const VORTEX_Y = 4;
+const PARTY_NAME = "Wave";
+const EVENT_TEXT = "Plea"
+const COMPANION_TAB_PRIORITY = -1; // not worth it
+const VORTEX_X = 0; const VORTEX_Y = 5;
 const SELECT_LOCATION = "bottom";
 
 function executeTurnFunction(turn) {
     if(turn == 1) {
-        // Vanille breaks
-        selectAbilities(1, [{x: 7, y: 0}, {x: 13, y: 1}, {x: 14, y: 1, target: 1}])
+        // DPS
+        selectAbilities(4, [{x: 3, y: 1}])
 
-        // Rightning 
-        selectAbilities(5, [{x: 0, y: 0}])
-
-        // NV Lightning does damage
-        selectAbilities(2, [{x: 4, y: 0}, {x:6, y: 0}, {x: 6, y: 0}, {x: 6, y: 0}])
-
-        // Fang damage
-        selectAbilities(3, [{x: 1, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
-
-        // Lumina pilfers
-        selectAbilities(4, [{x: 8, y: 1}])
-
-        // break first, then DPS
-        activateUnit(1); activateUnit(4); sleep(1);
-
-        activateUnit(2); activateUnit(3); activateUnit(6); sleep(0.9);
-        activateUnit(5);
+        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
-        pressReload();        
-
-        activateUnit(1); activateUnit(4);
-        activateUnit(2); activateUnit(3); activateUnit(6); sleep(0.9);
-        activateUnit(5);
+        // no cooldowns were used previously so reload & repeat
+        pressReload();
+        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     }
 }
 
-function executeRaid0311() {
+function executeRaid0624() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
@@ -72,7 +54,7 @@ function executeRaid0311() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid0311()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid0624()) { }; }
 module.exports = {
-    executeRaid0311
+    executeRaid0624
 }

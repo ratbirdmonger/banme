@@ -24,14 +24,6 @@ const { executeArenaLoop } = require(`${at.rootDir()}/banme/Arena`);
 
 usleep(500000);
 
-// unit 1 (vaan) steal and break
-selectAbilities(1, [{x: 2, y: 1}, {x: 4, y: 0}, {x: 7, y: 0}]);
-// unit 3 (elena) damage
-selectAbilities(3, [{x: 1, y: 0}, {x: 2, y: 1}, {x: 3, y: 0}, {x: 3, y: 0}]);
-activateUnit(1);
-activateUnit(2);
-activateUnit(3);
-activateUnit(4);
-activateUnit(5);
-activateUnit(6);
+tap(1113, 675); // tap x to clear text box
+
 sleep(1.5);

@@ -99,25 +99,25 @@ function multicastSR(orbsUsed, firstTurn) {
 
     let unit1Acted = false;
     // check if someone died
-    if(!isBattleUnitReady(4)) {
+    if(!isBattleUnitReady(5)) {
         // yep, he died. better check the other one.
-        if(!isBattleUnitReady(5)) {
+        if(!isBattleUnitReady(4)) {
             // ah crap the other one died too. Raise them both!
             selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 5}]);
         } else {
             // only the first one died, so raise him and heal everyone else
-            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 2, y: 0, target: 1}]);
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 5}, {x: 2, y: 0, target: 1}]);
         }
         activateUnit(1); unit1Acted = true;
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:11, y:0}]) // Bonus - Bushido
+        selectAbilities(3, [{x:8, y:0}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
-        // selectAbilities(2, [{x:4, y:1}, {x:11, y: 0}, {x:11, y: 0}]); // lucas
+        selectAbilities(2, [{x:4, y:1}, {x:11, y: 0}, {x:11, y: 0}]); // lucas
         // selectAbilities(2, [{x:1, y:1}, {x:8, y: 1}, {x:8, y: 1}]); // lilith
-        selectAbilities(2, [{x:1, y:1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // edel
+        //selectAbilities(2, [{x:1, y:1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}]); // edel
     }    
     if(isBattleUnitReady(4) && (resetSkills || isAutoAttackSelected(4))) {
         selectAbilities(4, [{x:2, y:0}, {x: 7, y: 1}, {x: 7, y: 1}]); // edel
@@ -127,9 +127,10 @@ function multicastSR(orbsUsed, firstTurn) {
     }
     
     activateUnit(3); // Bushido first to dispel cover/mirage
+    sleep(0.5);
     activateUnit(2);
 
-    sleep(2);
+    sleep(1.5);
     activateUnit(4);
     activateUnit(5);
     sleep(0.5);
@@ -335,7 +336,8 @@ function executeArena(orbsUsed, battleFunction) {
             battleFunction(orbsUsed, firstTurn);
             firstTurn = false;
 
-            sleep(3); // give time for the reload/repeat button to go blank
+            sleep(6); // give time for the reload/repeat button to be disabled
+            // BUG: if a unit is dead at turn start, reload/repeat takes a long time to disable. try sleeping 6
         } else {
             // arena is done
             break;

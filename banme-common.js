@@ -240,8 +240,10 @@ const FRIEND_TOP_LEFT = [
 ];
 
 const BONUS_ARROW_REGION = {
-    x_offset: 224, y_offset: 200, width: 45, height: 60
+    x_offset: 200, y_offset: 200, width: 100, height: 100
 }
+
+// region: x: 268, y: 843
 
 // a few white/black pixels to match the "Depart without companion" option in the "pick a companion" dialog
 const departWithoutCompanionColors = [
@@ -319,7 +321,6 @@ function tapBonusFriendOrDefault(companionTabs = null) {
     }
 
     tap(FRIEND_TOP_LEFT[bonusFriend].x + 50, FRIEND_TOP_LEFT[bonusFriend].y + 50);
-    sleep(1.5);
 }
 
 const SCROLL_BUTTON_INITIAL_LOCATION = {x: 1515, y: 650};
@@ -657,18 +658,17 @@ function executeEvent(arguments) {
             let companionTabPriority = arguments.companionTabPriority;
             if(companionTabPriority == false) {
                 // don't do anything at all, friends not allowed in this event
-                sleep(1); // need to sleep to give the next screen time to load
             } else if(Array.isArray(companionTabPriority)) {
                 tapBonusFriendOrDefault(companionTabPriority);
             } else {
                 // tap the first possible unit
                 tap(770, 820);
-                sleep(1);
             }
         } else {
             selectNoCompanion();
         }
     }  
+    sleep(3); // need to sleep to give the next screen time to load
 
     if('partyName' in arguments) {
         let partyName = arguments.partyName;

@@ -58,7 +58,7 @@ function sendGiftsAndPressShare() {
 
     // share
     tap(1250, 1200);
-    sleep(1.5);
+    sleep(2);
 
     // close the share screen
     doubleTap(1220, 350);
@@ -202,22 +202,14 @@ function dailyGilHunt() {
 // needs buffed stats
 function executeDaily() {
     let arguments = {
-        vortexX: 0, vortexY: 7,
-        eventText: "Darkness",
+        vortexX: 0, vortexY: 6,
+        eventText: "Dark",
         selectLocation: "top",
         partyName: "Wave",
-        companionTabPriority: 0,
+        companionTabPriority: false,
         executeTurnFunction: function(turn) {
-            if(turn == 1) {
-                selectAbilities(4, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1},  {x: 3, y: 1}])
-                selectAbilities(5, [{x: 2, y: 0}, {x: 4, y: 0}, {x: 4, y: 0},  {x: 4, y: 0}])
-        
-                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-            } else {
-                // no cooldowns were used previously so reload & repeat
-                pressReload();
-                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-            }
+            selectAbilities(4, [{x: 0, y: 0}])
+            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };
 
@@ -227,22 +219,18 @@ function executeDaily() {
 // needs buffed stats
 function executeDaily2() {
     let arguments = {
-        vortexX: 0, vortexY: 1,
-        eventText: "Nova",
+        vortexX: 0, vortexY: 2,
+        eventText: "Craft",
         selectLocation: "top",
         partyName: "MK",
-        companionTabPriority: false, // friends not allowed
+        companionTabPriority: -1,
         executeTurnFunction: function(turn) {
-            if(turn == 1) {
-                // DPS
-                selectAbilities(5, [{x: 1, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
-        
-                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-            } else {
-                // no cooldowns were used previously so reload & repeat
-                pressReload();
-                _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-            }
+            selectAbilities(2, [{x: 0, y: 0}])
+            selectAbilities(4, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0},  {x: 3, y: 0}])
+            selectAbilities(5, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1},  {x: 3, y: 1}])
+    
+            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+
         }
     };
 
@@ -251,13 +239,13 @@ function executeDaily2() {
 
 sleep(0.5);
 
-executeDaily();
-tapBackButton();
-exitVortex();
-
 // executeDaily2();
 // tapBackButton();
 // exitVortex();
+
+executeDaily();
+tapBackButton();
+exitVortex();
 
 dailyGilHunt();
 tapBackButton();

@@ -23,7 +23,7 @@ const {
 
 const PARTY_NAME = "Wave";
 const EVENT_TEXT = "Promised"
-const COMPANION_TAB_PRIORITY = [1, 2, 0];
+const COMPANION_TAB_PRIORITY = 0; // not worth it
 const VORTEX_X = 0; const VORTEX_Y = 6;
 const SELECT_LOCATION = "bottom";
 
@@ -47,7 +47,7 @@ function executeRaid0513() {
         vortexY: VORTEX_Y,
         eventText: EVENT_TEXT,
         selectLocation: SELECT_LOCATION,
-        companionTabPriority: -1,
+        companionTabPriority: COMPANION_TAB_PRIORITY,
         partyName: PARTY_NAME,
         executeTurnFunction: executeTurnFunction
     };

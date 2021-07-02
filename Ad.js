@@ -119,7 +119,7 @@ function executeAd() {
             tap(740, 1880);
             return false; // keep polling
         }
-    }, 5, 0.75, "back button after prize wheel");
+    }, 6, 0.75, "back button after prize wheel");
     
     sleep(2);
 }
