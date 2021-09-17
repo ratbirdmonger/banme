@@ -22,10 +22,10 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Wisdom"
+const EVENT_TEXT = "Zozo"
 const COMPANION_TAB_PRIORITY = -1;
 const VORTEX_X = 0; const VORTEX_Y = 0;
-const SELECT_LOCATION = "middle";
+const SELECT_LOCATION = "bottom";
 
 sleep(0.5);
 
@@ -33,9 +33,7 @@ sleep(0.5);
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(4, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0},  {x: 3, y: 0}])
-        selectAbilities(5, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1},  {x: 3, y: 1}])
-
+        selectAbilities(2, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();
@@ -44,7 +42,7 @@ function executeTurnFunction(turn) {
     }
 }
 
-function executeEvent061721() {
+function executeEvent071321() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
@@ -58,7 +56,7 @@ function executeEvent061721() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeEvent061721()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeEvent071321()) { }; }
 module.exports = {
-    executeEvent061721
+    executeEvent071321
 }

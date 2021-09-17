@@ -202,13 +202,13 @@ function dailyGilHunt() {
 // needs buffed stats
 function executeDaily() {
     let arguments = {
-        vortexX: 0, vortexY: 6,
-        eventText: "Dark",
+        vortexX: 0, vortexY: 7,
+        eventText: "Descendant",
         selectLocation: "top",
-        partyName: "Wave",
+        partyName: "MK",
         companionTabPriority: false,
         executeTurnFunction: function(turn) {
-            selectAbilities(4, [{x: 0, y: 0}])
+            selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
             _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };
@@ -219,18 +219,15 @@ function executeDaily() {
 // needs buffed stats
 function executeDaily2() {
     let arguments = {
-        vortexX: 0, vortexY: 2,
-        eventText: "Craft",
+        vortexX: 0, vortexY: 3,
+        eventText: "Steel",
         selectLocation: "top",
         partyName: "MK",
-        companionTabPriority: -1,
+        companionTabPriority: false,
         executeTurnFunction: function(turn) {
-            selectAbilities(2, [{x: 0, y: 0}])
-            selectAbilities(4, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0},  {x: 3, y: 0}])
-            selectAbilities(5, [{x: 1, y: 1}, {x: 3, y: 1}, {x: 3, y: 1},  {x: 3, y: 1}])
-    
+            selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
+            selectAbilities(3, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
             _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-
         }
     };
 
@@ -239,13 +236,13 @@ function executeDaily2() {
 
 sleep(0.5);
 
-// executeDaily2();
+// executeDaily();
 // tapBackButton();
 // exitVortex();
 
-executeDaily();
-tapBackButton();
-exitVortex();
+// executeDaily2();
+// tapBackButton();
+// exitVortex();
 
 dailyGilHunt();
 tapBackButton();
@@ -254,4 +251,4 @@ exitVortex();
 sendGiftsAndPressShare();
 //buyGoldBundle();
 
-executeAdLoop();
+// executeAdLoop();

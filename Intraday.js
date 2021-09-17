@@ -24,7 +24,7 @@ const {
 
 const { executeArenaLoop } = safeRequire(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = safeRequire(`${at.rootDir()}/banme/Expedition`);
-const { executeRaid0624 } = safeRequire(`${at.rootDir()}/banme/Events/2021-06-24-Raid`);
+const { executeRaid } = safeRequire(`${at.rootDir()}/banme/Events/2021-08-05-Raid`);
 appActivate("com.square-enix.ffbeww");
 
 // Arena
@@ -38,10 +38,10 @@ poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main me
 sleep(1); // wait an additional second, sometimes there's a "Connecting"
 
 // Raid
-while(executeRaid0624());
-tapBackButton();
-exitVortex(); // back to main menu
-poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
+// while(executeRaid());
+// tapBackButton();
+// exitVortex(); // back to main menu
+// poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
 
 // Expeditions
 selectMainMenu("Expedition");

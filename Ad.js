@@ -106,9 +106,12 @@ function executeAd() {
         return;
     }
     if(!isPrizeWheelShowing()) {
-        findAndClickXButton("2nd ad");
+        findAndClickXButton("2nd screen");
+    }
+    if(!poll(isPrizeWheelShowing, 5, 0.5)) {
+        findAndClickXButton("3rd screen");
     
-        poll(isPrizeWheelShowing, 5, 0.5, "Wait for prize wheel after 2nd X");
+        poll(isPrizeWheelShowing, 5, 0.5, "Wait for prize wheel after 3rd X");
     }
 
     // tap on the screen where the next button is until we're back to the UI

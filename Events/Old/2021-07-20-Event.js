@@ -22,26 +22,28 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Protect"
-const COMPANION_TAB_PRIORITY = [1, 0, 2];
+const EVENT_TEXT = "Town"
+const COMPANION_TAB_PRIORITY = -1;
 const VORTEX_X = 0; const VORTEX_Y = 0;
 const SELECT_LOCATION = "bottom";
+
+sleep(0.5);
 
 // requires cheating
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(5, [{x: 1, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
-
+        selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
+        selectAbilities(3, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
-        // no cooldowns were used previously so reload & repeat
         pressReload();
+
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     }
 }
 
-function executeMK0520() {
+function executeEvent071321() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
@@ -55,7 +57,7 @@ function executeMK0520() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeMK0520()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeEvent071321()) { }; }
 module.exports = {
-    executeMK0520
+    executeEvent071321
 }

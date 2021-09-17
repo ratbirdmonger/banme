@@ -45,11 +45,6 @@ const EXPEDITION_IN_PROGRESS_X_COLORS = [
 ];
 
 const EXPEDITION_NEXT_BUTTON_REGION = {x: 622, y: 1885, width: 296, height: 122};
-const EXPEDITION_NEXT_BUTTON_COLORS = [
-    { color: 14869993, x: 0, y: 0 },
-    { color: 16009, x: 0, y: -24 },
-    { color: 15066857, x: 23, y: -1 }
-];
 
 // the "Moogle" word in the "Exploring the Moogle Cave" caption at the top
 const EXPEDITION_MOOGLE_REGION = { x: 545, y: 329, width: 147, height: 65};
@@ -62,7 +57,7 @@ function isInMoogleExpedition() {
 }
 
 function isExpeditionNextButtonActive() {
-    return areColorsPresentInRegion(EXPEDITION_NEXT_BUTTON_COLORS, EXPEDITION_NEXT_BUTTON_REGION);
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/expedition-NEXT.png`, EXPEDITION_NEXT_BUTTON_REGION);
 }
 
 function isExpeditionNewButtonSelected() {
