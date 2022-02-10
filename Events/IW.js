@@ -274,6 +274,8 @@ function doOneIWBattle() {
 
     // unit 1 vaan, or someone with a damaging LB
     selectAbilities(1, [{x: 0, y: 0}]);
+    // unit 2 always summons esper
+    selectAbilities(2, [{x: 0, y: 1}]);
     activateUnit(1);
     activateUnit(5);
     activateUnit(3);
