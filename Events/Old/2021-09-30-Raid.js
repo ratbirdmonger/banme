@@ -21,10 +21,10 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "MK";
-const EVENT_TEXT = "Final"
+const PARTY_NAME = "Wave";
+const EVENT_TEXT = "Tomb"
 const COMPANION_TAB_PRIORITY = -1;
-const VORTEX_X = 0; const VORTEX_Y = 0;
+const VORTEX_X = 0; const VORTEX_Y = 6;
 const SELECT_LOCATION = "bottom";
 
 sleep(0.5);
@@ -32,8 +32,7 @@ sleep(0.5);
 // requires cheating
 function executeTurnFunction(turn) {
     if(turn == 1) {
-        // DPS
-        selectAbilities(1, [{x: 3, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}, {x: 4, y: 1}])
+        selectAbilities(5, [{x: 2, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();

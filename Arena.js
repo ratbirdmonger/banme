@@ -17,7 +17,7 @@ const {
 } = require(`${at.rootDir()}/banme/banme-common`);
 const {
     // basic gestures
-    swipe, sleep, tap, tapMiddle,
+    swipe, sleep, tap, tapMiddle, doubleTap,
     // color & text recognition, polling
     readText, areColorsPresentInRegion, poll
 } = require(`${at.rootDir()}/bot-common/bot-common`);
@@ -99,20 +99,20 @@ function multicastSR(orbsUsed, firstTurn) {
 
     let unit1Acted = false;
     // check if someone died
-    if(!isBattleUnitReady(5)) {
-        // yep, he died. better check the other one.
-        if(!isBattleUnitReady(4)) {
-            // ah crap the other one died too. Raise them both!
-            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 5}]);
+    var dead5 = !isBattleUnitReady(4);
+    var dead4 = !isBattleUnitReady(4);
+
+    if(dead4 || dead5) {
+        if(dead4) {
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 4}, {x: 5, y: 1, target: 4}]);
         } else {
-            // only the first one died, so raise him and heal everyone else
-            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 5}, {x: 2, y: 0, target: 1}]);
+            selectAbilities(1, [{x: 1, y: 0}, {x: 5, y: 1, target: 5}, {x: 5, y: 1, target: 5}]);
         }
         activateUnit(1); unit1Acted = true;
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:8, y:0}]) // Bonus - Bushido
+        selectAbilities(3, [{x:11, y:0}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:4, y:1}, {x:11, y: 0}, {x:11, y: 0}]); // lucas
@@ -320,10 +320,12 @@ function executeArena(orbsUsed, battleFunction) {
 
     // confirm
     tap(1000, 1150);
-    sleep(4); // TODO this should be a poll rather than a hard-coded sleep. also, could handle the "party changed"
+    sleep(2);
+    poll(function(){ return isBeginButtonActive() }, 20, 1);
+    sleep(1);
 
     // start battle
-    tap(800, 1800);
+    doubleTap(800, 1800);
 
     let firstTurn = true;
     while(true) {
@@ -374,6 +376,12 @@ function executeArenaLoop() {
         orbsUsed++;
     }
     return orbsUsed;
+}
+
+const BEGIN_BUTTON_REGION = {x: 618, y: 1694, width: 73, height: 96}
+
+function isBeginButtonActive() {
+    return isImagePresentInRegion(`${at.rootDir()}/banme/Images/arena-begin.png`, BEGIN_BUTTON_REGION);
 }
 
 if(module === undefined) { var module = {}; executeArenaLoop(); }

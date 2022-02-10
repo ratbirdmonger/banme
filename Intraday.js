@@ -24,21 +24,11 @@ const {
 
 const { executeArenaLoop } = safeRequire(`${at.rootDir()}/banme/Arena`);
 const { executeExpeditionLoop } = safeRequire(`${at.rootDir()}/banme/Expedition`);
-const { executeRaid } = safeRequire(`${at.rootDir()}/banme/Events/2021-08-05-Raid`);
+const { executeEvent1 } = safeRequire(`${at.rootDir()}/banme/Events/Raid`);
 appActivate("com.square-enix.ffbeww");
 
-// Arena
-selectMainMenu("Arena");
-tapActiveMainMenuButton();
-poll(isBackButtonActive, 10, 0.5, "Arena screen");
-sleep(0.5); // make sure the screen finishes fading in
-executeArenaLoop();
-tapBackButton(); // back to main menu
-poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
-sleep(1); // wait an additional second, sometimes there's a "Connecting"
-
 // Raid
-// while(executeRaid());
+// while(executeEvent1());
 // tapBackButton();
 // exitVortex(); // back to main menu
 // poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
@@ -54,3 +44,13 @@ if(isDailyQuestCloseButtonActive()) {
     tapDailyQuestCloseButton(); sleep(1);
 }
 poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
+
+// Arena
+selectMainMenu("Arena");
+tapActiveMainMenuButton();
+poll(isBackButtonActive, 10, 0.5, "Arena screen");
+sleep(0.5); // make sure the screen finishes fading in
+executeArenaLoop();
+tapBackButton(); // back to main menu
+poll(function(){return getMainMenuLabel() == "World"}, 2, 0.5, "Wait for main menu");
+sleep(1); // wait an additional second, sometimes there's a "Connecting"

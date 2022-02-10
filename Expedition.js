@@ -132,7 +132,7 @@ function executeExpeditionLoop() {
             tapMiddle(EXPEDITION_MOOGLE_DEPART_REGION);
         } else {
             // tap the middle empty unit slot
-            tap(750, 1360);
+            doubleTap(750, 1360);
             sleep(2);
             // now at the Select party screen, so tap the top 5 units. may not use them all
             tap(150, 868);

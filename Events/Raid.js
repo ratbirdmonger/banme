@@ -22,28 +22,28 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Crossroads"
+const EVENT_TEXT = "Library"
 const COMPANION_TAB_PRIORITY = -1;
-const VORTEX_X = 0; const VORTEX_Y = 2;
+const VORTEX_X = 0; const VORTEX_Y = 4;
 const SELECT_LOCATION = "bottom";
 
 sleep(0.5);
 
+// actually 1/20 raid
 // requires cheating
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
-        selectAbilities(3, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
+        selectAbilities(2, [{x: 2, y: 0}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();
 
-        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
+        _.forEach(_.range(1,2), function(i) {activateUnit(i)});
     }
 }
 
-function executeRaid() {
+function executeEvent1() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
@@ -57,7 +57,7 @@ function executeRaid() {
     return executeEvent(arguments);
 }
 
-if(module === undefined) { var module = {}; sleep(0.5); while(executeRaid()) { }; }
+if(module === undefined) { var module = {}; sleep(0.5); while(executeEvent1()) { }; }
 module.exports = {
-    executeRaid
+    executeEvent1
 }

@@ -203,30 +203,13 @@ function dailyGilHunt() {
 function executeDaily() {
     let arguments = {
         vortexX: 0, vortexY: 7,
-        eventText: "Descendant",
+        eventText: "Tomb",
         selectLocation: "top",
-        partyName: "MK",
+        partyName: "Wave",
         companionTabPriority: false,
         executeTurnFunction: function(turn) {
-            selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
-            _.forEach(_.range(1,7), function(i) {activateUnit(i)});
-        }
-    };
-
-    executeEvent(arguments);
-}
-
-// needs buffed stats
-function executeDaily2() {
-    let arguments = {
-        vortexX: 0, vortexY: 3,
-        eventText: "Steel",
-        selectLocation: "top",
-        partyName: "MK",
-        companionTabPriority: false,
-        executeTurnFunction: function(turn) {
-            selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
-            selectAbilities(3, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
+            selectAbilities(2, [{x: 1, y: 1}, {x: 4, y: 0}, {x: 4, y: 0}, {x: 4, y: 0}])
+            selectAbilities(5, [{x: 2, y: 1}, {x: 3, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
             _.forEach(_.range(1,7), function(i) {activateUnit(i)});
         }
     };

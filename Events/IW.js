@@ -157,10 +157,14 @@ function parseAbilityText(text) {
 
 function extractNumber(text) {
     // hard-coding it to try to catch OCR errors
-    if(text.includes("60")) {
+    if(text.includes("80")) {
+        return 80;
+    } else if(text.includes("60")) {
         return 60;
     } else if(text.includes("40")) {
         return 40;
+    } else if(text.includes("20")) {
+        return 20;
     } else if(text.includes("15")) {
         return 15;
     } else if(text.includes("12")) {
@@ -247,7 +251,7 @@ const HP_MAG_SPR_PRIORITY_LIST = ["Unique", "Rare", ["HP", "MAG", "SPR"], "DEF",
 // TODO: DEF, SPR, HP priorities
 
 // set this depending on what weapon is being run
-const PRIORITY_LIST = ATK_PRIORITY_LIST;
+const PRIORITY_LIST = HP_PRIORITY_LIST;
 
 const DISMISS_ABILITIES_BUTTON_REGION = {x: 45, y: 1393, width: 674, height: 73};
 const SWITCH_ABILITY_OBTAINED = {x: 816, y: 1393, width: 674, height: 73};
@@ -335,7 +339,7 @@ function doOneIWBattle() {
         tapMiddle(regionToTap);
         sleep(0.5);
         doubleTap(IW_OBTAIN_ABILITY_CONFIRM_REGION.x, IW_OBTAIN_ABILITY_CONFIRM_REGION.y);
-        sleep(3);
+        sleep(4);
         // tap somewhere to force the screen to move along
         doubleTap(IW_OBTAIN_ABILITY_CONFIRM_REGION.x, IW_OBTAIN_ABILITY_CONFIRM_REGION.y);
         sleep(2);

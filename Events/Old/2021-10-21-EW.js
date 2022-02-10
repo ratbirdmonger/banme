@@ -22,10 +22,9 @@ const {
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
 const PARTY_NAME = "MK";
-const EVENT_TEXT = "Town"
 const COMPANION_TAB_PRIORITY = -1;
 const VORTEX_X = 0; const VORTEX_Y = 0;
-const SELECT_LOCATION = "bottom";
+const SELECT_LOCATION = "middle";
 
 sleep(0.5);
 
@@ -33,8 +32,8 @@ sleep(0.5);
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(2, [{x: 1, y: 1}, {x: 5, y: 0}, {x: 5, y: 0}, {x: 5, y: 0}])
-        selectAbilities(3, [{x: 1, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}, {x: 7, y: 1}])
+        selectAbilities(1, [{x: 3, y: 0}, {x: 5, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+        selectAbilities(3, [{x: 0, y: 0}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();
@@ -47,7 +46,6 @@ function executeEvent071321() {
     let arguments = {
         vortexX: VORTEX_X,
         vortexY: VORTEX_Y,
-        eventText: EVENT_TEXT,
         selectLocation: SELECT_LOCATION,
         companionTabPriority: COMPANION_TAB_PRIORITY,
         partyName: PARTY_NAME,
