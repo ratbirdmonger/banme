@@ -21,25 +21,24 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "MK";
-const EVENT_TEXT = "Library"
+const PARTY_NAME = "story";
+const EVENT_TEXT = "The"
 const COMPANION_TAB_PRIORITY = -1;
-const VORTEX_X = 0; const VORTEX_Y = 4;
+const VORTEX_X = 0; const VORTEX_Y = 1;
 const SELECT_LOCATION = "bottom";
 
 sleep(0.5);
 
-// actually 1/20 raid
+// actually 3/3 raid
 // requires cheating
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(2, [{x: 2, y: 0}, {x: 6, y: 1}, {x: 6, y: 1}, {x: 6, y: 1}])
+        selectAbilities(4, [{x: 0, y: 0}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();
-
-        _.forEach(_.range(1,2), function(i) {activateUnit(i)});
+        _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     }
 }
 

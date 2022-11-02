@@ -227,9 +227,9 @@ sleep(0.5);
 // tapBackButton();
 // exitVortex();
 
-dailyGilHunt();
-tapBackButton();
-exitVortex();
+// dailyGilHunt();
+// tapBackButton();
+// exitVortex();
 
 sendGiftsAndPressShare();
 //buyGoldBundle();

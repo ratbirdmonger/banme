@@ -21,20 +21,19 @@ const {
     isDontRequestButtonActive, isNextButtonActive, tapNextButton, tapDontRequestButton, tapDailyQuestCloseButton, dismissVictoryScreenDialogs        
  } = safeRequire(`${at.rootDir()}/banme/banme-common`);
 
-const PARTY_NAME = "Wave";
-const EVENT_TEXT = "Tiger"
+const PARTY_NAME = "story";
+const EVENT_TEXT = "of"
 const COMPANION_TAB_PRIORITY = -1;
 const VORTEX_X = 0; const VORTEX_Y = 0;
-const SELECT_LOCATION = "middle";
+const SELECT_LOCATION = "bottom";
 
 sleep(0.5);
 
-// 1/27 eW
+// 5/12
 function executeTurnFunction(turn) {
     if(turn == 1) {
         // DPS
-        selectAbilities(1, [{x: 1, y: 0}, {x: 3, y: 0}, {x: 3, y: 0}])
-        selectAbilities(5, [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 1}, {x: 3, y: 1}])
+        selectAbilities(3, [{x: 2, y: 1}, {x: 9, y: 1}, {x: 9, y: 1}, {x: 9, y: 1}, {x: 9, y: 1}])
         _.forEach(_.range(1,7), function(i) {activateUnit(i)});
     } else {
         pressReload();

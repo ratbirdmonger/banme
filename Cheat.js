@@ -79,7 +79,7 @@ function modifyStats(esperName) {
     
     // tap search
     tap(740, 870);
-    sleep(5);
+    sleep(10);
     
     for(let i = 0; i <= 5; i++) {
         tap(memoryLocation[i].x, memoryLocation[i].y);

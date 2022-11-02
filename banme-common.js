@@ -485,13 +485,19 @@ function selectVortex(x = null, y = null) {
             swipe(EVENT_2_REGION.x, EVENT_2_REGION.y, EVENT_1_REGION.x, EVENT_1_REGION.y);
             sleep(0.1);
         }
+        var region = EVENT_1_REGION;
         if(row == y) {
-            tapMiddle(EVENT_1_REGION);
+            region = EVENT_1_REGION;
         } else if(row == y-1) {
-            tapMiddle(EVENT_2_REGION);
+            region = EVENT_2_REGION;
         } else {
-            tapMiddle(EVENT_3_REGION);
+            region = EVENT_3_REGION;
         }
+
+        tapMiddle(region);
+        sleep(0.1);
+        tapMiddle(region);
+
         poll(isBackButtonActive, 5, 0.5);
         sleep(0.5);
     }

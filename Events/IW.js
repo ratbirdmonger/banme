@@ -119,6 +119,8 @@ function parseAbilityText(text) {
         returnValue = {type: "DEF Auto-Boost"};
     } else if(text.includes("SPR Auto")) {
         returnValue = {type: "SPR Auto-Boost"};
+    } else if(text.includes("Reduce")) {
+        returnValue = {type: "Reduce"};        
     } else if(text.includes("ATK")) {
         var amount = extractNumber(text);
         if(amount == 40) {
@@ -128,10 +130,6 @@ function parseAbilityText(text) {
         }
     } else if(text.includes("MAG")) {
         returnValue = {type: "MAG", amount: extractNumber(text)};
-    } else if(text.includes("DEF")) {
-        returnValue = {type: "DEF", amount: extractNumber(text)};
-    } else if(text.includes("SPR")) {
-        returnValue = {type: "SPR", amount: extractNumber(text)};
     } else if(text.includes("HP")) {
         var amount = extractNumber(text);
         if(amount == 40) {
@@ -139,6 +137,10 @@ function parseAbilityText(text) {
         } else {
             returnValue = {type: "HP", amount: amount};
         }
+    } else if(text.includes("DEF")) {
+        returnValue = {type: "DEF", amount: extractNumber(text)};
+    } else if(text.includes("SPR")) {
+        returnValue = {type: "SPR", amount: extractNumber(text)};
     } else if(text.includes("MP")) {
         var amount = extractNumber(text);
         if(amount == 40) {
@@ -275,7 +277,7 @@ function doOneIWBattle() {
     // unit 1 vaan, or someone with a damaging LB
     selectAbilities(1, [{x: 0, y: 0}]);
     // unit 2 always summons esper
-    selectAbilities(2, [{x: 0, y: 1}]);
+    //selectAbilities(2, [{x: 0, y: 1}]);
     activateUnit(1);
     activateUnit(5);
     activateUnit(3);

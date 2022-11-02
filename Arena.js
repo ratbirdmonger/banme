@@ -112,7 +112,7 @@ function multicastSR(orbsUsed, firstTurn) {
     }
 
     if(isBattleUnitReady(3) && (resetSkills || isAutoAttackSelected(3))) {
-        selectAbilities(3, [{x:11, y:0}]) // Bonus - Bushido
+        selectAbilities(3, [{x:5, y:1}]) // Bonus - Bushido
     }
     if(isBattleUnitReady(2) && (resetSkills || isAutoAttackSelected(2))) {
         selectAbilities(2, [{x:4, y:1}, {x:11, y: 0}, {x:11, y: 0}]); // lucas
